@@ -1,0 +1,3 @@
+build/*
+!build/hotreload.sh
+.DS_STORE/*
