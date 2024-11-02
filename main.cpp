@@ -6,7 +6,7 @@
 #include <dlfcn.h> // Only Linux right now. Windows would be a similar process with LoadLibraryA
 #include <thread>
 
-#define LIBNAME "Game/libhotreload.dylib" // This is the hot reload library
+#define LIBNAME "Game/libhotreload.so" // This is the hot reload library
 
 typedef void(*LIBMAIN_T)(void*, size_t);
 
