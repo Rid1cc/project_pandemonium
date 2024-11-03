@@ -4,9 +4,6 @@ project(pandemonium)
 set(CMAKE_C_STANDARD 23)
 set(CMAKE_CXX_STANDARD 23)
 
-add_executable(pandemonium main.cpp
-        Game/main.hpp)
+add_executable(pandemonium src/main.cpp)
 find_package(raylib CONFIG REQUIRED)
 target_link_libraries(pandemonium PRIVATE raylib)
-
-add_subdirectory(Game)
