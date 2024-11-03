@@ -6,6 +6,7 @@
 
 int main(void) {
 
+
     InitWindow(screenWidth, screenHeight, "Pandemonium");
 
     SetExitKey(0); // ESCAPE NO LONGER CLOSES THE GAME!
@@ -22,7 +23,7 @@ int main(void) {
                 if (IsKeyPressed(KEY_ENTER)) currentScreen = GAMEPLAY;
             } break;
             case GAMEPLAY: {
-                UpdateGameplay(currentScreen, textBox, command, letterCount, mouseOnText, framesCounter);
+                UpdateGameplay(currentScreen, textBox, command, letterCount, mouseOnText, framesCounter, backTimer);
             } break;
             case ENDING: {
                 if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP)) currentScreen = TITLE;

@@ -5,6 +5,6 @@
 #include "globals.h"
 
 
-void UpdateGameplay(GameScreen& currentScreen, Rectangle& textBox, char* command, int& letterCount, bool& mouseOnText, int& framesCounter);
+void UpdateGameplay(GameScreen& currentScreen, Rectangle& textBox, char* command, int& letterCount, bool& mouseOnText, int& framesCounter, int& backTimer);
 
 #endif // GAMEPLAY_UPDATE_H
