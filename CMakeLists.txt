@@ -4,6 +4,15 @@ project(pandemonium)
 set(CMAKE_C_STANDARD 23)
 set(CMAKE_CXX_STANDARD 23)
 
-add_executable(pandemonium src/main.cpp)
+# Dodanie wszystkich plików źródłowych
+set(SOURCES
+    src/main.cpp
+    src/globals.cpp
+    src/gameplay_draw.cpp
+    src/gameplay_update.cpp
+)
+
+add_executable(pandemonium ${SOURCES})
+
 find_package(raylib CONFIG REQUIRED)
 target_link_libraries(pandemonium PRIVATE raylib)
