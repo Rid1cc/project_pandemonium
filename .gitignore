@@ -1,4 +1,4 @@
 build/*
-!build/hotreload.sh
 .DS_STORE/*
 .DS_Store
+.vscode
