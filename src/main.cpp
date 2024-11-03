@@ -1,13 +1,10 @@
 #include "raylib.h"
-#include "gamescreen.h"
 #include "gameplay_update.h"
 #include "gameplay_draw.h"
 #include "globals.h"
 
 
 int main(void) {
-    const int screenWidth = 1280;
-    const int screenHeight = 720;
 
     InitWindow(screenWidth, screenHeight, "Pandemonium");
 
@@ -25,7 +22,7 @@ int main(void) {
                 if (IsKeyPressed(KEY_ENTER)) currentScreen = GAMEPLAY;
             } break;
             case GAMEPLAY: {
-                UpdateGameplay(currentScreen, textBox, name, letterCount, mouseOnText, framesCounter);
+                UpdateGameplay(currentScreen, textBox, command, letterCount, mouseOnText, framesCounter);
             } break;
             case ENDING: {
                 if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP)) currentScreen = TITLE;
@@ -47,7 +44,7 @@ int main(void) {
                 DrawText("PRESS ENTER or TAP to JUMP to GAMEPLAY SCREEN", 120, 220, 20, DARKGREEN);
             } break;
             case GAMEPLAY: {
-                DrawGameplay(textBox, name, letterCount, mouseOnText, framesCounter);
+                DrawGameplay(textBox, command, letterCount, mouseOnText, framesCounter);
             } break;
             case ENDING: {
                 DrawRectangle(0, 0, screenWidth, screenHeight, BLUE);

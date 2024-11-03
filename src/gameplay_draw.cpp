@@ -1,18 +1,25 @@
 #include "gameplay_draw.h"
 #include "globals.h"  // Wczytanie zmiennych globalnych, jeśli są potrzebne
 
-void DrawGameplay(Rectangle textBox, const char* name, int letterCount, bool mouseOnText, int framesCounter) {
-    // Implementacja funkcji
-    ClearBackground(RAYWHITE);
-    DrawText("PLACE MOUSE OVER INPUT BOX!", 240, 140, 20, GRAY);
-    DrawRectangleRec(textBox, LIGHTGRAY);
-    if (mouseOnText) DrawRectangleLines((int)textBox.x, (int)textBox.y, (int)textBox.width, (int)textBox.height, RED);
-    else DrawRectangleLines((int)textBox.x, (int)textBox.y, (int)textBox.width, (int)textBox.height, DARKGRAY);
+void DrawGameplay(Rectangle textBox, const char* command, int letterCount, bool mouseOnText, int framesCounter) {
+    ClearBackground(BLACK);
 
-    DrawText(name, (int)textBox.x + 5, (int)textBox.y + 8, 40, MAROON);
-    DrawText(TextFormat("INPUT CHARS: %i/%i", letterCount, 9), 315, 250, 20, DARKGRAY);
+    //Monitor
+    DrawRectangleLines(50, 25, screenWidth-100, screenHeight-50, ORANGE);
 
-    if (mouseOnText && letterCount < 9 && ((framesCounter / 20) % 2) == 0) {
-        DrawText("_", (int)textBox.x + 8 + MeasureText(name, 40), (int)textBox.y + 12, 40, MAROON);
+    //Podziałki poziome
+    DrawLine(50, (screenHeight/2)+5, screenWidth-350, (screenHeight/2)+5, ORANGE);  
+    DrawLine(50, (screenHeight/2)-5, screenWidth-350, (screenHeight/2)-5, ORANGE);
+
+    //Podziałki pionowe
+    DrawLine(screenWidth-350, 25, screenWidth-350, (screenHeight/2)-5, ORANGE);
+    DrawLine(screenWidth-350, (screenHeight/2)+5, screenWidth-350, screenHeight-25, ORANGE);
+    DrawLine(screenWidth-340, 25, screenWidth-340, screenHeight-25, ORANGE);
+
+    //Input
+    DrawText(">", 55, screenHeight-50, 20, ORANGE);
+    DrawText(command, 65, screenHeight-50, 20, ORANGE);
+    if (letterCount < 99 && ((framesCounter / 20) % 2) == 0) {
+        DrawText("_", 65 + 4 + MeasureText(command, 20), screenHeight-50, 20, ORANGE);
     }
 }
