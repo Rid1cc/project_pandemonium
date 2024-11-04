@@ -1,7 +1,6 @@
 #include "gameplay_update.h"
 #include "globals.h"  // Zmienne globalne są dostępne tutaj
-#include <chrono>
-#include <thread>
+
 
 
 
