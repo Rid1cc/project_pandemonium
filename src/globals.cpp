@@ -8,6 +8,7 @@ char command[100] = "\0";
 int letterCount = 0;
 bool mouseOnText = false;
 int framesCounter = 0;
+int backTimer = 0;
 const int screenWidth = 1280;
 const int screenHeight = 720;
 

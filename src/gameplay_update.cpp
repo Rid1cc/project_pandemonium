@@ -40,6 +40,20 @@ void UpdateGameplay(GameScreen& currentScreen, Rectangle& textBox, char* command
         command[letterCount] = '\0';
     } 
 
+        //po 30 klatkach usuwa duzo 
+    if (IsKeyDown(KEY_BACKSPACE)){
+        if(backTimer>=30){
+            letterCount--;
+            if (letterCount < 0) letterCount = 0;
+            command[letterCount] = '\0';
+        }
+        else{
+        backTimer++;
+        }
+    }else{
+        backTimer=0;
+    }
+
     if (mouseOnText) {
         SetMouseCursor(MOUSE_CURSOR_IBEAM);
         }
