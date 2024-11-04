@@ -2,7 +2,7 @@
 #include "globals.h"  // Zmienne globalne są dostępne tutaj
 #include <chrono>
 #include <thread>
-
+// komentarz siema 
 
 
 void UpdateGameplay(GameScreen& currentScreen, Rectangle& textBox, char* command, int& letterCount, bool& mouseOnText, int& framesCounter, int& backTimer) {
