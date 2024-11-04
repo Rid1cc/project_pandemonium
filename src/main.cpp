@@ -22,7 +22,7 @@ int main(void) {
                 if (IsKeyPressed(KEY_ENTER)) currentScreen = GAMEPLAY;
             } break;
             case GAMEPLAY: {
-                UpdateGameplay(currentScreen, textBox, command, letterCount, mouseOnText, framesCounter);
+                UpdateGameplay(currentScreen, textBox, command, letterCount, mouseOnText, framesCounter, backTimer, history);
             } break;
             case ENDING: {
                 if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP)) currentScreen = TITLE;
