@@ -10,6 +10,7 @@ set(SOURCES
     src/globals.cpp
     src/gameplay_draw.cpp
     src/gameplay_update.cpp
+    src/command_interpreter.cpp
 )
 
 add_executable(pandemonium ${SOURCES})

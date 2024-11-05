@@ -2,6 +2,7 @@
 #include "gameplay_update.h"
 #include "gameplay_draw.h"
 #include "globals.h"
+#include "command_interpreter.h"
 
 
 int main(void) {
@@ -23,7 +24,7 @@ int main(void) {
                 if (IsKeyPressed(KEY_ENTER)) currentScreen = GAMEPLAY;
             } break;
             case GAMEPLAY: {
-                UpdateGameplay(currentScreen, textBox, command, letterCount, mouseOnText, framesCounter, backTimer);
+                UpdateGameplay(currentScreen, textBox, command, letterCount, mouseOnText, framesCounter, backTimer, history, upTimes);
             } break;
             case ENDING: {
                 if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP)) currentScreen = TITLE;
