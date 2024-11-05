@@ -9,7 +9,6 @@ void UpdateGameplay(GameScreen& currentScreen, Rectangle& textBox, char* command
     else mouseOnText = false;
     
     int key = GetCharPressed();
-    char* history[100][10];
 
     while (key > 0) {
         if ((key >= 32) && (key <= 125) && (letterCount < 99)) {
