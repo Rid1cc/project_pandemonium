@@ -11,7 +11,8 @@ int framesCounter = 0;
 int backTimer = 0;
 const int screenWidth = 1280;
 const int screenHeight = 720;
-
+int upTimes = 0;
 
 //Do przeniesienia oddzielny plik dla zmiennych do terminala
-std::string history = "0";
+std::string history[30] = {" "};
+

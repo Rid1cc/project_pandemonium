@@ -15,6 +15,7 @@ extern int framesCounter;
 extern int backTimer;
 extern const int screenWidth;
 extern const int screenHeight;
-extern std::string history;
+extern std::string history[30];
+extern int upTimes;
 
 #endif // GLOBALS_H
