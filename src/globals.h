@@ -13,6 +13,7 @@ extern int letterCount;
 extern bool mouseOnText;
 extern int framesCounter;
 extern int backTimer;
+extern std::string input;
 extern const int screenWidth;
 extern const int screenHeight;
 extern std::string history[30];

@@ -15,4 +15,5 @@ int upTimes = 0;
 
 //Do przeniesienia oddzielny plik dla zmiennych do terminala
 std::string history[30] = {" "};
+std::string input = "";
 
