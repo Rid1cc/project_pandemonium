@@ -7,11 +7,11 @@ void DrawGameplay(Rectangle textBox, const char* command, int letterCount, bool 
     //Monitor
     DrawRectangleLines(50, 25, screenWidth-100, screenHeight-50, ORANGE);
 
-    //Podziałki poziome
+    //Horizontal lines
     DrawLine(50, (screenHeight/2)+5, screenWidth-350, (screenHeight/2)+5, ORANGE);  
     DrawLine(50, (screenHeight/2)-5, screenWidth-350, (screenHeight/2)-5, ORANGE);
 
-    //Podziałki pionowe
+    //Vertical lines
     DrawLine(screenWidth-350, 25, screenWidth-350, (screenHeight/2)-5, ORANGE);
     DrawLine(screenWidth-350, (screenHeight/2)+5, screenWidth-350, screenHeight-25, ORANGE);
     DrawLine(screenWidth-340, 25, screenWidth-340, screenHeight-25, ORANGE);

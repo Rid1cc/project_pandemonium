@@ -1,11 +1,11 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
-#include "raylib.h"       // Dołączenie, aby uzyskać dostęp do Rectangle
+#include "raylib.h"     
 #include <string>
 
 typedef enum GameScreen { LOGO = 0, TITLE, GAMEPLAY, ENDING } GameScreen;
 
-// Deklaracja zmiennych globalnych
+
 extern GameScreen currentScreen;
 extern Rectangle textBox;
 extern char command[100];

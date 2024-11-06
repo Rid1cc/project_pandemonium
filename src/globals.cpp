@@ -1,7 +1,7 @@
 #include "globals.h"
 #include <string>
 
-// Definicje zmiennych globalnych (inicjalizacja)
+// Global variables
 
 // Gameplay
 GameScreen currentScreen = LOGO;
@@ -10,9 +10,12 @@ char command[100] = "\0";
 int letterCount = 0;
 bool mouseOnText = false;
 int framesCounter = 0;
-
 int backTimer = 0;
+std::string history[30] = {" "};
+std::string input = "";
 
+
+//Main
 const int screenWidth = 1280;
 const int screenHeight = 720;
 
@@ -22,7 +25,5 @@ int effects_volume = 100;
 int upTimes = 0;
 
 
-//Do przeniesienia oddzielny plik dla zmiennych do terminala
-std::string history[30] = {" "};
-std::string input = "";
+
 

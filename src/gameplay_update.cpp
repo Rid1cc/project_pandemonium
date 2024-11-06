@@ -1,6 +1,6 @@
 #include "gameplay_update.h"
 #include "globals.h"  
-#include "command_interpreter.h"  // Dodajemy nagłówek interpretera
+#include "CommandInterpreter.h" 
 #include <string>
 #include <iostream>
 
@@ -8,6 +8,7 @@ void UpdateGameplay(GameScreen& currentScreen, Rectangle& textBox, char* command
     if (CheckCollisionPointRec(GetMousePosition(), textBox)) mouseOnText = true;
     else mouseOnText = false;
     
+    static CommandInterpreter cmdInterpreter;
     int key = GetCharPressed();
 
     while (key > 0) {
@@ -22,16 +23,16 @@ void UpdateGameplay(GameScreen& currentScreen, Rectangle& textBox, char* command
     if (IsKeyPressed(KEY_ENTER)){
         upTimes = 0;
 
-        // Przechowujemy wprowadzone polecenie w historii
+        // History buffer
         for(int i = 29; i > 0; i--) {
             history[i] = history[i - 1];
         }
         history[0] = command;
 
-        // Wywołujemy executeCommand z bieżącą komendą
-        executeCommand(command);
+        // Object call
+        cmdInterpreter.executeCommand(command);
 
-        // Czyścimy aktualne polecenie
+        // Clear ui
         for(int i = 0; i <= 100; i++) {
             letterCount--;
             if (letterCount < 0) letterCount = 0;
@@ -39,7 +40,7 @@ void UpdateGameplay(GameScreen& currentScreen, Rectangle& textBox, char* command
         }
     }
 
-    // Obsługa strzałki w górę/dół i backspace (pozostała logika)
+    // Arrow up and down, backspace logics etc.
     if (IsKeyPressed(KEY_BACKSPACE)) {
         letterCount--;
         if (letterCount < 0) letterCount = 0;
@@ -58,8 +59,6 @@ void UpdateGameplay(GameScreen& currentScreen, Rectangle& textBox, char* command
     } else {
         backTimer = 0;
     }
-
-        // Obsługa strzałki w górę - przeglądanie historii do tyłu
     if (IsKeyPressed(KEY_UP)) {
         if (upTimes < 29 && !history[upTimes].empty()) {
             std::string previousCommand = history[upTimes];
@@ -71,7 +70,6 @@ void UpdateGameplay(GameScreen& currentScreen, Rectangle& textBox, char* command
         }
     }
 
-    // Obsługa strzałki w dół - przeglądanie historii do przodu
     if (IsKeyPressed(KEY_DOWN)) {
         if (upTimes > 0) {
             upTimes--;  // Przejdź do nowszego polecenia
@@ -88,7 +86,7 @@ void UpdateGameplay(GameScreen& currentScreen, Rectangle& textBox, char* command
         }
     }
 
-
+    //not used yet
     if (mouseOnText) {
         SetMouseCursor(MOUSE_CURSOR_IBEAM);
     } else {

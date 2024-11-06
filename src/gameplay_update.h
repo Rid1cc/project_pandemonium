@@ -1,7 +1,7 @@
 #ifndef GAMEPLAY_UPDATE_H
 #define GAMEPLAY_UPDATE_H
 
-#include "raylib.h"       // Dołączenie raylib.h zapewnia dostęp do definicji typu Rectangle
+#include "raylib.h" 
 #include "globals.h"
 #include <string>
 

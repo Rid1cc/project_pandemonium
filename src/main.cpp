@@ -2,7 +2,6 @@
 #include "gameplay_update.h"
 #include "gameplay_draw.h"
 #include "globals.h"
-#include "command_interpreter.h"
 
 
 int main(void) {
