@@ -64,25 +64,21 @@ void UpdateGameplay(GameScreen& currentScreen, Rectangle& textBox, char* command
             std::string previousCommand = history[upTimes];
             letterCount = previousCommand.length();
             upTimes++;
-            // Przepisz wartość poprzedniego polecenia do `command`
             std::copy(previousCommand.begin(), previousCommand.end(), command);
-            command[letterCount] = '\0';  // Dodaj zakończenie do `command`
+            command[letterCount] = '\0'; 
         }
     }
 
     if (IsKeyPressed(KEY_DOWN)) {
         if (upTimes > 0) {
-            upTimes--;  // Przejdź do nowszego polecenia
+            upTimes--;
             std::string nextCommand = history[upTimes-1];
             letterCount = nextCommand.length();
-
-            // Przepisz wartość nowszego polecenia do `command`
             std::copy(nextCommand.begin(), nextCommand.end(), command);
-            command[letterCount] = '\0';  // Dodaj zakończenie do `command`
+            command[letterCount] = '\0';
         } else if (upTimes == 0) {
-            // Jeśli doszliśmy do `upTimes == 0`, wracamy do pustego pola
             letterCount = 0;
-            command[0] = '\0';  // Ustawiamy `command` na pusty string
+            command[0] = '\0';
         }
     }
 
