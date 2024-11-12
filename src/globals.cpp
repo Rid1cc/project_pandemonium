@@ -1,5 +1,6 @@
-#include "globals.h"
+#include "headers/globals.h"
 #include <string>
+#include <raylib.h>
 
 // Global variables
 
@@ -24,6 +25,13 @@ int general_volume = 100;
 int effects_volume = 100;
 int upTimes = 0;
 
+//Fonts !!! INITIALIZE IN MAIN, OPENGL THREAD NEEDED
+Font alagard;
 
-
+//-----------Extra functions-----------
+//Drawtext using alagard font (quicker method)
+void DrawTextB(const char *text, float posX, float posY, int fontSize, Color color)
+{
+    DrawTextEx(alagard, text, (Vector2){ posX, posY }, fontSize, 2, color);
+}
 

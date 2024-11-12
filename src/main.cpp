@@ -1,17 +1,18 @@
 #include "raylib.h"
-#include "gameplay_update.h"
-#include "gameplay_draw.h"
-#include "globals.h"
+#include "headers/gameplay_update.h"
+#include "headers/gameplay_draw.h"
+#include "headers/globals.h"
 
 
 int main(void) {
 
 
     InitWindow(screenWidth, screenHeight, "Pandemonium");
-
     SetExitKey(0); // ESCAPE NO LONGER CLOSES THE GAME!
-
     SetTargetFPS(60);
+
+    //FONT INIT, LOADING INTO VRAM
+    alagard = LoadFont("../assets/fonts/alagard.png");
 
     while (!WindowShouldClose()) {
         switch (currentScreen) {

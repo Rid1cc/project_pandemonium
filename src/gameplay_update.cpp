@@ -1,14 +1,15 @@
-#include "gameplay_update.h"
-#include "globals.h"  
-#include "CommandInterpreter.h" 
+#include "headers/gameplay_update.h"
+#include "headers/globals.h"  
+#include "headers/CommandInterpreter.h" 
 #include <string>
 #include <iostream>
 
 void UpdateGameplay(GameScreen& currentScreen, Rectangle& textBox, char* command, int& letterCount, bool& mouseOnText, int& framesCounter, int& backTimer, std::string* history, int& upTimes) {
     if (CheckCollisionPointRec(GetMousePosition(), textBox)) mouseOnText = true;
-    else mouseOnText = false;
+    else mouseOnText = true;
     
     static CommandInterpreter cmdInterpreter;
+    
     int key = GetCharPressed();
 
     while (key > 0) {
@@ -91,6 +92,9 @@ void UpdateGameplay(GameScreen& currentScreen, Rectangle& textBox, char* command
 
     if (mouseOnText) framesCounter++;
     else framesCounter = 0;
+    if(framesCounter == 60){
+        framesCounter = 0;
+    }
 
     if (IsKeyPressed(KEY_ESCAPE)) currentScreen = TITLE;
 }
