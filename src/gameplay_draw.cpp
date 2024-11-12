@@ -1,7 +1,8 @@
 #include "headers/gameplay_draw.h"
 #include "headers/globals.h"  // Wczytanie zmiennych globalnych, jeśli są potrzebne
+#include <string>
 
-void DrawGameplay(Rectangle textBox, const char* command, int letterCount, bool mouseOnText, int framesCounter) {
+void DrawGameplay(Rectangle textBox, const char* command, int letterCount, bool mouseOnText, int framesCounter, std::string* historyDrawn) {
     ClearBackground(BLACK);
 
     //Monitor
@@ -16,7 +17,7 @@ void DrawGameplay(Rectangle textBox, const char* command, int letterCount, bool 
     DrawLine(screenWidth-350, (screenHeight/2)+5, screenWidth-350, screenHeight-25, ORANGE);
     DrawLine(screenWidth-340, 25, screenWidth-340, screenHeight-25, ORANGE);
 
-    //Input
+    //Terminal Input
     DrawText(">", 55, screenHeight-50, 20, ORANGE);
     DrawTextB(command, 65, screenHeight-50, 20, ORANGE);
     if (letterCount < 99 && ((framesCounter / 20) % 2) == 0) {
@@ -24,5 +25,9 @@ void DrawGameplay(Rectangle textBox, const char* command, int letterCount, bool 
         DrawText("_", 65 + 4 + MeasureTextEx(alagard, command, 20, 2).x, screenHeight-50, 20, ORANGE);
     }
 
-    //Output
+    //Terminal Output
+    for(int i = 0; i<15; i++){
+        DrawTextB(historyDrawn[i].c_str(), 55, screenHeight-70-(i*20), 20, ORANGE);
+    }
+    
 }

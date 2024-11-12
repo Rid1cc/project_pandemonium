@@ -1,14 +1,15 @@
 #include "headers/CommandInterpreter.h"
 #include <iostream>
 #include <sstream>
+#include "headers/globals.h"
 
 CommandInterpreter::CommandInterpreter() : currentCommand("") {
-    // Podbudowka pod przyszlosc
+    // Feature NYD
 }
 
 void CommandInterpreter::executeCommand(const std::string& command) {
     currentCommand = command;
-    parseCommand(command);
+    parseCommand(command, historyDrawn);
     addToHistory(command);
 }
 
@@ -33,7 +34,13 @@ const std::vector<std::string>& CommandInterpreter::getHistory() const {
     return history;
 }
 
-void CommandInterpreter::parseCommand(const std::string& command) {
+void CommandInterpreter::historyDrawnUp() {
+    for(int i = 29; i > 0; i--) {
+        historyDrawn[i] = historyDrawn[i - 1];
+    }
+}
+
+void CommandInterpreter::parseCommand(const std::string& command, std::string* historyDrawn) {
     std::istringstream iss(command);
     std::string cmd;
     std::vector<std::string> args;
@@ -41,20 +48,28 @@ void CommandInterpreter::parseCommand(const std::string& command) {
     iss >> cmd;
 
     std::string arg;
+   
+
     while (iss >> arg) {
         args.push_back(arg);
     }
 
     if (cmd == "echo") {
+        historyDrawnUp();
         std::string output;
-        for (const auto& a : args) {  // Iteruj przez wszystkie argumenty
+        for (const auto& a : args) {  // chceck every arg
             output += a + " ";
         }
-        std::cout << output << std::endl;
+        historyDrawn[0] = output;
     } else if (cmd == "ifconfig") {
-        std::cout << "IP address: 192.168.100.1" << std::endl;
-    } else {
-        std::cout << "Command not found!" << std::endl;
+        historyDrawnUp();
+        historyDrawn[0] = "IP address: 192.168.100.1";
+    } 
+
+    //ADD COMMANDS HERE AS ELSEIF, ADD ARGS AS ARGS, REMEMBER TO EXECUTE historyDrawnUp EVERY TIME LINE IS UPPED.
+    else {
+        historyDrawnUp();      
+        historyDrawn[0] = "Unknown command: " + command;
     }
 }
 

@@ -12,8 +12,12 @@ int letterCount = 0;
 bool mouseOnText = false;
 int framesCounter = 0;
 int backTimer = 0;
+
 std::string history[30] = {" "};
+std::string historyDrawn[30] = {" "};
+
 std::string input = "";
+
 
 
 //Main

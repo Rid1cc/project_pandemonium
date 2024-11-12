@@ -17,6 +17,7 @@ extern std::string input;
 extern const int screenWidth;
 extern const int screenHeight;
 extern std::string history[30];
+extern std::string historyDrawn[30];
 extern int upTimes;
 extern Font alagard;
 void DrawTextB(const char *text, float posX, float posY, int fontSize, Color color);

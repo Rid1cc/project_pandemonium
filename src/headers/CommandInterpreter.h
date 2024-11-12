@@ -20,7 +20,8 @@ private:
     std::vector<std::string> history;
     const int maxHistorySize = 30; // not yet used, in futute - replace for history[]
 
-    void parseCommand(const std::string& command);
+    void parseCommand(const std::string& command, std::string* historyDrawn);
+    void historyDrawnUp();
 };
 
 #endif

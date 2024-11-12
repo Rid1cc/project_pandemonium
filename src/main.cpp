@@ -46,7 +46,7 @@ int main(void) {
                 DrawText("PRESS ENTER or TAP to JUMP to GAMEPLAY SCREEN", 120, 220, 20, DARKGREEN);
             } break;
             case GAMEPLAY: {
-                DrawGameplay(textBox, command, letterCount, mouseOnText, framesCounter);
+                DrawGameplay(textBox, command, letterCount, mouseOnText, framesCounter, historyDrawn);
             } break;
             case ENDING: {
                 DrawRectangle(0, 0, screenWidth, screenHeight, BLUE);
