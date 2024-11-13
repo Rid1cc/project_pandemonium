@@ -5,7 +5,7 @@
 // Global variables
 
 // Gameplay
-GameScreen currentScreen = LOGO;
+GameScreen currentScreen = TITLE;
 Rectangle textBox = { 640.0f, 180.0f, 225, 50 };
 char command[100] = "\0";
 int letterCount = 0;
