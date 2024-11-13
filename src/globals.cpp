@@ -12,7 +12,7 @@ int letterCount = 0;
 bool mouseOnText = false;
 int framesCounter = 0;
 int backTimer = 0;
-
+int upTimes = 0;
 std::string history[30] = {" "};
 std::string historyDrawn[30] = {" "};
 std::string input = "";
@@ -26,7 +26,7 @@ Rectangle screen = {50, 25, screenWidth-100, screenHeight-50};
 //Settings
 int general_volume = 100;
 int effects_volume = 100;
-int upTimes = 0;
+
 
 //Fonts !!! INITIALIZE IN MAIN, OPENGL THREAD NEEDED
 Font alagard;
