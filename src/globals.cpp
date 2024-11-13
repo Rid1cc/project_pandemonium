@@ -12,6 +12,7 @@ int letterCount = 0;
 bool mouseOnText = false;
 int framesCounter = 0;
 int backTimer = 0;
+int upTimes = 0;
 
 std::string history[30] = {" "};
 std::string historyDrawn[30] = {" "};
@@ -24,10 +25,16 @@ std::string input = "";
 const int screenWidth = 1280;
 const int screenHeight = 720;
 
+
 //Settings
-int general_volume = 100;
-int effects_volume = 100;
-int upTimes = 0;
+float general_volume = 1.0f;
+float effects_volume = 1.0f;
+
+
+// Music
+Music main_theme = LoadMusicStream("country.mp3");
+bool mute_audio = false;
+
 
 //Fonts !!! INITIALIZE IN MAIN, OPENGL THREAD NEEDED
 Font alagard;

@@ -3,9 +3,9 @@
 #include "raylib.h"     
 #include <string>
 
-typedef enum GameScreen { LOGO = 0, TITLE, GAMEPLAY, ENDING } GameScreen;
+typedef enum GameScreen { LOGO = 0, TITLE, SETTINGS, GAMEPLAY, ENDING } GameScreen;
 
-
+// Deklaracja zmiennych globalnych
 extern GameScreen currentScreen;
 extern Rectangle textBox;
 extern char command[100];
@@ -22,4 +22,12 @@ extern int upTimes;
 extern Font alagard;
 void DrawTextB(const char *text, float posX, float posY, int fontSize, Color color);
 
+// Settings
+extern float general_volume;
+extern float effects_volume;
+
+// Music
+extern Music main_theme;
+extern bool mute_audio;
+extern TraceLogCallback failed_to_load_music;
 #endif // GLOBALS_H
