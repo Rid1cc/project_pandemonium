@@ -8,6 +8,7 @@ typedef enum GameScreen { LOGO = 0, TITLE, SETTINGS, GAMEPLAY, ENDING } GameScre
 // Deklaracja zmiennych globalnych
 extern GameScreen currentScreen;
 extern Rectangle textBox;
+extern Rectangle screen;
 extern char command[100];
 extern int letterCount;
 extern bool mouseOnText;
@@ -20,7 +21,9 @@ extern std::string history[30];
 extern std::string historyDrawn[30];
 extern int upTimes;
 extern Font alagard;
+extern Font pixeled;
 void DrawTextB(const char *text, float posX, float posY, int fontSize, Color color);
+void DrawTextC(const char *text, float posX, float posY, int fontSize, Color color);
 
 // Settings
 extern float general_volume;

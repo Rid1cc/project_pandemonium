@@ -14,7 +14,8 @@ int main(void) {
     SetTargetFPS(60);
 
     //FONT INIT, LOADING INTO VRAM
-    alagard = LoadFont("../assets/fonts/alagard.png");
+    alagard = LoadFont("../assets/fonts/alagard.png"); // For ui related
+    pixeled = LoadFontEx("../assets/fonts/Pixeled.ttf", 20, 0, 317); //For system related
 
     /*
     // music initialization functions

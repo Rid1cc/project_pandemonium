@@ -6,16 +6,29 @@ void DrawGameplay(Rectangle textBox, const char* command, int letterCount, bool 
     ClearBackground(BLACK);
 
     //Monitor
-    DrawRectangleLines(50, 25, GetScreenWidth()-100, GetScreenHeight()-50, ORANGE);
+    DrawRectangleLinesEx(screen, 3, ORANGE);
+    
+    //Labels
+        //TopWindow
+    DrawRectangle(screenWidth-450, 25, 100, 15, ORANGE);
+    DrawTextC("desktop.frm", screenWidth-445, 22, 20, BLACK);
+        //BotWindow
+    DrawRectangle(screenWidth-450, (float)(screenHeight/2)+5, 100, 15, ORANGE);
+    DrawTextC("   csnl.frm", screenWidth-445, (float)(screenHeight/2)+2, 20, BLACK);   
+        //RightWindow
+    DrawRectangle(screenWidth-150, 25, 100, 15, ORANGE);
+    DrawTextC(" pidmgr.frm", screenWidth-145, 22, 20, BLACK);
+        //Sysinfo
+    DrawTextC("paradisiOS ver 7.3, up to date.", 5, 2, 20, WHITE);          
 
     //Horizontal lines
-    DrawLine(50, (GetScreenHeight()/2)+5, GetScreenWidth()-350, (GetScreenHeight()/2)+5, ORANGE);  
-    DrawLine(50, (GetScreenHeight()/2)-5, GetScreenWidth()-350, (GetScreenHeight()/2)-5, ORANGE);
+    DrawLineEx((Vector2){50, (float)(screenHeight/2)+5}, (Vector2){(float)screenWidth-350, (float)(screenHeight/2)+5}, 3, ORANGE); 
+    DrawLineEx((Vector2){50, (float)(screenHeight/2)-5}, (Vector2){(float)screenWidth-350, (float)(screenHeight/2)-5}, 3, ORANGE);
 
     //Vertical lines
-    DrawLine(GetScreenWidth()-350, 25, GetScreenWidth()-350, (GetScreenHeight()/2)-5, ORANGE);
-    DrawLine(GetScreenWidth()-350, (GetScreenHeight()/2)+5, GetScreenWidth()-350, GetScreenHeight()-25, ORANGE);
-    DrawLine(GetScreenWidth()-340, 25, GetScreenWidth()-340, GetScreenHeight()-25, ORANGE);
+    DrawLineEx((Vector2){(float)screenWidth-350, 25}, (Vector2){(float)screenWidth-350, (float)(screenHeight/2)-5}, 3, ORANGE);
+    DrawLineEx((Vector2){(float)screenWidth-350, (float)(screenHeight/2)+5}, (Vector2){(float)screenWidth-350, (float)screenHeight-25}, 3, ORANGE);
+    DrawLineEx((Vector2){(float)screenWidth-340, 25}, (Vector2){(float)screenWidth-340, (float)screenHeight-25}, 3, ORANGE);
 
     //Terminal Input
     DrawText(">", 55, GetScreenHeight()-50, 20, ORANGE);
