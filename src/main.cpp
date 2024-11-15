@@ -15,7 +15,13 @@ int main(void) {
 
     //FONT INIT, LOADING INTO VRAM
     alagard = LoadFont("../assets/fonts/alagard.png"); // For ui related
-    pixeled = LoadFontEx("../assets/fonts/Pixeled.ttf", 20, 0, 317); //For system related
+    pixeled = LoadFontEx("../assets/fonts/Minecraft.ttf", 16, 0, 317); //For system related
+
+    //Initialize Scene, w. target
+    RenderTexture2D target = LoadRenderTexture(screenWidth, screenHeight);
+    //Load Shader
+    // Shader shader = LoadShader("../assets/shaders/scan.vert", "../assets/shaders/scan.frag");
+    Shader shader = LoadShader(0, "../assets/shaders/fx.fs");
 
     /*
     // music initialization functions
@@ -29,6 +35,8 @@ int main(void) {
     */
 
     while (!WindowShouldClose()) {
+
+        BeginTextureMode(target);
         // UpdateMusicStream(main_theme);
         if (!IsWindowState(FLAG_WINDOW_RESIZABLE)) SetWindowState(FLAG_WINDOW_RESIZABLE);
 
@@ -53,7 +61,6 @@ int main(void) {
             default: break;
         }
 
-        BeginDrawing();
         ClearBackground(RAYWHITE);
 
         switch (currentScreen) {
@@ -81,10 +88,19 @@ int main(void) {
             } break;
             default: break;
         }
+        EndTextureMode();
+        BeginDrawing();
+
+        ClearBackground(BLACK);
+        BeginShaderMode(shader);  // render with shader
+        DrawTextureRec(target.texture, (Rectangle){ 0, 0, (float)target.texture.width, -(float)target.texture.height }, (Vector2){ 0, 0 }, WHITE);
+        EndShaderMode();
 
         EndDrawing();
     }
 
+    UnloadShader(shader);
+    UnloadRenderTexture(target);
     /*
     // Music De-Initialization
     UnloadMusicStream(main_theme);

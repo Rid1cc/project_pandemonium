@@ -11,15 +11,15 @@ void DrawGameplay(Rectangle textBox, const char* command, int letterCount, bool 
     //Labels
         //TopWindow
     DrawRectangle(screenWidth-450, 25, 100, 15, ORANGE);
-    DrawTextC("desktop.frm", screenWidth-445, 22, 20, BLACK);
+    DrawTextC("DESKTP.SH", screenWidth-445, 28, 12, BLACK);
         //BotWindow
     DrawRectangle(screenWidth-450, (float)(screenHeight/2)+5, 100, 15, ORANGE);
-    DrawTextC("   csnl.frm", screenWidth-445, (float)(screenHeight/2)+2, 20, BLACK);   
+    DrawTextC("CONSL.SH", screenWidth-445, (float)(screenHeight/2)+8, 12, BLACK);   
         //RightWindow
     DrawRectangle(screenWidth-150, 25, 100, 15, ORANGE);
-    DrawTextC(" pidmgr.frm", screenWidth-145, 22, 20, BLACK);
+    DrawTextC("PIDMGR.SH", screenWidth-145, 28, 12, BLACK);
         //Sysinfo
-    DrawTextC("paradisiOS ver 7.3, up to date.", 5, 2, 20, WHITE);          
+    DrawTextC("ParadisiOS ver 7.3, up to date.", 5, 2, 12, WHITE);          
 
     //Horizontal lines
     DrawLineEx((Vector2){50, (float)(screenHeight/2)+5}, (Vector2){(float)screenWidth-350, (float)(screenHeight/2)+5}, 3, ORANGE); 
