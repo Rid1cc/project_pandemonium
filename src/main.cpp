@@ -20,7 +20,6 @@ int main(void) {
     //Initialize Scene, w. target
     RenderTexture2D target = LoadRenderTexture(screenWidth, screenHeight);
     //Load Shader
-    // Shader shader = LoadShader("../assets/shaders/scan.vert", "../assets/shaders/scan.frag");
     Shader shader = LoadShader(0, "../assets/shaders/fx.fs");
 
     /*
@@ -92,9 +91,13 @@ int main(void) {
         BeginDrawing();
 
         ClearBackground(BLACK);
-        BeginShaderMode(shader);  // render with shader
+
+        //commented because of working with graphics, shaders just get in the way with that. 
+        //to make it work uncomment beginshadermode and endshadermode.
+
+        //BeginShaderMode(shader);  // render with shader
         DrawTextureRec(target.texture, (Rectangle){ 0, 0, (float)target.texture.width, -(float)target.texture.height }, (Vector2){ 0, 0 }, WHITE);
-        EndShaderMode();
+        //EndShaderMode();
 
         EndDrawing();
     }
