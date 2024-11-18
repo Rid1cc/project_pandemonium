@@ -13,6 +13,8 @@ set(SOURCES
     src/CommandInterpreter.cpp
     src/settings_draw.cpp 
     src/settings_update.cpp 
+    src/title_draw.cpp
+    src/title_update.cpp
 )
 
 add_executable(pandemonium ${SOURCES})

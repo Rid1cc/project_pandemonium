@@ -4,6 +4,8 @@
 #include "headers/settings_draw.h"
 #include "headers/settings_update.h"
 #include "headers/globals.h"
+#include "headers/title_draw.h"
+#include "headers/title_update.h"
 
 
 int main(void) {
@@ -45,8 +47,7 @@ int main(void) {
                 if (framesCounter > 120) currentScreen = TITLE;
             } break;
             case TITLE: {
-                if (IsKeyPressed(KEY_ENTER)) currentScreen = GAMEPLAY;
-                if (IsKeyPressed(KEY_S)) currentScreen = SETTINGS;
+                TitleUpdate();
             } break;
             case SETTINGS: {
                 SettingsUpdate(general_volume, effects_volume, mute_audio);
@@ -68,11 +69,7 @@ int main(void) {
                 DrawText("WAIT for 2 SECONDS...", 290, 220, 20, GRAY);
             } break;
             case TITLE: {
-                DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), BLACK);
-                DrawLine(GetScreenWidth()/4, GetScreenHeight()/4, GetScreenWidth()/4, GetScreenHeight()/4 + 200, ORANGE);
-                DrawText("TITLE SCREEN", 20, 20, 40, ORANGE);
-                DrawText("PRESS ENTER to go to GAMEPLAY SCREEN", GetScreenWidth()/4 + 10, GetScreenHeight()/4 + 10, 20, ORANGE);
-                DrawText("PRESS S to go to SETTINGS SCREEN", GetScreenWidth()/4 + 10, GetScreenHeight()/4 + 40, 20, ORANGE);
+                DrawTitle();
             } break;
             case SETTINGS: {
                 DrawSettings(general_volume, effects_volume);
@@ -95,9 +92,9 @@ int main(void) {
         //commented because of working with graphics, shaders just get in the way with that. 
         //to make it work uncomment beginshadermode and endshadermode.
 
-        //BeginShaderMode(shader);  // render with shader
+        // BeginShaderMode(shader);  // render with shader
         DrawTextureRec(target.texture, (Rectangle){ 0, 0, (float)target.texture.width, -(float)target.texture.height }, (Vector2){ 0, 0 }, WHITE);
-        //EndShaderMode();
+        // EndShaderMode();
 
         EndDrawing();
     }
