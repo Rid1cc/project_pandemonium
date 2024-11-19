@@ -12,7 +12,7 @@ out vec4 finalColor;
 // Parameters - make a pipeline into settings
 const float curvature = 0.07;          // curvature strength
 const float bloomIntensity = 2.5;     // bloom strength
-const float scanlineIntensity = 0.9;  // scanline intensity
+const float scanlineIntensity = 1;  // scanline intensity
 const float brightness = 1.4;         // brightness
 const vec2 resolution = vec2(1920.0, 1080.0); //texture resolution
 

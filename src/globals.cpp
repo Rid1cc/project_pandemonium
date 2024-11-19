@@ -1,6 +1,7 @@
 #include "headers/globals.h"
 #include <string>
 #include <raylib.h>
+#include "headers/MiniGameManager.h"
 
 // Global variables
 
@@ -16,6 +17,7 @@ int upTimes = 0;
 std::string history[30] = {" "};
 std::string historyDrawn[30] = {" "};
 std::string input = "";
+MiniGameManager gameManager;
 
 
 //Main

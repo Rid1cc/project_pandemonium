@@ -15,6 +15,8 @@ set(SOURCES
     src/settings_update.cpp 
     src/title_draw.cpp
     src/title_update.cpp
+    src/MiniGameManager.cpp
+    src/minigames/RotatingRectangleGame.cpp
 )
 
 add_executable(pandemonium ${SOURCES})

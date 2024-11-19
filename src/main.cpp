@@ -7,6 +7,8 @@
 #include "headers/title_draw.h"
 #include "headers/title_update.h"
 
+#include "minigames/RotatingRectangleGame.h"
+
 
 int main(void) {
 
@@ -23,7 +25,6 @@ int main(void) {
     RenderTexture2D target = LoadRenderTexture(screenWidth, screenHeight);
     //Load Shader
     Shader shader = LoadShader(0, "../assets/shaders/fx.fs");
-
     /*
     // music initialization functions
     InitAudioDevice();
@@ -34,6 +35,10 @@ int main(void) {
     PlayMusicStream(main_theme);
     }
     */
+
+    //minigames init
+    auto rotatingGame = std::make_shared<RotatingRectangleGame>(200, 150, 400, 300, "Rotating Rectangle");
+    gameManager.AddGame(rotatingGame);
 
     while (!WindowShouldClose()) {
 
@@ -92,9 +97,9 @@ int main(void) {
         //commented because of working with graphics, shaders just get in the way with that. 
         //to make it work uncomment beginshadermode and endshadermode.
 
-        // BeginShaderMode(shader);  // render with shader
+        BeginShaderMode(shader);  // render with shader
         DrawTextureRec(target.texture, (Rectangle){ 0, 0, (float)target.texture.width, -(float)target.texture.height }, (Vector2){ 0, 0 }, WHITE);
-        // EndShaderMode();
+        EndShaderMode();
 
         EndDrawing();
     }

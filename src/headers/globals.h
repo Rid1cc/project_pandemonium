@@ -1,12 +1,14 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
-#include "raylib.h"     
+#include "raylib.h"    
+#include "MiniGameManager.h" 
 #include <string>
 
 typedef enum GameScreen { LOGO = 0, TITLE, SETTINGS, GAMEPLAY, ENDING } GameScreen;
 
 // Deklaracja zmiennych globalnych
 extern GameScreen currentScreen;
+extern MiniGameManager gameManager;
 extern Rectangle textBox;
 extern Rectangle screen;
 extern char command[100];
