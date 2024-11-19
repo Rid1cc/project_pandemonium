@@ -3,6 +3,7 @@
 #include "headers/CommandInterpreter.h" 
 #include <string>
 #include <iostream>
+#include "headers/MiniGameManager.h"
 
 void UpdateGameplay(GameScreen& currentScreen, Rectangle& textBox, char* command, int& letterCount, bool& mouseOnText, int& framesCounter, int& backTimer, std::string* history, int& upTimes) {
     if (CheckCollisionPointRec(GetMousePosition(), textBox)) mouseOnText = true;
@@ -95,6 +96,7 @@ void UpdateGameplay(GameScreen& currentScreen, Rectangle& textBox, char* command
     if(framesCounter == 60){
         framesCounter = 0;
     }
-
+    
+    gameManager.Update();
     if (IsKeyPressed(KEY_ESCAPE)) currentScreen = TITLE;
 }
