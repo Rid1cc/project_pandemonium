@@ -9,7 +9,7 @@
 // Unified MiniGame class
 class MiniGame {
 protected:
-    Rectangle rect;        // Game window dimensions
+    Rectangle window;        // Game window dimensions
     std::string title;     // Title of the window
     bool isDragging;       // Is the window being dragged?
     Vector2 dragOffset;    // Drag offset

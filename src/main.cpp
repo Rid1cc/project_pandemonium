@@ -6,7 +6,6 @@
 #include "headers/globals.h"
 #include "headers/title_draw.h"
 #include "headers/title_update.h"
-
 #include "minigames/RotatingRectangleGame.h"
 
 
