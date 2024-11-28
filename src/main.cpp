@@ -7,12 +7,14 @@
 #include "headers/title_draw.h"
 #include "headers/title_update.h"
 #include "minigames/RotatingRectangleGame.h"
+#include "minigames/ConnectWiresGame.h"
 
 
 int main(void) {
 
 
     InitWindow(screenWidth, screenHeight, "Pandemonium");
+    SetWindowMinSize(screenWidth, screenHeight);
     SetExitKey(0); // ESCAPE NO LONGER CLOSES THE GAME!
     SetTargetFPS(60);
 
@@ -38,6 +40,8 @@ int main(void) {
     //minigames init
     auto rotatingGame = std::make_shared<RotatingRectangleGame>(200, 150, 400, 300, "Rotating Rectangle");
     gameManager.AddGame(rotatingGame);
+    auto connectingGame = std::make_shared<ConnectWiresGame>(200, 150, 400, 300, "Connect Wires");
+    gameManager.AddGame(connectingGame);
 
     while (!WindowShouldClose()) {
 
