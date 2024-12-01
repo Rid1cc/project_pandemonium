@@ -57,6 +57,6 @@ endif()
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-  file(WRITE "/home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/${CMAKE_INSTALL_MANIFEST}"
+  file(WRITE "/home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()

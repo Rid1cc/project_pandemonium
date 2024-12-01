@@ -60,7 +60,7 @@ EQUALS = =
 CMAKE_SOURCE_DIR = /home/agh/Desktop/projekt/project_pandemonium/project_pandemonium
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/agh/Desktop/projekt/project_pandemonium/project_pandemonium
+CMAKE_BINARY_DIR = /home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/CMakeFiles /home/agh/Desktop/projekt/project_pandemonium/project_pandemonium//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/build/CMakeFiles /home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/build//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -273,6 +273,30 @@ src/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/pandemonium.dir/build.make CMakeFiles/pandemonium.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
+src/minigames/ConnectWiresGame.o: src/minigames/ConnectWiresGame.cpp.o
+.PHONY : src/minigames/ConnectWiresGame.o
+
+# target to build an object file
+src/minigames/ConnectWiresGame.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pandemonium.dir/build.make CMakeFiles/pandemonium.dir/src/minigames/ConnectWiresGame.cpp.o
+.PHONY : src/minigames/ConnectWiresGame.cpp.o
+
+src/minigames/ConnectWiresGame.i: src/minigames/ConnectWiresGame.cpp.i
+.PHONY : src/minigames/ConnectWiresGame.i
+
+# target to preprocess a source file
+src/minigames/ConnectWiresGame.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pandemonium.dir/build.make CMakeFiles/pandemonium.dir/src/minigames/ConnectWiresGame.cpp.i
+.PHONY : src/minigames/ConnectWiresGame.cpp.i
+
+src/minigames/ConnectWiresGame.s: src/minigames/ConnectWiresGame.cpp.s
+.PHONY : src/minigames/ConnectWiresGame.s
+
+# target to generate assembly for a file
+src/minigames/ConnectWiresGame.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pandemonium.dir/build.make CMakeFiles/pandemonium.dir/src/minigames/ConnectWiresGame.cpp.s
+.PHONY : src/minigames/ConnectWiresGame.cpp.s
+
 src/minigames/RotatingRectangleGame.o: src/minigames/RotatingRectangleGame.cpp.o
 .PHONY : src/minigames/RotatingRectangleGame.o
 
@@ -420,6 +444,9 @@ help:
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/minigames/ConnectWiresGame.o"
+	@echo "... src/minigames/ConnectWiresGame.i"
+	@echo "... src/minigames/ConnectWiresGame.s"
 	@echo "... src/minigames/RotatingRectangleGame.o"
 	@echo "... src/minigames/RotatingRectangleGame.i"
 	@echo "... src/minigames/RotatingRectangleGame.s"
