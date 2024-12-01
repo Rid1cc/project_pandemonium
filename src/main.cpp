@@ -25,7 +25,7 @@ int main(void) {
     //Initialize Scene, w. target
     RenderTexture2D target = LoadRenderTexture(screenWidth, screenHeight);
     //Load Shader
-    Shader shader = LoadShader(0, "../assets/shaders/fx.fs");
+    //Shader shader = LoadShader(0, "../assets/shaders/fx.fs");
     /*
     // music initialization functions
     InitAudioDevice();
@@ -100,14 +100,14 @@ int main(void) {
         //commented because of working with graphics, shaders just get in the way with that. 
         //to make it work uncomment beginshadermode and endshadermode.
 
-        BeginShaderMode(shader);  // render with shader
+        //BeginShaderMode(shader);  // render with shader
         DrawTextureRec(target.texture, (Rectangle){ 0, 0, (float)target.texture.width, -(float)target.texture.height }, (Vector2){ 0, 0 }, WHITE);
         EndShaderMode();
 
         EndDrawing();
     }
 
-    UnloadShader(shader);
+    //UnloadShader(shader);
     UnloadRenderTexture(target);
     /*
     // Music De-Initialization
