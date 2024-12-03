@@ -6,12 +6,13 @@
 class ConnectWiresGame : public MiniGame
 {
 private:
-    Vector2 startPoint;
     Vector2 mouse;
     bool moveStartPoint;
     bool moveEndPoint;
+    Vector2 startPoint;
     Vector2 endPoint;
-
+    Rectangle startArea;
+    Rectangle endArea;
 public:
     // constructor
     ConnectWiresGame(float x, float y, float width, float height, const std::string& title);

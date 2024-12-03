@@ -2,7 +2,7 @@
 
 // MiniGame Constructor
 MiniGame::MiniGame(float x, float y, float width, float height, const std::string& title)
-    : window({x, y, width, height}), title(title), isDragging(false), isOpen(true) {}
+    : window({x, y, width, height}), title(title), isDragable(false), isOpen(true) {}
 
 // Base Update method (can be overridden)
 void MiniGame::Update() {
@@ -16,16 +16,16 @@ void MiniGame::Draw() {
 
 // Handle dragging of the window
 void MiniGame::HandleDrag() {
-    if (isDragging) {
+    if (isDragable) {
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
             Vector2 mousePosition = GetMousePosition();
             window.x = mousePosition.x - dragOffset.x;
             window.y = mousePosition.y - dragOffset.y;
         } else {
-            isDragging = false;
+            isDragable = false;
         }
-    } else if (CheckCollisionPointRec(GetMousePosition(), window) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-        isDragging = true;
+    } else if (CheckCollisionPointRec(GetMousePosition(), {window.x, window.y, window.width, 30}) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+        isDragable = true;
         Vector2 mousePosition = GetMousePosition();
         dragOffset = {mousePosition.x - window.x, mousePosition.y - window.y};
     }
