@@ -5,4 +5,10 @@
 void TitleUpdate() {
     if (IsKeyPressed(KEY_ENTER)) currentScreen = GAMEPLAY;
     if (IsKeyPressed(KEY_S)) currentScreen = SETTINGS;
+
+    //frames counter
+    framesCounter ++;
+    if(framesCounter>=60){
+        framesCounter = 0;
+    }
 }

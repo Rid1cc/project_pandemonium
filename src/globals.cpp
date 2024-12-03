@@ -25,6 +25,7 @@ const int screenWidth = 1280;
 const int screenHeight = 720;
 Rectangle screen = {50, 25, screenWidth-100, screenHeight-50};
 
+
 //Settings
 float general_volume = 1.0f;
 float effects_volume = 1.0f;
