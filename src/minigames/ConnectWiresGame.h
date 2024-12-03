@@ -13,6 +13,7 @@ private:
     Vector2 endPoint;
     Rectangle startArea;
     Rectangle endArea;
+    
 public:
     // constructor
     ConnectWiresGame(float x, float y, float width, float height, const std::string& title);
