@@ -1,3 +1,0 @@
-/home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/build/CMakeFiles/pandemonium.dir
-/home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/build/CMakeFiles/edit_cache.dir
-/home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/build/CMakeFiles/rebuild_cache.dir
