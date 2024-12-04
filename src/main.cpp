@@ -7,6 +7,8 @@
 #include "headers/title_draw.h"
 #include "headers/title_update.h"
 #include "minigames/RotatingRectangleGame.h"
+#include "minigames/FinderGame.h"
+
 
 
 int main(void) {
@@ -37,7 +39,10 @@ int main(void) {
 
     //minigames init
     auto rotatingGame = std::make_shared<RotatingRectangleGame>(200, 150, 400, 300, "Rotating Rectangle");
-    gameManager.AddGame(rotatingGame);
+    // gameManager.AddGame(rotatingGame);
+
+    auto finder = std::make_shared<FinderGame>(200, 150, 400, 300, "FinderGame");
+    gameManager.AddGame(finder);
 
     while (!WindowShouldClose()) {
 
