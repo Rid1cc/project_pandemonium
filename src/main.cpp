@@ -96,9 +96,9 @@ int main(void) {
         //commented because of working with graphics, shaders just get in the way with that. 
         //to make it work uncomment beginshadermode and endshadermode.
 
-        BeginShaderMode(shader);  // <----- SHADER COMMENT
+        //BeginShaderMode(shader);  // <----- SHADER COMMENT
         DrawTextureRec(target.texture, (Rectangle){ 0, 0, (float)target.texture.width, -(float)target.texture.height }, (Vector2){ 0, 0 }, WHITE);
-        EndShaderMode(); // <----- SHADER COMMENT
+        //EndShaderMode(); // <----- SHADER COMMENT
 
         EndDrawing();
     }

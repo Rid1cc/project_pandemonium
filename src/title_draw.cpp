@@ -4,12 +4,6 @@
 #include <chrono>
 #include <cstdio>
 
-Rectangle title = {float(screenWidth/5), float(screenHeight/9), float((screenWidth/5)*3), float((screenHeight/9)*1.4)};
-Rectangle button_exit ={100, float(screenHeight)-130, 200, 50};
-Rectangle button_lore ={100, float(screenHeight)-210, 200, 50};
-Rectangle button_settings ={100, float(screenHeight)-290, 200, 50};
-Rectangle button_play ={100, float(screenHeight)-370, 200, 50};
-
 
 void DrawTitle() {
     //Particle randomizer
@@ -40,6 +34,12 @@ void DrawTitle() {
     //Play
     DrawRectangleLinesEx(button_play, 3, ORANGE);
     DrawTextB("MISSIONS", 110, float(screenHeight)-365, 40, ORANGE);
+
+    //Description
+    DrawRectangleLinesEx(desc_window, 3, ORANGE);
+
+    //Animations
+    DrawRectangleLinesEx(anim_window_title, 3, ORANGE);
 
     //Particles
     int randomW;
