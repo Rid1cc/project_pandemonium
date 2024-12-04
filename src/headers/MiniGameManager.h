@@ -11,7 +11,7 @@ class MiniGame {
 protected:
     Rectangle window;        // Game window dimensions
     std::string title;     // Title of the window
-    bool isDragging;       // Is the window being dragged?
+    bool isDragable;       // Is the window being dragged?
     Vector2 dragOffset;    // Drag offset
     bool isOpen;           // Is the game window open?
 
