@@ -15,12 +15,12 @@ void SettingsUpdate(float& general_volume, float& effects_volume, bool& mute_aud
         if (!IsWindowMaximized()) SetWindowState(FLAG_WINDOW_MAXIMIZED);
         else if (IsWindowMaximized()) RestoreWindow();
     }
-
+    /*
     if (IsKeyPressed(KEY_M)) {
         if (!mute_audio) {PauseMusicStream(main_theme); general_volume = 0.0f; mute_audio = true;}
         else if (mute_audio) {ResumeMusicStream(main_theme); effects_volume = 1.0f; mute_audio = false;}
     }
-
+    */
     if (IsKeyPressed(KEY_ESCAPE)) currentScreen = TITLE;
 }
 
