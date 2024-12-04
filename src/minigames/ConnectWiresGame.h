@@ -10,6 +10,7 @@ class ConnectWiresGame : public MiniGame
 private:
     bool moveStartPoint;
     bool moveEndPoint;
+    
     int inTargetAreaCounter;
     Vector2 mousePosition;
     Rectangle startArea;
@@ -30,6 +31,7 @@ public:
     // standard destructor
     ~ConnectWiresGame() = default;
 
+    bool gameComplete;
     void Update() override;
     void Draw() override;
 };

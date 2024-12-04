@@ -3,7 +3,7 @@
 #define pointsNum 16
 
 ConnectWiresGame::ConnectWiresGame(float x, float y, float width, float height, const std::string& title)
-    : MiniGame(x, y, width, height, title), moveStartPoint(false), moveEndPoint(false), 
+    : MiniGame(x, y, width, height, title), moveStartPoint(false), moveEndPoint(false), gameComplete(false),
     mousePosition(GetMousePosition()), points(), isPointMovable(), targetAreas(), isAtTargetArea(), inTargetAreaCounter() {
     startArea = {window.x + 30, window.y + 40, 35, window.height - 60};
     endArea = {window.x + window.width - 65, window.y + 40, 35, window.height - 60};
@@ -14,11 +14,7 @@ ConnectWiresGame::ConnectWiresGame(float x, float y, float width, float height, 
 
 void ConnectWiresGame::Update() {
     MiniGame::Update(); // Handle dragging
-    Vector2 mousePosition = GetMousePosition();
-    Vector2 mousePositionDelta = GetMouseDelta();
-
     UpdatePoints();
-    
 
 }
 
@@ -26,12 +22,6 @@ void ConnectWiresGame::Update() {
 void ConnectWiresGame::Draw() {
     MiniGame::Draw(); // Draw window 
     DrawWires();
-    
-    for (int i = 0; i < pointsNum; i++) {
-        DrawRectangleLinesEx(targetAreas[i], 1, PURPLE);
-    }
-    
-
 }
 
 
@@ -100,12 +90,16 @@ void ConnectWiresGame::UpdatePoints() {
             }
         }
         
-        if (inTargetAreaCounter == 16) {
+        if (inTargetAreaCounter == 14 && CheckCollisionCircleRec(points[7], 10.0f, targetAreas[11]) && CheckCollisionCircleRec(points[11], 10.0f, targetAreas[7])) {
+            if(!gameComplete) {
             TraceLog(LOG_INFO, "MiniGame Complete!");
+            gameComplete = true;
+            }
         }
     }
 
 }
+
 
 bool ConnectWiresGame::IsAnyMovable() {
     for (int i = 0; i < pointsNum; i++) {
@@ -121,6 +115,9 @@ void ConnectWiresGame::DrawWires() {
         DrawLineBezier(points[2*i], points[(2*i)+1], 4.0f,(i%2==0)? colors[i/2]:colors[(i-1)/2]);
         DrawCircleV(points[i*2], CheckCollisionPointCircle(mousePosition, points[i*2], 10.0f)? 14.0f : 8.0f,(i%2==0)? WHITE:colors[i/2]);
         DrawCircleV(points[(i*2)+1], CheckCollisionPointCircle(mousePosition, points[(i*2)+1], 10.0f)? 14.0f : 8.0f,(i%2==0)? WHITE:colors[i/2]);
+    }
+    for (int i = 0; i < pointsNum; i++) {
+        DrawRectangleLinesEx(targetAreas[i], 1, PURPLE);
     }
 }
 
