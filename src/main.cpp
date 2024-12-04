@@ -40,7 +40,7 @@ int main(void) {
     //minigames init
     //auto rotatingGame = std::make_shared<RotatingRectangleGame>(200, 150, 400, 300, "Rotating Rectangle");
     //gameManager.AddGame(rotatingGame);
-    auto connectingGame = std::make_shared<ConnectWiresGame>(200, 150, 400, 300, "Connect Wires in standard B");
+    auto connectingGame = std::make_shared<ConnectWiresGame>(200, 150, 400, 300, "Connect Wires in standard Bgit p");
     gameManager.AddGame(connectingGame);
 
     while (!WindowShouldClose()) {
