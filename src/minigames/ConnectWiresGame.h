@@ -10,19 +10,18 @@ class ConnectWiresGame : public MiniGame
 private:
     bool moveStartPoint;
     bool moveEndPoint;
-    std::vector<bool> isPointMovable;
     Vector2 mousePosition;
     Rectangle startArea;
     Rectangle endArea;
+    std::vector<Rectangle> targetAreas;
     std::vector<Color> colors; // 4 colors (orange, green, blue, brown, white)
     std::vector<Vector2> points;
+    std::vector<bool> isPointMovable;
+    std::vector<bool> isAtTargetArea;
     void DrawWires();
-    void MovePoints();
     bool IsAnyMovable();
     void UpdatePoints();
     void CreateWires();
-    // void MovePointsToArea();
-    void DragObjectsWithWindow();
 
 public:
     // constructor
