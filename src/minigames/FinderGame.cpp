@@ -2,8 +2,6 @@
 
 FinderGame::FinderGame(float x, float y, float width, float height, const std::string& title)
     : MiniGame(x, y, width, height, title), scissorMode(true){
-        // setting scissor Area to follow window
-        // scissorArea = window;
 }
 
 
@@ -15,6 +13,7 @@ void FinderGame::Update() {
         scissorMode = !scissorMode;
     }
 
+    // scissorArea will follow window
     scissorArea = window;
 }
 
