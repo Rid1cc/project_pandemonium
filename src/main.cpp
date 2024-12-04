@@ -25,7 +25,7 @@ int main(void) {
     //Initialize Scene, w. target
     RenderTexture2D target = LoadRenderTexture(screenWidth, screenHeight);
     //Load Shader
-    Shader shader = LoadShader(0, "../assets/shaders/fx.fs");
+    //Shader shader = LoadShader(0, "../assets/shaders/fx.fs");
     /*
     // music initialization functions
     InitAudioDevice();
@@ -38,9 +38,9 @@ int main(void) {
     */
 
     //minigames init
-    auto rotatingGame = std::make_shared<RotatingRectangleGame>(200, 150, 400, 300, "Rotating Rectangle");
-    gameManager.AddGame(rotatingGame);
-    auto connectingGame = std::make_shared<ConnectWiresGame>(200, 150, 400, 300, "Connect Wires");
+    //auto rotatingGame = std::make_shared<RotatingRectangleGame>(200, 150, 400, 300, "Rotating Rectangle");
+    //gameManager.AddGame(rotatingGame);
+    auto connectingGame = std::make_shared<ConnectWiresGame>(200, 150, 400, 300, "Connect Wires in standard Bgit p");
     gameManager.AddGame(connectingGame);
 
     while (!WindowShouldClose()) {
@@ -100,14 +100,14 @@ int main(void) {
         //commented because of working with graphics, shaders just get in the way with that. 
         //to make it work uncomment beginshadermode and endshadermode.
 
-        BeginShaderMode(shader);  // render with shader
+        //BeginShaderMode(shader);  // render with shader
         DrawTextureRec(target.texture, (Rectangle){ 0, 0, (float)target.texture.width, -(float)target.texture.height }, (Vector2){ 0, 0 }, WHITE);
         EndShaderMode();
 
         EndDrawing();
     }
 
-    UnloadShader(shader);
+    //UnloadShader(shader);
     UnloadRenderTexture(target);
     /*
     // Music De-Initialization

@@ -1,0 +1,74 @@
+[
+{
+  "directory": "/home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/build",
+  "command": "/usr/bin/g++ -g -std=gnu++23 -I/usr/include -o CMakeFiles/pandemonium.dir/src/main.cpp.o -c /home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/src/main.cpp",
+  "file": "/home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/src/main.cpp",
+  "output": "CMakeFiles/pandemonium.dir/src/main.cpp.o"
+},
+{
+  "directory": "/home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/build",
+  "command": "/usr/bin/g++ -g -std=gnu++23 -I/usr/include -o CMakeFiles/pandemonium.dir/src/globals.cpp.o -c /home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/src/globals.cpp",
+  "file": "/home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/src/globals.cpp",
+  "output": "CMakeFiles/pandemonium.dir/src/globals.cpp.o"
+},
+{
+  "directory": "/home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/build",
+  "command": "/usr/bin/g++ -g -std=gnu++23 -I/usr/include -o CMakeFiles/pandemonium.dir/src/gameplay_draw.cpp.o -c /home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/src/gameplay_draw.cpp",
+  "file": "/home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/src/gameplay_draw.cpp",
+  "output": "CMakeFiles/pandemonium.dir/src/gameplay_draw.cpp.o"
+},
+{
+  "directory": "/home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/build",
+  "command": "/usr/bin/g++ -g -std=gnu++23 -I/usr/include -o CMakeFiles/pandemonium.dir/src/gameplay_update.cpp.o -c /home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/src/gameplay_update.cpp",
+  "file": "/home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/src/gameplay_update.cpp",
+  "output": "CMakeFiles/pandemonium.dir/src/gameplay_update.cpp.o"
+},
+{
+  "directory": "/home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/build",
+  "command": "/usr/bin/g++ -g -std=gnu++23 -I/usr/include -o CMakeFiles/pandemonium.dir/src/CommandInterpreter.cpp.o -c /home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/src/CommandInterpreter.cpp",
+  "file": "/home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/src/CommandInterpreter.cpp",
+  "output": "CMakeFiles/pandemonium.dir/src/CommandInterpreter.cpp.o"
+},
+{
+  "directory": "/home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/build",
+  "command": "/usr/bin/g++ -g -std=gnu++23 -I/usr/include -o CMakeFiles/pandemonium.dir/src/settings_draw.cpp.o -c /home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/src/settings_draw.cpp",
+  "file": "/home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/src/settings_draw.cpp",
+  "output": "CMakeFiles/pandemonium.dir/src/settings_draw.cpp.o"
+},
+{
+  "directory": "/home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/build",
+  "command": "/usr/bin/g++ -g -std=gnu++23 -I/usr/include -o CMakeFiles/pandemonium.dir/src/settings_update.cpp.o -c /home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/src/settings_update.cpp",
+  "file": "/home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/src/settings_update.cpp",
+  "output": "CMakeFiles/pandemonium.dir/src/settings_update.cpp.o"
+},
+{
+  "directory": "/home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/build",
+  "command": "/usr/bin/g++ -g -std=gnu++23 -I/usr/include -o CMakeFiles/pandemonium.dir/src/title_draw.cpp.o -c /home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/src/title_draw.cpp",
+  "file": "/home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/src/title_draw.cpp",
+  "output": "CMakeFiles/pandemonium.dir/src/title_draw.cpp.o"
+},
+{
+  "directory": "/home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/build",
+  "command": "/usr/bin/g++ -g -std=gnu++23 -I/usr/include -o CMakeFiles/pandemonium.dir/src/title_update.cpp.o -c /home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/src/title_update.cpp",
+  "file": "/home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/src/title_update.cpp",
+  "output": "CMakeFiles/pandemonium.dir/src/title_update.cpp.o"
+},
+{
+  "directory": "/home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/build",
+  "command": "/usr/bin/g++ -g -std=gnu++23 -I/usr/include -o CMakeFiles/pandemonium.dir/src/MiniGameManager.cpp.o -c /home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/src/MiniGameManager.cpp",
+  "file": "/home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/src/MiniGameManager.cpp",
+  "output": "CMakeFiles/pandemonium.dir/src/MiniGameManager.cpp.o"
+},
+{
+  "directory": "/home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/build",
+  "command": "/usr/bin/g++ -g -std=gnu++23 -I/usr/include -o CMakeFiles/pandemonium.dir/src/minigames/RotatingRectangleGame.cpp.o -c /home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/src/minigames/RotatingRectangleGame.cpp",
+  "file": "/home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/src/minigames/RotatingRectangleGame.cpp",
+  "output": "CMakeFiles/pandemonium.dir/src/minigames/RotatingRectangleGame.cpp.o"
+},
+{
+  "directory": "/home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/build",
+  "command": "/usr/bin/g++ -g -std=gnu++23 -I/usr/include -o CMakeFiles/pandemonium.dir/src/minigames/ConnectWiresGame.cpp.o -c /home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/src/minigames/ConnectWiresGame.cpp",
+  "file": "/home/agh/Desktop/projekt/project_pandemonium/project_pandemonium/src/minigames/ConnectWiresGame.cpp",
+  "output": "CMakeFiles/pandemonium.dir/src/minigames/ConnectWiresGame.cpp.o"
+}
+]
