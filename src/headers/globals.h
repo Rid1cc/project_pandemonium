@@ -22,10 +22,21 @@ extern const int screenHeight;
 extern std::string history[30];
 extern std::string historyDrawn[30];
 extern int upTimes;
+extern Vector2 mousePos;
 extern Font alagard;
 extern Font pixeled;
 void DrawTextB(const char *text, float posX, float posY, int fontSize, Color color);
 void DrawTextC(const char *text, float posX, float posY, int fontSize, Color color);
+
+
+//Title
+extern Rectangle button_play;
+extern Rectangle button_lore;
+extern Rectangle button_settings;
+extern Rectangle button_exit;
+extern Rectangle title;
+extern Rectangle desc_window;
+extern Rectangle anim_window_title;
 
 // Settings
 extern float general_volume;
