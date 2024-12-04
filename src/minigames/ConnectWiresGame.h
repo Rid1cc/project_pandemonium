@@ -10,6 +10,7 @@ class ConnectWiresGame : public MiniGame
 private:
     bool moveStartPoint;
     bool moveEndPoint;
+    int inTargetAreaCounter;
     Vector2 mousePosition;
     Rectangle startArea;
     Rectangle endArea;

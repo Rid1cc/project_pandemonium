@@ -4,7 +4,7 @@
 
 ConnectWiresGame::ConnectWiresGame(float x, float y, float width, float height, const std::string& title)
     : MiniGame(x, y, width, height, title), moveStartPoint(false), moveEndPoint(false), 
-    mousePosition(GetMousePosition()), points(), isPointMovable(), targetAreas(), isAtTargetArea() {
+    mousePosition(GetMousePosition()), points(), isPointMovable(), targetAreas(), isAtTargetArea(), inTargetAreaCounter() {
     startArea = {window.x + 30, window.y + 40, 35, window.height - 60};
     endArea = {window.x + window.width - 65, window.y + 40, 35, window.height - 60};
     colors = {ORANGE, GREEN, BLUE, BROWN, WHITE};
@@ -15,8 +15,10 @@ ConnectWiresGame::ConnectWiresGame(float x, float y, float width, float height, 
 void ConnectWiresGame::Update() {
     MiniGame::Update(); // Handle dragging
     Vector2 mousePosition = GetMousePosition();
+    Vector2 mousePositionDelta = GetMouseDelta();
 
     UpdatePoints();
+    
 
 }
 
@@ -24,22 +26,11 @@ void ConnectWiresGame::Update() {
 void ConnectWiresGame::Draw() {
     MiniGame::Draw(); // Draw window 
     DrawWires();
-
-    DrawRectangleLinesEx({window.x + 30, window.y + 40, 35, window.height - 60}, 0.9f, WHITE);
-    DrawRectangleLinesEx({window.x + window.width - 65, window.y + 40, 35, window.height - 60}, 0.9f, WHITE);
-
-    // {window.x, window.y, window.width, 30}
-    /*
-    //Draw Standard B
-    DrawLine(window.x + 170, window.y + 10, window.x + 330, window.y + 10, GRAY);
-    DrawLine(window.x + 170, window.y + 30, window.x + 330, window.y + 30, GRAY);
-    DrawLine()
-    DrawTriangle({window.x + 170, window.y + 10}, {window.x + 170, window.y + 30}, {window.x + 190, window.y + 10}, WHITE);
-    DrawTriangle({window.x + 170, window.y + 30}, {window.x + 190, window.y + 30}, {window.x + 190, window.y + 10}, ORANGE);
-    DrawRectangle(window.x + 190, window.y + 10, 20, 20, ORANGE);
-    DrawTriangle({window.x + 210, window.y + 10}, {window.x + 210, window.y + 30}, {window.x + 230, window.y + 10}, WHITE);
-    DrawTriangle({window.x + 210, window.y + 30}, {window.x + 230, window.y + 10}, {window.x + 230, window.y + 30}, GREEN);
-    */
+    
+    for (int i = 0; i < pointsNum; i++) {
+        DrawRectangleLinesEx(targetAreas[i], 1, PURPLE);
+    }
+    
 
 }
 
@@ -56,12 +47,14 @@ void ConnectWiresGame::UpdatePoints() {
         }
 
     /*handle moving the points*/
-    for (int i = (pointsNum -1); i >= 0; i--) { // for all points
+    for (int i = pointsNum - 1; i >= 0; i--) { // for all points
         
         // Drag points with window
         if (isDragable && IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
         points[i].x += mousePositionDelta.x;
         points[i].y += mousePositionDelta.y;
+        targetAreas[i].x += mousePositionDelta.x;
+        targetAreas[i].y += mousePositionDelta.y;
         }
 
         // check if point should be able to move
@@ -91,16 +84,24 @@ void ConnectWiresGame::UpdatePoints() {
             else if (points[i].y <= endArea.y) points[i].y = endArea.y;
         }
     
+        
         if (CheckCollisionCircleRec(points[i], 10.0f, targetAreas[i])){
-            // if false
-                // set isAtTargetArea to true
-                // tracelog info
-
-            // if not
-                // if true
-                // set isAtTargetArea to false
-                //tracelog info
-            
+            if(isAtTargetArea[i] == false) {
+                isAtTargetArea[i] = true;
+                inTargetAreaCounter++;
+                TraceLog(LOG_INFO, "Point %i is in right spot!", i);
+            }
+        } 
+        else if(!CheckCollisionCircleRec(points[i], 10.0f, targetAreas[i])) {
+            if(isAtTargetArea[i] == true) {
+                isAtTargetArea[i] = false;
+                inTargetAreaCounter--;
+                TraceLog(LOG_INFO, "Point %i is not in right spot!", i);
+            }
+        }
+        
+        if (inTargetAreaCounter == 16) {
+            TraceLog(LOG_INFO, "MiniGame Complete!");
         }
     }
 
@@ -118,8 +119,8 @@ void ConnectWiresGame::DrawWires() {
     // DrawLineBezier(wirePoints[0], wirePoints[1], 4.0f, ORANGE);
     for (int i = 0; i < pairsNum; i++) {
         DrawLineBezier(points[2*i], points[(2*i)+1], 4.0f,(i%2==0)? colors[i/2]:colors[(i-1)/2]);
-        DrawCircleV(points[i*2], CheckCollisionPointCircle(mousePosition, points[i*2], 10.0f)? 14.0f : 8.0f,(i%2==0)? colors[i/2]:WHITE);
-        DrawCircleV(points[(i*2)+1], CheckCollisionPointCircle(mousePosition, points[(i*2)+1], 10.0f)? 14.0f : 8.0f,(i%2==0)? colors[i/2]:WHITE);
+        DrawCircleV(points[i*2], CheckCollisionPointCircle(mousePosition, points[i*2], 10.0f)? 14.0f : 8.0f,(i%2==0)? WHITE:colors[i/2]);
+        DrawCircleV(points[(i*2)+1], CheckCollisionPointCircle(mousePosition, points[(i*2)+1], 10.0f)? 14.0f : 8.0f,(i%2==0)? WHITE:colors[i/2]);
     }
 }
 
@@ -141,11 +142,11 @@ void ConnectWiresGame::CreateWires() {
         else if (i % 2 == 1) { // for endArea
             // set points (x, y)
             points[i] = {endArea.x + (endArea.width/2), endArea.y + endArea.height - ((endArea.height/8)/2) - (startArea.height/8)*(i/2)};
-            TraceLog(LOG_INFO, "succesfully created pair %i", ((i + 1)/2));}
+            TraceLog(LOG_INFO, "succesfully created pair %i", ((i + 1)/2));
             // set targetAreas
             targetAreas[i] = {endArea.x,endArea.y + (endArea.height/8)*(i/2),endArea.width, (endArea.height/8)};
-            TraceLog(LOG_INFO, "successfully created targetAreaPair");
-        // set points target areas
+            TraceLog(LOG_INFO, "successfully created target %i", (i + 1)/2);
+        }
     }
 }
 
