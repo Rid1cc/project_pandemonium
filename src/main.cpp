@@ -22,6 +22,7 @@ int main(void) {
     alagard = LoadFont("../assets/fonts/alagard.png"); // For ui related
     pixeled = LoadFontEx("../assets/fonts/Minecraft.ttf", 16, 0, 317); //For system related
 
+    Shader shader = LoadShader(0, "../assets/shaders/fx.fs");
     //Initialize Scene, w. target
     RenderTexture2D target = LoadRenderTexture(screenWidth, screenHeight);
     //Load Shader
@@ -107,7 +108,7 @@ int main(void) {
         EndDrawing();
     }
 
-    //UnloadShader(shader);
+    UnloadShader(shader);
     UnloadRenderTexture(target);
     /*
     // Music De-Initialization
