@@ -75,7 +75,6 @@ void FinderGame::Update() {
             scissorArea = window;
 
             // countdown timer
-            // float currentTime = GetTime();
             currentTime = GetTime();
             if (currentTime - lastUpdateTime >= 1.0f) { // Co 1 sekundę
                 lastUpdateTime = currentTime;
@@ -128,12 +127,16 @@ void FinderGame::Draw() {
             DrawText("Collect 10 positive messages (green!)", window.x + 10, window.y + 40, 20, ORANGE); // draw game instruction
 
             // draw collected counter
-            collectedText = "Collected: " + std::to_string(collected);
-            DrawText(collectedText.c_str(), window.x + 10, window.y + 80, 20, ORANGE);
+            // collectedText = "Collected: " + std::to_string(collected);
+            // DrawText(collectedText.c_str(), window.x + 10, window.y + 80, 20, ORANGE);
+            DrawText("Collected: ", window.x + 10, window.y + 80, 20, ORANGE);
+            DrawText(std::to_string(collected).c_str(), window.x + 130, window.y + 80, 20, WHITE);
 
             // draw timer
-            timerText = "Time left: " + std::to_string(timer) + "s";
-            DrawText(timerText.c_str(), window.x + 10, window.y + 120, 20, ORANGE);
+            // timerText = "Time left: " + std::to_string(timer) + "s";
+            // DrawText(timerText.c_str(), window.x + 10, window.y + 120, 20, ORANGE);
+            DrawText("Time left: ", window.x + 10, window.y + 120, 20, ORANGE);
+            DrawText((std::to_string(timer) + "s").c_str(), window.x + 120, window.y + 120, 20, RED);
 
             // IF CAN BE DELETED IN THE FUTURE!!!!
             if (scissorMode) {
@@ -164,7 +167,6 @@ void FinderGame::DrawStartScreen(){
         "Are you ready? Good luck!";
 
     // window cords
-    // Rectangle panel = { 100, 100, 1100, 400 };
     DrawRectangleRec(panel, BLACK);                    // Background
     DrawRectangleLinesEx(panel, 10, GOLD); 
 
@@ -196,7 +198,6 @@ void FinderGame::DrawStartScreen(){
     }   
 
     //START BUTTON
-    // Rectangle startButton = { panel.x + (panel.width - 200) / 2, panel.y + panel.height - 80, 200, 50 };
     DrawRectangleRec(startButton, ORANGE);
     DrawRectangleLinesEx(startButton, 3, WHITE);
     DrawText("START", 
@@ -278,8 +279,7 @@ void FinderGame::DrawEndScreen(bool isWin) {
     }
 
     float MessageHeight = 120; // font size
-    float MessageWidth = MeasureText(message, MessageHeight); // Messageheight is font size 
-    // float MessageHeight = 120; // font size
+    float MessageWidth = MeasureText(message, MessageHeight); // MessageHeight is font size 
 
     // rectangle position
     float recX = (GetScreenWidth() - MessageWidth) / 2;
