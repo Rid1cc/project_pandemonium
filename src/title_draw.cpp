@@ -79,6 +79,9 @@ void DrawTitle() {
         DrawTextB("MISSIONS", 110, float(screenHeight)-365, 40, ORANGE);
     }
     
+    //MOTD
+    DrawTextC("Good day to you EXORCIST_432.", float(screenWidth/5), float(screenHeight)-520, 15, ORANGE);
+    DrawTextC("All systems Online.", float(screenWidth/5), float(screenHeight)-500, 15, ORANGE);
 
     //models texture
     DrawTexturePro(space3d.texture,

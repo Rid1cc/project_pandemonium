@@ -24,6 +24,7 @@ extern const int screenHeight;
 extern std::string history[30];
 extern std::string historyDrawn[30];
 extern int upTimes;
+extern bool exitGame;
 extern Vector2 mousePos;
 extern Font alagard;
 extern Font pixeled;

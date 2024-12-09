@@ -59,7 +59,7 @@ int main(void) {
     model_door = LoadModel("../assets/models/door.obj");
 
 
-    while (!WindowShouldClose()) {
+    while (!exitGame && !WindowShouldClose()) {
         Init3DTitleTexture();
         BeginTextureMode(target);
         // UpdateMusicStream(main_theme);
