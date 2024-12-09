@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <sstream>
+#include "../headers/globals.h"
 
 class FinderGame : public MiniGame {
 private:

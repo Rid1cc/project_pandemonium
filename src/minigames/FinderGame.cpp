@@ -47,14 +47,14 @@ FinderGame::FinderGame(float x, float y, float width, float height, const std::s
     };
 
     // isGameStarted = false;
-    timer = 30; // time of the game
+    timer = 31; // time of the game
     lastUpdateTime = 0.0f; // a variable that helps with the timer
     
     collected = 0; // score (collected pop ups texts)
 
     endScreenStartTime = 0.0;
 
-    GenerateRandomObjects(); // generating 
+    GenerateRandomObjects(); // generating once before start 
 }
 
 
@@ -124,19 +124,19 @@ void FinderGame::Draw() {
             break;
         case GAMEPLAY:
             MiniGame::Draw(); // draw window
-            DrawText("Collect 10 positive messages (green!)", window.x + 10, window.y + 40, 20, ORANGE); // draw game instruction
+            DrawTextB("Collect 10 positive messages (green!)", window.x + 10, window.y + 40, 20, ORANGE); // draw game instruction
 
             // draw collected counter
             // collectedText = "Collected: " + std::to_string(collected);
             // DrawText(collectedText.c_str(), window.x + 10, window.y + 80, 20, ORANGE);
-            DrawText("Collected: ", window.x + 10, window.y + 80, 20, ORANGE);
-            DrawText(std::to_string(collected).c_str(), window.x + 130, window.y + 80, 20, WHITE);
+            DrawTextB("Collected: ", window.x + 10, window.y + 80, 20, ORANGE);
+            DrawTextB(std::to_string(collected).c_str(), window.x + 130, window.y + 80, 20, WHITE);
 
             // draw timer
             // timerText = "Time left: " + std::to_string(timer) + "s";
             // DrawText(timerText.c_str(), window.x + 10, window.y + 120, 20, ORANGE);
-            DrawText("Time left: ", window.x + 10, window.y + 120, 20, ORANGE);
-            DrawText((std::to_string(timer) + "s").c_str(), window.x + 120, window.y + 120, 20, RED);
+            DrawTextB("Time left: ", window.x + 10, window.y + 120, 20, ORANGE);
+            DrawTextB((std::to_string(timer) + "s").c_str(), window.x + 120, window.y + 120, 20, RED);
 
             // IF CAN BE DELETED IN THE FUTURE!!!!
             if (scissorMode) {
@@ -144,8 +144,8 @@ void FinderGame::Draw() {
             } // Begin Scissor Mode 
 
             // draw good and bad texts
-            DrawText(good.text.c_str(),  good.x, good.y, 20, GREEN);
-            DrawText(bad.text.c_str(), bad.x, bad.y, 20, RED);
+            DrawTextB(good.text.c_str(),  good.x, good.y, 20, GREEN);
+            DrawTextB(bad.text.c_str(), bad.x, bad.y, 20, RED);
 
             if (scissorMode) {
                 EndScissorMode();
@@ -173,7 +173,7 @@ void FinderGame::DrawStartScreen(){
     const char* header = "Welcome to Finder!";
     int headerFontSize = 40;
     int headerWidth = MeasureText(header, headerFontSize);
-    DrawText(header, 
+    DrawTextB(header, 
              panel.x + (panel.width - headerWidth) / 2, // horizontal centering
              panel.y + 30,                              // distance from the top
              headerFontSize, 
@@ -189,7 +189,7 @@ void FinderGame::DrawStartScreen(){
     int lineNum = 0;
     while (std::getline(messageStream, line)) {
         int lineWidth = MeasureText(line.c_str(), messageFontSize);
-        DrawText(line.c_str(), 
+        DrawTextB(line.c_str(), 
                  panel.x + (panel.width - lineWidth) / 2, // Wyśrodkowanie poziome
                  messageY + lineNum * messageLineHeight, // Odstęp pionowy
                  messageFontSize, 
@@ -200,7 +200,7 @@ void FinderGame::DrawStartScreen(){
     //START BUTTON
     DrawRectangleRec(startButton, ORANGE);
     DrawRectangleLinesEx(startButton, 3, WHITE);
-    DrawText("START", 
+    DrawTextB("START", 
              startButton.x + (startButton.width - MeasureText("START", 25)) / 2, 
              startButton.y + (startButton.height - 25) / 2, 25, WHITE);
 }
@@ -288,5 +288,5 @@ void FinderGame::DrawEndScreen(bool isWin) {
     Rectangle End = {recX - 50, recY - 50, MessageWidth + 100, MessageHeight + 100};
     DrawRectangleRec(End, BLACK);              // Background
     DrawRectangleLinesEx(End, 5, ORANGE); 
-    DrawText(message, recX, recY, MessageHeight, messageColor);  // MessageHeight is font size 
+    DrawTextC(message, recX, recY, MessageHeight, messageColor);  // MessageHeight is font size 
 }
