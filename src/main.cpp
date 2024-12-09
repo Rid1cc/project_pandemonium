@@ -8,6 +8,8 @@
 #include "headers/title_update.h"
 #include "minigames/RotatingRectangleGame.h"
 #include "minigames/ConnectWiresGame.h"
+#include "minigames/FinderGame.h"
+
 
 
 int main(void) {
@@ -41,8 +43,13 @@ int main(void) {
     //minigames init
     //auto rotatingGame = std::make_shared<RotatingRectangleGame>(200, 150, 400, 300, "Rotating Rectangle");
     //gameManager.AddGame(rotatingGame);
-    auto connectingGame = std::make_shared<ConnectWiresGame>(200, 150, 400, 300, "Connect Wires in standard B");
+    auto connectingGame = std::make_shared<ConnectWiresGame>(400, 750, 400, 300, "Connect Wires in standard B");
     gameManager.AddGame(connectingGame);
+    auto rotatingGame = std::make_shared<RotatingRectangleGame>(200, 150, 400, 300, "Rotating Rectangle");
+    // gameManager.AddGame(rotatingGame);
+
+    auto finder = std::make_shared<FinderGame>(200, 150, 400, 300, "FinderGame");
+    gameManager.AddGame(finder);
 
     while (!WindowShouldClose()) {
 
