@@ -2,8 +2,21 @@
 #include <string>
 #include <raylib.h>
 #include "headers/MiniGameManager.h"
+#include <random>
+#include <chrono>
+
+//Random init
+std::mt19937 rng(std::chrono::steady_clock::now().time_since_epoch().count());
 
 // Global variables
+bool exitGame = false;
+
+//3D stuff
+Model model_globe;
+Model model_cog;
+Model model_door;
+Model model_data;
+Camera camera;
 
 // Gameplay
 GameScreen currentScreen = TITLE;
@@ -28,6 +41,7 @@ Rectangle button_settings ={100, float(screenHeight)-290, 200, 50};
 Rectangle button_play ={100, float(screenHeight)-370, 200, 50};
 Rectangle desc_window ={350, float(screenHeight)-370, 500, 290};
 Rectangle anim_window_title ={880, float(screenHeight)-370, 300, 290};
+RenderTexture2D space3d;
 
 //Main
 const int screenWidth = 1280;
@@ -55,7 +69,15 @@ void DrawTextB(const char *text, float posX, float posY, int fontSize, Color col
 {
     DrawTextEx(alagard, text, (Vector2){ posX, posY }, fontSize, 2, color);
 }
+//Drawtext using pixeleted font
 void DrawTextC(const char *text, float posX, float posY, int fontSize, Color color)
 {
     DrawTextEx(pixeled, text, (Vector2){ posX, posY }, fontSize, 2, color);
+}
+//Shake float !
+float ShakeXY(float pos, float intensity){
+    float shook;
+    std::uniform_int_distribution<int> rS(pos-intensity, pos+intensity);
+    shook = rS(rng);
+    return shook;
 }
