@@ -25,6 +25,8 @@ int main(void) {
     Shader shader = LoadShader(0, "../assets/shaders/fx.fs");
     //Initialize Scene, w. target
     RenderTexture2D target = LoadRenderTexture(screenWidth, screenHeight);
+    space3d = LoadRenderTexture((int)desc_window.width, (int)desc_window.height);
+
     //Load Shader
     //Shader shader = LoadShader(0, "../assets/shaders/fx.fs");
     /*
@@ -44,8 +46,21 @@ int main(void) {
     auto connectingGame = std::make_shared<ConnectWiresGame>(200, 150, 400, 300, "Connect Wires in standard B");
     gameManager.AddGame(connectingGame);
 
-    while (!WindowShouldClose()) {
+    //define camera state (for 3d models)
+    camera.position = (Vector3){ 10.0f, 5.0f, 10.0f }; // Camera position
+    camera.target = (Vector3){ 0.0f, 0.0f, 0.0f }; // Camera looking at point
+    camera.up = (Vector3){ 0.0f, 1.0f, 0.0f }; // Camera up vector
+    camera.fovy = 45.0f; // Camera field-of-view Y
+    camera.projection = CAMERA_PERSPECTIVE; // Camera mode type
 
+    model_globe = LoadModel("../assets/models/globe.obj");
+    model_cog = LoadModel("../assets/models/cog.obj");
+    model_data = LoadModel("../assets/models/data.obj");
+    model_door = LoadModel("../assets/models/door.obj");
+
+
+    while (!WindowShouldClose()) {
+        Init3DTitleTexture();
         BeginTextureMode(target);
         // UpdateMusicStream(main_theme);
         if (!IsWindowState(FLAG_WINDOW_RESIZABLE)) SetWindowState(FLAG_WINDOW_RESIZABLE);
@@ -71,6 +86,8 @@ int main(void) {
         }
 
         ClearBackground(RAYWHITE);
+        
+        // Begin 3D mode
 
         switch (currentScreen) {
             case LOGO: {
@@ -93,23 +110,40 @@ int main(void) {
             } break;
             default: break;
         }
+
+
+        //Particles
+        int randomW;
+        int randomH;
+        if(framesCounter%3==0){
+        for(int i =0; i<=20; i++){
+            std::uniform_int_distribution<int> rW(50, screenWidth-100);
+            std::uniform_int_distribution<int> rH(25, screenHeight-50);
+            randomW = rW(rng);
+            randomH = rH(rng);
+            DrawText("-", randomW, randomH, 10, ORANGE);
+            }
+        }
+
         EndTextureMode();
         BeginDrawing();
-
         ClearBackground(BLACK);
-
         //commented because of working with graphics, shaders just get in the way with that. 
         //to make it work uncomment beginshadermode and endshadermode.
-
-        //BeginShaderMode(shader);  // <----- SHADER COMMENT
-        DrawTextureRec(target.texture, (Rectangle){ 0, 0, (float)target.texture.width, -(float)target.texture.height }, (Vector2){ 0, 0 }, WHITE);
-        //EndShaderMode(); // <----- SHADER COMMENT
-
+        BeginShaderMode(shader);  // <----- SHADER COMMENT
+        DrawTextureRec(target.texture, (Rectangle){ 0, 0, (float)target.texture.width, -(float)target.texture.height }, (Vector2){ 0, 0 }, WHITE);         
+        EndShaderMode(); // <----- SHADER COMMENT
         EndDrawing();
     }
 
     UnloadShader(shader);
+    UnloadModel(model_cog);
+    UnloadModel(model_door);
+    UnloadModel(model_data);
+    UnloadModel(model_globe);
     UnloadRenderTexture(target);
+    UnloadRenderTexture(space3d);
+    
     /*
     // Music De-Initialization
     UnloadMusicStream(main_theme);

@@ -3,6 +3,8 @@
 #include "raylib.h"    
 #include "MiniGameManager.h" 
 #include <string>
+#include <random>
+#include <chrono>
 
 typedef enum GameScreen { LOGO = 0, TITLE, SETTINGS, GAMEPLAY, ENDING } GameScreen;
 
@@ -27,7 +29,16 @@ extern Font alagard;
 extern Font pixeled;
 void DrawTextB(const char *text, float posX, float posY, int fontSize, Color color);
 void DrawTextC(const char *text, float posX, float posY, int fontSize, Color color);
+float ShakeXY(float pos, float intensity);
+void ProjectModel(const char* objFilePath, Color modelColor, Rectangle destRect);
+extern std::mt19937 rng;
 
+
+extern Model model_globe;
+extern Model model_cog;
+extern Model model_data;
+extern Model model_door;
+extern Camera camera;
 
 //Title
 extern Rectangle button_play;
@@ -37,6 +48,7 @@ extern Rectangle button_exit;
 extern Rectangle title;
 extern Rectangle desc_window;
 extern Rectangle anim_window_title;
+extern RenderTexture2D space3d;
 
 // Settings
 extern float general_volume;
