@@ -5,9 +5,9 @@ TypeGame::TypeGame(float x, float y, float width, float height, const std::strin
 }
 
 void TypeGame::Update(){
-    MiniGame::Update();
+    MiniGame::Update(); // handle dragging
 }
 
 void TypeGame::Draw(){
-    MiniGame::Draw();
+    MiniGame::Draw(); // draw window
 }
