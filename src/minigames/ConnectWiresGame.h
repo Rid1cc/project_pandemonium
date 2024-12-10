@@ -2,8 +2,7 @@
 #define CONNECT_WIRES_GAME_H
 
 #include "../headers/MiniGameManager.h"
-#include <vector>
-#include <memory>
+
 
 class ConnectWiresGame : public MiniGame
 {
@@ -31,7 +30,7 @@ public:
     // standard destructor
     ~ConnectWiresGame() = default;
 
-    bool gameComplete;
+
     void Update() override;
     void Draw() override;
 };

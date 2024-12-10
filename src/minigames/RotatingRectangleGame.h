@@ -10,6 +10,7 @@ private:
 
 public:
     RotatingRectangleGame(float x, float y, float width, float height, const std::string& title);
+    ~RotatingRectangleGame() = default;
 
     void Update() override;
     void Draw() override;
