@@ -3,7 +3,7 @@
 #define pointsNum 16
 
 ConnectWiresGame::ConnectWiresGame(float x, float y, float width, float height, const std::string& title)
-    : MiniGame(x, y, width, height, title), moveStartPoint(false), moveEndPoint(false), gameComplete(false),
+    : MiniGame(x, y, width, height, title), moveStartPoint(false), moveEndPoint(false),
     mousePosition(GetMousePosition()), points(), isPointMovable(), targetAreas(), isAtTargetArea(), inTargetAreaCounter() {
     startArea = {window.x + 30, window.y + 40, 35, window.height - 60};
     endArea = {window.x + window.width - 65, window.y + 40, 35, window.height - 60};
@@ -14,8 +14,9 @@ ConnectWiresGame::ConnectWiresGame(float x, float y, float width, float height, 
 
 void ConnectWiresGame::Update() {
     MiniGame::Update(); // Handle dragging
-    UpdatePoints();
-
+    if (manager->onTop == GetThis()) {
+        UpdatePoints();
+    } 
 }
 
 

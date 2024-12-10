@@ -66,6 +66,10 @@ int main(void) {
     model_data = LoadModel("../assets/models/data.obj");
     model_door = LoadModel("../assets/models/door.obj");
 
+    auto rotatingGame = std::make_shared<RotatingRectangleGame>(screen.x + (screenWidth/2) - 200, screen.y + (screenHeight/2) - 150, 400, 300, "Rotating Rectangle");
+    gameManager.AddGame(rotatingGame);
+    auto connectingGame2 = std::make_shared<ConnectWiresGame>(200, 150, 400, 300, "Connect Wires in standard B");
+    gameManager.AddGame(connectingGame2);
 
     while (!exitGame && !WindowShouldClose()) {
         Init3DTitleTexture();
@@ -85,6 +89,8 @@ int main(void) {
                 SettingsUpdate(general_volume, effects_volume, mute_audio);
             } break;
             case GAMEPLAY: {
+                if (!connectingGame) {
+                }
                 UpdateGameplay(currentScreen, textBox, command, letterCount, mouseOnText, framesCounter, backTimer, history, upTimes);
             } break;
             case ENDING: {
