@@ -15,6 +15,10 @@ set(SOURCES
     src/settings/settings_vars.cpp
     src/settings/settings_draw.cpp 
     src/settings/settings_update.cpp
+    src/settings/sc_audio.cpp
+    src/settings/sc_graphics.cpp
+    src/settings/sc_display.cpp
+    src/settings/sc_custom.cpp
     #
     src/title_draw.cpp
     src/title_update.cpp

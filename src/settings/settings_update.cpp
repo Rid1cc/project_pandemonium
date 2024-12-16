@@ -5,23 +5,23 @@
 
 void SettingsUpdate(float& general_volume, float& effects_volume, bool& mute_audio) {
     
+    /*
     if (IsKeyPressed(KEY_V))
     {
         if (IsWindowState(FLAG_VSYNC_HINT)) ClearWindowState(FLAG_VSYNC_HINT);
         else SetWindowState(FLAG_VSYNC_HINT);
     }
-
     if (IsKeyPressed(KEY_F))
     {
         if (!IsWindowMaximized()) SetWindowState(FLAG_WINDOW_MAXIMIZED);
         else if (IsWindowMaximized()) RestoreWindow();
     }
-    /*
     if (IsKeyPressed(KEY_M)) {
         if (!mute_audio) {PauseMusicStream(main_theme); general_volume = 0.0f; mute_audio = true;}
         else if (mute_audio) {ResumeMusicStream(main_theme); effects_volume = 1.0f; mute_audio = false;}
     }
     */
+
     if (IsKeyPressed(KEY_ESCAPE)) currentScreen = TITLE;
 
         //frames counter
@@ -32,43 +32,59 @@ void SettingsUpdate(float& general_volume, float& effects_volume, bool& mute_aud
 
     //mouse pointer collision
     mousePos = GetMousePosition();
-
-    //check if mouse over button
+ 
+    //Highlight Handler
+    switch (currentSettings) {
+            case GRAPHICS: {
+                graph_highl = true;
+            } break;
+            case AUDIO: {
+                audio_highl = true;
+            } break;
+            case DISPLAY: {
+                display_highl = true;
+            } break;
+            case CUSTOM: {
+                custom_highl = true;
+            } break;
+            default: break;
+        }
     
-    //play
+    //Button Graphic
     if(CheckCollisionPointRec(mousePos, button_graphic)==true){
-        printf("graj\n");
         graph_highl = true;
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-            currentScreen = GAMEPLAY;
-            graph_highl = false;
+            currentSettings = GRAPHICS;
+            graph_highl = true;
             }
-    } else graph_highl = false;
+    } else if (currentSettings != GRAPHICS )graph_highl = false;
     
-    //settings
+    //Button Audio
     if(CheckCollisionPointRec(mousePos, button_audio)==true){
-        printf("opcje\n");
         audio_highl = true;
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-            currentScreen = SETTINGS;
-            audio_highl = false;
+            currentSettings = AUDIO;
+            audio_highl = true;
             }
-    } else audio_highl = false;
+    } else if (currentSettings != AUDIO ) audio_highl = false;
 
-    //lore
+    //Button Display
     if(CheckCollisionPointRec(mousePos, button_display)==true){
-        printf("lore\n");
         display_highl = true;
-    } else display_highl = false;
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+        currentSettings = DISPLAY;
+        display_highl = true;
+        }
+    } else if (currentSettings != DISPLAY ) display_highl = false;
 
-    //quit
+    //Button Custom
     if(CheckCollisionPointRec(mousePos, button_custom)==true){
-        printf("quit\n");
         custom_highl = true;
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-            exitGame = true;
-            }
-    } else custom_highl = false;
+        currentSettings = CUSTOM;
+        custom_highl = true;
+        }
+    } else if (currentSettings != CUSTOM ) custom_highl = false;
 
     //return
     if(CheckCollisionPointRec(mousePos, button_return)==true){

@@ -110,6 +110,12 @@ Rectangle ShakeRectangleOnClick(Rectangle rec, float intensity){
     }
 }
 
+//Custom round (number, decimal pos)
+float Enround(float num, int pos) {
+    float mpower = std::pow(10.0, pos); // 10^miejsca
+    return std::round(num * mpower) / mpower;
+}
+
 //Clamping (purpose sliders, can be used wherever)
 float Clamp(float value, float min, float max) {
     if (value < min) return min;

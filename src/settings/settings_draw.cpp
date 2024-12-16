@@ -3,6 +3,7 @@
 #include "../headers/settings_update.h"
 #include <raylib.h>
 #include "../headers/settings_vars.h"
+#include "sc_audio.h"
 
 
 void DrawSettings(float& general_volume, float& effects_volume) {
@@ -115,8 +116,7 @@ void DrawSettings(float& general_volume, float& effects_volume) {
                 DrawText("WAIT for 2 SECONDS...", 290, 220, 20, GRAY);
             } break;
             case AUDIO: {
-                DrawText("UnderSmoked Studios", 20, 20, 40, LIGHTGRAY);
-                DrawText("WAIT for 2 SECONDS...", 290, 220, 20, GRAY);
+                HandleSetAudio();
             } break;
             case DISPLAY: {
                 DrawText("UnderSmoked Studios", 20, 20, 40, LIGHTGRAY);

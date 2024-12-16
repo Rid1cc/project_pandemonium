@@ -68,4 +68,5 @@ Rectangle ShakeRectangle(Rectangle rec, float intensity);
 Rectangle ShakeRectangleOnClick(Rectangle rec, float intensity);
 void ProjectModel(const char* objFilePath, Color modelColor, Rectangle destRect);
 float Clamp(float value, float min, float max);
+float Enround(float num, int pos);
 

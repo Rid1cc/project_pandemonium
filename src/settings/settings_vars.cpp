@@ -1,8 +1,10 @@
-#include "../headers/globals.h"
 #include <string>
 #include <raylib.h>
 #include "../headers/MiniGameManager.h"
 #include "../headers/globals.h"
+#include <iostream>
+#include <sstream>
+#include <string>
 
 bool graph_highl;
 bool audio_highl;
@@ -22,13 +24,9 @@ Rectangle button_restore = {980, float(screenHeight)-290, 200, 50};
 Rectangle settings_screen = {340, 60, 600, 580};
 Rectangle settings_desc = {100, 60, 200, 260};
 
-//Slider parameters
-Rectangle sliderRect = { 300, 200, 200, 20 }; // Pos and sizes
-float minValue = 0.0f;
-float maxValue = 100.0f;
-float currentValue = 50.0f; // Start value
-bool isValueFinalized = false;
-
+float master_volume = 0.5;
+float music_volume = 1.0;
+float sfx_volume = 1.0;
 
 //Slider drawing
 float DrawSlider(Rectangle sliderRect, float minValue, float maxValue, float value) {
@@ -36,12 +34,12 @@ float DrawSlider(Rectangle sliderRect, float minValue, float maxValue, float val
     float knobX = sliderRect.x + (value - minValue) / (maxValue - minValue) * sliderRect.width;
     Rectangle knobRect = { knobX - 10, sliderRect.y - 5, 20, sliderRect.height + 10 };
 
-    // Rysowanie slidera
+    // Slider draw
     DrawRectangleRec(sliderRect, BLACK); // Background
     DrawRectangle(sliderRect.x, sliderRect.y, knobX - sliderRect.x, sliderRect.height, ORANGE); // Infill
     DrawRectangleRec(knobRect, ORANGE); // Knob
 
-    // Obsługa myszy
+    // Mouse handler
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
         Vector2 mousePos = GetMousePosition();
         if (CheckCollisionPointRec(mousePos, sliderRect) || CheckCollisionPointRec(mousePos, knobRect)) {
@@ -50,5 +48,12 @@ float DrawSlider(Rectangle sliderRect, float minValue, float maxValue, float val
             value = Clamp(newValue, minValue, maxValue);
         }
     }
-    return value;
+    return Enround(value, 2);
+}
+
+//custom float to string (removing additional 0s)
+std::string floatToString(float num) {
+    std::ostringstream oss;
+    oss << num; 
+    return oss.str(); 
 }
