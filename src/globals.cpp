@@ -64,6 +64,7 @@ bool mute_audio = false;
 Font alagard;
 Font pixeled;
 
+
 //-----------Extra functions-----------
 //Drawtext using alagard font (quicker method)
 void DrawTextB(const char *text, float posX, float posY, int fontSize, Color color)

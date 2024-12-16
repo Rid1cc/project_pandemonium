@@ -9,8 +9,7 @@
 #include "minigames/RotatingRectangleGame.h"
 #include "minigames/ConnectWiresGame.h"
 #include "minigames/FinderGame.h"
-
-
+#include "headers/shader_handler.h"
 
 int main(void) {
 
@@ -24,7 +23,10 @@ int main(void) {
     alagard = LoadFont("../assets/fonts/alagard.png"); // For ui related
     pixeled = LoadFontEx("../assets/fonts/Minecraft.ttf", 16, 0, 317); //For system related
 
-    Shader shader = LoadShader(0, "../assets/shaders/fx.fs");
+    //Shader init
+    
+    InitializeShader();
+
     //Initialize Scene, w. target
     RenderTexture2D target = LoadRenderTexture(screenWidth, screenHeight);
     space3d = LoadRenderTexture((int)desc_window.width, (int)desc_window.height);
