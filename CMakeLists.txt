@@ -11,8 +11,11 @@ set(SOURCES
     src/gameplay_draw.cpp
     src/gameplay_update.cpp
     src/CommandInterpreter.cpp
-    src/settings_draw.cpp 
-    src/settings_update.cpp 
+    # settings
+    src/settings/settings_vars.cpp
+    src/settings/settings_draw.cpp 
+    src/settings/settings_update.cpp
+    #
     src/title_draw.cpp
     src/title_update.cpp
     src/MiniGameManager.cpp

@@ -1,5 +1,5 @@
-#ifndef SETTINGS_UPDATE_H
-#define SETTINGS_UPDATE_H
+#ifndef SETTINGS_VARS_H
+#define SETTINGS_VARS_H
 
 #include "raylib.h"
 #include "globals.h"
@@ -21,6 +21,6 @@ extern Rectangle button_return;
 extern Rectangle button_restore;
 extern Rectangle button_apply;
 
-void SettingsUpdate(float& general_volume, float& effects_volume, bool& mute_audio);
+float DrawSlider(Rectangle sliderRect, float minValue, float maxValue, float value);
 
-#endif // SETTINGS_UPDATE_H
+#endif // SETTINGS_VARS_H

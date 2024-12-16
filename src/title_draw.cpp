@@ -22,7 +22,16 @@ void DrawTitle() {
     
     // drawing backgrounds
     DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), BLACK);
-    DrawRectangleLinesEx(screen, 3, ORANGE);
+    
+    //ScreenShake + Barriers
+    if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT) == true){
+        DrawRectangleLinesEx(ShakeRectangle(screen, 5), 6, ORANGE);
+    }
+    else{
+        DrawRectangleLinesEx(screen, 3, ORANGE);
+    }
+    
+    
 
     DrawTextC("ParadisiOS ver 7.3, up to date.", 5, 2, 12, WHITE);  
     //Title
