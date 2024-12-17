@@ -6,6 +6,18 @@
 #include "sc_audio.h"
 #include "sc_graphics.h"
 
+void settings_button(std::string label ,bool &highl, Rectangle button, float xpos, float ypos){
+    if(highl == true){
+        DrawRectangleRec(button, ORANGE);
+        DrawRectangleLinesEx(button, 3, BLACK);  
+        DrawTextB(label.c_str(), ShakeXY(xpos, 1.5), ShakeXY(float(screenHeight)+ypos, 1.5), 40, BLACK);
+    }
+    else{
+        DrawRectangleRec(button, BLACK);
+        DrawRectangleLinesEx(button, 3, ORANGE);
+        DrawTextB(label.c_str(), xpos, float(screenHeight)+ypos, 40, ORANGE);
+    }
+}
 
 void DrawSettings(float& general_volume, float& effects_volume) {
     ClearBackground(BLACK);
@@ -23,90 +35,16 @@ void DrawSettings(float& general_volume, float& effects_volume) {
     //Label
     DrawTextC("ParadisiOS ver 7.3, up to date.", 5, 2, 12, WHITE);  
 
-    //Customize Button
-    if(custom_highl == true){
-        DrawRectangleRec(button_custom, ORANGE);
-        DrawRectangleLinesEx(button_custom, 3, BLACK);
-        DrawTextB("CUSTOM", ShakeXY(110, 1.5), ShakeXY(float(screenHeight)-125, 1.5), 40, BLACK);
-    }
-    else{
-        DrawRectangleRec(button_custom, BLACK);
-        DrawRectangleLinesEx(button_custom, 3, ORANGE);
-        DrawTextB("CUSTOM", 110, float(screenHeight)-125, 40, ORANGE);
-    }
-    
+    //Settings Left buttons
+    settings_button("CUSTOM", custom_highl, button_custom, 110, -125);
+    settings_button("DISPLAY", display_highl, button_display, 110, -205);
+    settings_button("AUDIO", audio_highl, button_audio, 110, -285);
+    settings_button("GRAPHICS", graph_highl, button_graphic, 110, -365);
 
-    //Display Button
-    if(display_highl == true){
-        DrawRectangleRec(button_display, ORANGE);
-        DrawRectangleLinesEx(button_display, 3, BLACK);
-        DrawTextB("DISPLAY", ShakeXY(110, 1.5), ShakeXY(float(screenHeight)-205,1.5), 40, BLACK);
-    }
-    else{
-        DrawRectangleRec(button_display, BLACK);
-        DrawRectangleLinesEx(button_display, 3, ORANGE);
-        DrawTextB("DISPLAY", 110, float(screenHeight)-205, 40, ORANGE);
-    }
-
-    //Audio Button
-    if(audio_highl == true){
-        DrawRectangleRec(button_audio, ORANGE);
-        DrawRectangleLinesEx(button_audio, 3, BLACK);
-        DrawTextB("AUDIO", ShakeXY(110, 1.5), ShakeXY(float(screenHeight)-285, 1.5), 40, BLACK);
-    }
-    else{
-        DrawRectangleRec(button_audio, BLACK);
-        DrawRectangleLinesEx(button_audio, 3, ORANGE);
-        DrawTextB("AUDIO", 110, float(screenHeight)-285, 40, ORANGE);
-    }
-
-    //Graph Button
-    if(graph_highl== true){
-        DrawRectangleRec(button_graphic, ORANGE);
-        DrawRectangleLinesEx(button_graphic, 3, BLACK);
-        DrawTextB("GRAPHICS", ShakeXY(110, 1.5), ShakeXY(float(screenHeight)-365, 1.5), 40, BLACK);
-    }
-    else{
-        DrawRectangleRec(button_graphic, BLACK);
-        DrawRectangleLinesEx(button_graphic, 3, ORANGE);
-        DrawTextB("GRAPHICS", 110, float(screenHeight)-365, 40, ORANGE);
-    }
-
-    //Return button
-    if(return_highl== true){
-        DrawRectangleRec(button_return, ORANGE);
-        DrawRectangleLinesEx(button_return, 3, BLACK);
-        DrawTextB("RETURN", ShakeXY(990, 1.5), ShakeXY(float(screenHeight)-125, 1.5), 40, BLACK);
-    }
-    else{
-        DrawRectangleRec(button_return, BLACK);
-        DrawRectangleLinesEx(button_return, 3, ORANGE);
-        DrawTextB("RETURN", 990, float(screenHeight)-125, 40, ORANGE);
-    }
-
-    //Apply button
-    if(apply_highl== true){
-        DrawRectangleRec(button_apply, ORANGE);
-        DrawRectangleLinesEx(button_apply, 3, BLACK);
-        DrawTextB("APPLY", ShakeXY(990, 1.5), ShakeXY(float(screenHeight)-205, 1.5), 40, BLACK);
-    }
-    else{
-        DrawRectangleRec(button_apply, BLACK);
-        DrawRectangleLinesEx(button_apply, 3, ORANGE);
-        DrawTextB("APPLY", 990, float(screenHeight)-205, 40, ORANGE);
-    }
-
-    //Restore button
-    if(restore_highl== true){
-        DrawRectangleRec(button_restore, ORANGE);
-        DrawRectangleLinesEx(button_restore, 3, BLACK);
-        DrawTextB("DEFAULT", ShakeXY(990, 1.5), ShakeXY(float(screenHeight)-285, 1.5), 40, BLACK);
-    }
-    else{
-        DrawRectangleRec(button_restore, BLACK);
-        DrawRectangleLinesEx(button_restore, 3, ORANGE);
-        DrawTextB("DEFAULT", 990, float(screenHeight)-285, 40, ORANGE);
-    }
+    //Settings Right buttons
+    settings_button("RETURN", return_highl, button_return, 990, -125);
+    settings_button("APPLY", apply_highl, button_apply, 990, -205);
+    settings_button("DEFAULT", restore_highl, button_restore, 990, -285);
 
     //Settings window
     DrawRectangleLinesEx(settings_screen, 3, ORANGE);

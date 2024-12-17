@@ -4,24 +4,17 @@
 #include "../headers/settings_vars.h"
 #include "../headers/shader_handler.h"
 
-void SettingsUpdate(float& general_volume, float& effects_volume, bool& mute_audio) {
+void sc_switcher(Vector2 &mousePos, Rectangle button, bool &highlight, enum SettingsScreen parseToScreen){
+    if(CheckCollisionPointRec(mousePos, button)==true){
+        highlight = true;
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+            currentSettings = parseToScreen;
+            highlight = true;
+            }
+    } else if (currentSettings != parseToScreen )highlight = false;
+}
 
-    /*
-    if (IsKeyPressed(KEY_V))
-    {
-        if (IsWindowState(FLAG_VSYNC_HINT)) ClearWindowState(FLAG_VSYNC_HINT);
-        else SetWindowState(FLAG_VSYNC_HINT);
-    }
-    if (IsKeyPressed(KEY_F))
-    {
-        if (!IsWindowMaximized()) SetWindowState(FLAG_WINDOW_MAXIMIZED);
-        else if (IsWindowMaximized()) RestoreWindow();
-    }
-    if (IsKeyPressed(KEY_M)) {
-        if (!mute_audio) {PauseMusicStream(main_theme); general_volume = 0.0f; mute_audio = true;}
-        else if (mute_audio) {ResumeMusicStream(main_theme); effects_volume = 1.0f; mute_audio = false;}
-    }
-    */
+void SettingsUpdate(float& general_volume, float& effects_volume, bool& mute_audio) {
 
     if (IsKeyPressed(KEY_ESCAPE)) currentScreen = TITLE;
 
@@ -34,7 +27,7 @@ void SettingsUpdate(float& general_volume, float& effects_volume, bool& mute_aud
     //mouse pointer collision
     mousePos = GetMousePosition();
  
-    //Highlight Handler
+    //Highlight Inhibitor
     switch (currentSettings) {
             case GRAPHICS: {
                 graph_highl = true;
@@ -51,41 +44,11 @@ void SettingsUpdate(float& general_volume, float& effects_volume, bool& mute_aud
             default: break;
         }
     
-    //Button Graphic
-    if(CheckCollisionPointRec(mousePos, button_graphic)==true){
-        graph_highl = true;
-        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-            currentSettings = GRAPHICS;
-            graph_highl = true;
-            }
-    } else if (currentSettings != GRAPHICS )graph_highl = false;
-    
-    //Button Audio
-    if(CheckCollisionPointRec(mousePos, button_audio)==true){
-        audio_highl = true;
-        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-            currentSettings = AUDIO;
-            audio_highl = true;
-            }
-    } else if (currentSettings != AUDIO ) audio_highl = false;
-
-    //Button Display
-    if(CheckCollisionPointRec(mousePos, button_display)==true){
-        display_highl = true;
-        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-        currentSettings = DISPLAY;
-        display_highl = true;
-        }
-    } else if (currentSettings != DISPLAY ) display_highl = false;
-
-    //Button Custom
-    if(CheckCollisionPointRec(mousePos, button_custom)==true){
-        custom_highl = true;
-        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-        currentSettings = CUSTOM;
-        custom_highl = true;
-        }
-    } else if (currentSettings != CUSTOM ) custom_highl = false;
+    //Buttons
+    sc_switcher(mousePos, button_graphic, graph_highl, GRAPHICS);
+    sc_switcher(mousePos, button_audio, audio_highl, AUDIO);
+    sc_switcher(mousePos, button_display, display_highl, DISPLAY);
+    sc_switcher(mousePos, button_custom, custom_highl, CUSTOM);
 
     //return
     if(CheckCollisionPointRec(mousePos, button_return)==true){
