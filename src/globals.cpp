@@ -19,7 +19,7 @@ Model model_data;
 Camera camera;
 
 // Gameplay
-GameScreen currentScreen = SETTINGS;
+GameScreen currentScreen = TITLE;
 Rectangle textBox = { 640.0f, 180.0f, 225, 50 };
 char command[100] = "\0";
 int letterCount = 0;
@@ -50,7 +50,7 @@ Rectangle screen = {50, 25, screenWidth-100, screenHeight-50};
 
 
 //Settings
-SettingsScreen currentSettings = AUDIO;
+SettingsScreen currentSettings = GRAPHICS;
 float general_volume = 1.0f;
 float effects_volume = 1.0f;
 
