@@ -29,7 +29,7 @@ float music_volume = 1.0;
 float sfx_volume = 1.0;
 
 //Slider drawing
-float DrawSlider(Rectangle sliderRect, float minValue, float maxValue, float value) {
+float DrawSlider(Rectangle sliderRect, float minValue, float maxValue, float value, int position) {
     // Position handler
     float knobX = sliderRect.x + (value - minValue) / (maxValue - minValue) * sliderRect.width;
     Rectangle knobRect = { knobX - 10, sliderRect.y - 5, 20, sliderRect.height + 10 };
@@ -48,7 +48,7 @@ float DrawSlider(Rectangle sliderRect, float minValue, float maxValue, float val
             value = Clamp(newValue, minValue, maxValue);
         }
     }
-    return Enround(value, 2);
+    return Enround(value, position);
 }
 
 //custom float to string (removing additional 0s)

@@ -23,5 +23,6 @@ extern Vector2 sh_resolution;
 extern Shader shader;
 
 void InitializeShader();
+void ReloadShader();
 
 #endif

@@ -1,7 +1,8 @@
-#ifndef SC_CUSTOM_H
-#define SC_CUSTOM_H
+#ifndef SC_GRAPHICS_H
+#define SC_GRAPHICS_H
 
 #include "raylib.h"
 
+void HandleSetShader();
 
 #endif

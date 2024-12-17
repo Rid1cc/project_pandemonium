@@ -17,6 +17,15 @@ float brightness;
 Vector2 sh_resolution;
 Shader shader;
 
+
+void ReloadShader(){
+    SetShaderValue(shader, curvatureLoc, &curvature, SHADER_UNIFORM_FLOAT);
+    SetShaderValue(shader, bloomIntensityLoc, &bloomIntensity, SHADER_UNIFORM_FLOAT);
+    SetShaderValue(shader, glowIntensityLoc, &glowIntensity, SHADER_UNIFORM_FLOAT);
+    SetShaderValue(shader, scanlineIntensityLoc, &scanlineIntensity, SHADER_UNIFORM_FLOAT);
+    SetShaderValue(shader, brightnessLoc, &brightness, SHADER_UNIFORM_FLOAT);
+    SetShaderValue(shader, sh_resolutionLoc, &sh_resolution, SHADER_UNIFORM_VEC2);
+}
 void InitializeShader() {
     shader = LoadShader(0, "../assets/shaders/fx.fs");
 
@@ -28,19 +37,15 @@ void InitializeShader() {
     brightnessLoc = GetShaderLocation(shader, "brightness");
     sh_resolutionLoc = GetShaderLocation(shader, "resolution");
 
-    // Set params
+    // Set params DEFAULT
     curvature = 0.07f;
     bloomIntensity = 2.3f;
     glowIntensity = 1.5f;
     scanlineIntensity = 1.0f;
     brightness = 1.4f;
     sh_resolution = { 1920.0f, 1080.0f };
-
-    SetShaderValue(shader, curvatureLoc, &curvature, SHADER_UNIFORM_FLOAT);
-    SetShaderValue(shader, bloomIntensityLoc, &bloomIntensity, SHADER_UNIFORM_FLOAT);
-    SetShaderValue(shader, glowIntensityLoc, &glowIntensity, SHADER_UNIFORM_FLOAT);
-    SetShaderValue(shader, scanlineIntensityLoc, &scanlineIntensity, SHADER_UNIFORM_FLOAT);
-    SetShaderValue(shader, brightnessLoc, &brightness, SHADER_UNIFORM_FLOAT);
-    SetShaderValue(shader, sh_resolutionLoc, &sh_resolution, SHADER_UNIFORM_VEC2);
+    
+    ReloadShader();
 
 }
+

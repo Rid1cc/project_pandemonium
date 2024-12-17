@@ -4,6 +4,7 @@
 #include <raylib.h>
 #include "../headers/settings_vars.h"
 #include "sc_audio.h"
+#include "sc_graphics.h"
 
 
 void DrawSettings(float& general_volume, float& effects_volume) {
@@ -112,8 +113,7 @@ void DrawSettings(float& general_volume, float& effects_volume) {
 
     switch (currentSettings) {
             case GRAPHICS: {
-                DrawText("UnderSmoked Studios", 20, 20, 40, LIGHTGRAY);
-                DrawText("WAIT for 2 SECONDS...", 290, 220, 20, GRAY);
+                HandleSetShader();
             } break;
             case AUDIO: {
                 HandleSetAudio();

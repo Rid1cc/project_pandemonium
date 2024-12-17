@@ -25,7 +25,7 @@ extern float master_volume;
 extern float music_volume;
 extern float sfx_volume;
 
-float DrawSlider(Rectangle sliderRect, float minValue, float maxValue, float value);
+float DrawSlider(Rectangle sliderRect, float minValue, float maxValue, float value, int position);
 std::string floatToString(float num);
 
 #endif // SETTINGS_VARS_H

@@ -2,9 +2,10 @@
 #include "../headers/globals.h"
 #include <raylib.h>
 #include "../headers/settings_vars.h"
+#include "../headers/shader_handler.h"
 
 void SettingsUpdate(float& general_volume, float& effects_volume, bool& mute_audio) {
-    
+
     /*
     if (IsKeyPressed(KEY_V))
     {
@@ -101,7 +102,7 @@ void SettingsUpdate(float& general_volume, float& effects_volume, bool& mute_aud
         printf("apply\n");
         apply_highl = true;
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-            apply_highl = false;
+            ReloadShader();
             }
     } else apply_highl = false;
 
