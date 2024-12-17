@@ -9,8 +9,7 @@
 #include "minigames/RotatingRectangleGame.h"
 #include "minigames/ConnectWiresGame.h"
 #include "minigames/FinderGame.h"
-
-
+#include "headers/shader_handler.h"
 
 int main(void) {
 
@@ -24,7 +23,10 @@ int main(void) {
     alagard = LoadFont("../assets/fonts/alagard.png"); // For ui related
     pixeled = LoadFontEx("../assets/fonts/Minecraft.ttf", 16, 0, 317); //For system related
 
-    Shader shader = LoadShader(0, "../assets/shaders/fx.fs");
+    //Shader init
+    
+    InitializeShader();
+
     //Initialize Scene, w. target
     RenderTexture2D target = LoadRenderTexture(screenWidth, screenHeight);
     space3d = LoadRenderTexture((int)desc_window.width, (int)desc_window.height);
@@ -138,14 +140,14 @@ int main(void) {
             DrawText("-", randomW, randomH, 10, ORANGE);
             }
         }
-
+        Rectangle TextureKernel = { 0, 0, (float)target.texture.width, -(float)target.texture.height };
         EndTextureMode();
         BeginDrawing();
         ClearBackground(BLACK);
         //commented because of working with graphics, shaders just get in the way with that. 
         //to make it work uncomment beginshadermode and endshadermode.
         BeginShaderMode(shader);  // <----- SHADER COMMENT
-        DrawTextureRec(target.texture, (Rectangle){ 0, 0, (float)target.texture.width, -(float)target.texture.height }, (Vector2){ 0, 0 }, WHITE);         
+        DrawTextureRec(target.texture, ShakeRectangleOnClick(TextureKernel, 5), (Vector2){ 0, 0 }, WHITE);         
         EndShaderMode(); // <----- SHADER COMMENT
         EndDrawing();
     }

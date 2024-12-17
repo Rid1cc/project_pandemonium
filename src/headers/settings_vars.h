@@ -1,5 +1,5 @@
-#ifndef SETTINGS_UPDATE_H
-#define SETTINGS_UPDATE_H
+#ifndef SETTINGS_VARS_H
+#define SETTINGS_VARS_H
 
 #include "raylib.h"
 #include "globals.h"
@@ -21,6 +21,13 @@ extern Rectangle button_return;
 extern Rectangle button_restore;
 extern Rectangle button_apply;
 
-void SettingsUpdate(float& general_volume, float& effects_volume, bool& mute_audio);
+extern float master_volume;
+extern float music_volume;
+extern float sfx_volume;
 
-#endif // SETTINGS_UPDATE_H
+extern SettingState shaderQuality;
+
+float DrawSlider(Rectangle sliderRect, float minValue, float maxValue, float value, int position);
+std::string floatToString(float num);
+
+#endif // SETTINGS_VARS_H

@@ -10,12 +10,12 @@ in vec2 fragTexCoord;
 out vec4 finalColor;       
 
 // Parameters - make a pipeline into settings
-const float curvature = 0.07;          // curvature strength
-const float bloomIntensity = 2.3;     // bloom strength
-const float glowIntensity = 1.5;      // glow intensity
-const float scanlineIntensity = 1;    // scanline intensity
-const float brightness = 1.4;         // brightness
-const vec2 resolution = vec2(1920.0, 1080.0); // texture resolution
+uniform float curvature;          // curvature strength
+uniform float bloomIntensity;     // bloom strength
+uniform float glowIntensity;      // glow intensity
+uniform float scanlineIntensity;    // scanline intensity
+uniform float brightness;         // brightness
+uniform vec2 resolution; // texture resolution
 
 // mapping curvature
 vec2 applyCurvature(vec2 uv) {

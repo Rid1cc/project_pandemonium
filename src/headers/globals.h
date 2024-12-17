@@ -7,9 +7,12 @@
 #include <chrono>
 
 typedef enum GameScreen { LOGO = 0, TITLE, SETTINGS, GAMEPLAY, ENDING } GameScreen;
+typedef enum SettingsScreen { GRAPHICS = 0, AUDIO, DISPLAY, CUSTOM } SettingsScreen;
+typedef enum SettingState { LOW = 0, MID, HI} SettingState;
 
 // Deklaracja zmiennych globalnych
 extern GameScreen currentScreen;
+extern SettingsScreen currentSettings;
 extern MiniGameManager gameManager;
 extern Rectangle textBox;
 extern Rectangle screen;
@@ -28,10 +31,6 @@ extern bool exitGame;
 extern Vector2 mousePos;
 extern Font alagard;
 extern Font pixeled;
-void DrawTextB(const char *text, float posX, float posY, int fontSize, Color color);
-void DrawTextC(const char *text, float posX, float posY, int fontSize, Color color);
-float ShakeXY(float pos, float intensity);
-void ProjectModel(const char* objFilePath, Color modelColor, Rectangle destRect);
 extern std::mt19937 rng;
 
 
@@ -55,8 +54,20 @@ extern RenderTexture2D space3d;
 extern float general_volume;
 extern float effects_volume;
 
+
 // Music
 extern Music main_theme;
 extern bool mute_audio;
 extern TraceLogCallback failed_to_load_music;
 #endif // GLOBALS_H
+
+// Funcs
+void DrawTextB(const char *text, float posX, float posY, int fontSize, Color color);
+void DrawTextC(const char *text, float posX, float posY, int fontSize, Color color);
+float ShakeXY(float pos, float intensity);
+Rectangle ShakeRectangle(Rectangle rec, float intensity);
+Rectangle ShakeRectangleOnClick(Rectangle rec, float intensity);
+void ProjectModel(const char* objFilePath, Color modelColor, Rectangle destRect);
+float Clamp(float value, float min, float max);
+float Enround(float num, int pos);
+
