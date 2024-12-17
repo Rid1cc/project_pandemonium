@@ -28,6 +28,8 @@ float master_volume = 0.5;
 float music_volume = 1.0;
 float sfx_volume = 1.0;
 
+SettingState shaderQuality = LOW;
+
 //Slider drawing
 float DrawSlider(Rectangle sliderRect, float minValue, float maxValue, float value, int position) {
     // Position handler

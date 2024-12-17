@@ -25,6 +25,8 @@ extern float master_volume;
 extern float music_volume;
 extern float sfx_volume;
 
+extern SettingState shaderQuality;
+
 float DrawSlider(Rectangle sliderRect, float minValue, float maxValue, float value, int position);
 std::string floatToString(float num);
 

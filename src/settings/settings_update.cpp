@@ -16,6 +16,7 @@ void sc_switcher(Vector2 &mousePos, Rectangle button, bool &highlight, enum Sett
 
 void SettingsUpdate(float& general_volume, float& effects_volume, bool& mute_audio) {
 
+    //Return on escape
     if (IsKeyPressed(KEY_ESCAPE)) currentScreen = TITLE;
 
         //frames counter
@@ -65,6 +66,18 @@ void SettingsUpdate(float& general_volume, float& effects_volume, bool& mute_aud
         printf("apply\n");
         apply_highl = true;
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+            switch (shaderQuality) {
+                case LOW: {
+                    sh_resolution = {1920,1080};
+                } break;
+                case MID: {
+                    sh_resolution = {1600,900};
+                } break;
+                case HI: {
+                    sh_resolution = {1280,720};
+                } break;
+                default: break;
+            }
             ReloadShader();
             }
     } else apply_highl = false;

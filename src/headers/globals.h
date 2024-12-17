@@ -8,6 +8,7 @@
 
 typedef enum GameScreen { LOGO = 0, TITLE, SETTINGS, GAMEPLAY, ENDING } GameScreen;
 typedef enum SettingsScreen { GRAPHICS = 0, AUDIO, DISPLAY, CUSTOM } SettingsScreen;
+typedef enum SettingState { LOW = 0, MID, HI} SettingState;
 
 // Deklaracja zmiennych globalnych
 extern GameScreen currentScreen;
