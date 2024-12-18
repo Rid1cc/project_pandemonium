@@ -14,9 +14,9 @@ ConnectWiresGame::ConnectWiresGame(float x, float y, float width, float height, 
 
 void ConnectWiresGame::Update() {
     MiniGame::Update(); // Handle dragging
-    if (manager->onTop == GetThis()) {
+    // if (manager->onTop == GetThis()) {
+    // } 
         UpdatePoints();
-    } 
 }
 
 
