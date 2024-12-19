@@ -19,6 +19,7 @@ set(SOURCES
     src/minigames/RotatingRectangleGame.cpp
     src/minigames/ConnectWiresGame.cpp
     src/minigames/FinderGame.cpp
+    src/minigames/TypeGame.cpp
 )
 
 add_executable(pandemonium ${SOURCES})
