@@ -17,7 +17,7 @@ public:
     std::string title;     // Title of the window
     bool isDragable;       // Is the window being dragged?
     bool isOpen;           // Is the game window open?
-    bool isActive;         // Is Game Window Active?
+    // bool isFirst;         // Is Game Window Active?
     bool gameComplete;     // Is Game Complete?
 
     // Virtual methods for game-specific behavior
@@ -25,7 +25,6 @@ public:
     virtual void Draw();   // To be overridden for specific logic
 
     // Window management
-    void DrawWindow();
     void Close();
 };
 
