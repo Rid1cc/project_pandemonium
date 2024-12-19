@@ -45,7 +45,7 @@ int main(void) {
     //gameManager.AddGame(rotatingGame);
 
     auto finder = std::make_shared<FinderGame>(200, 150, 400, 300, "FinderGame");
-    // gameManager.AddGame(finder);
+    gameManager.AddGame(finder);
 
     auto connectingGame = std::make_shared<ConnectWiresGame>(700, 250, 400, 300, "Connect Wires in standard B");
     // gameManager.AddGame(connectingGame);

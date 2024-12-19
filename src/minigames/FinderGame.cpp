@@ -46,8 +46,7 @@ FinderGame::FinderGame(float x, float y, float width, float height, const std::s
         "password=\"1234\";"
     };
 
-    // isGameStarted = false;
-    timer = 31; // time of the game
+    timer = 31; // time of the game 
     lastUpdateTime = 0.0f; // a variable that helps with the timer
     
     collected = 0; // score (collected pop ups texts)
