@@ -21,18 +21,13 @@ int main(void) {
 
     //FONT INIT, LOADING INTO VRAM
     alagard = LoadFont("../assets/fonts/alagard.png"); // For ui related
-    pixeled = LoadFontEx("../assets/fonts/Minecraft.ttf", 16, 0, 317); //For system related
-
-    //Shader init
-    
+    pixeled = LoadFontEx("../assets/fonts/Minecraft.ttf", 16, 0, 317); //For system related    
     InitializeShader();
 
     //Initialize Scene, w. target
     RenderTexture2D target = LoadRenderTexture(screenWidth, screenHeight);
     space3d = LoadRenderTexture((int)desc_window.width, (int)desc_window.height);
 
-    //Load Shader
-    //Shader shader = LoadShader(0, "../assets/shaders/fx.fs");
     /*
     // music initialization functions
     InitAudioDevice();
@@ -45,16 +40,10 @@ int main(void) {
     */
 
     //minigames init
-    //auto rotatingGame = std::make_shared<RotatingRectangleGame>(200, 150, 400, 300, "Rotating Rectangle");
-    //gameManager.AddGame(rotatingGame);
     auto finder = std::make_shared<FinderGame>(200, 150, 400, 300, "FinderGame");
     gameManager.AddGame(finder);
     auto connectingGame = std::make_shared<ConnectWiresGame>(700, 250, 400, 300, "Connect Wires in standard B");
     gameManager.AddGame(connectingGame);
-    // auto rotatingGame = std::make_shared<RotatingRectangleGame>(700, 250, 400, 300, "Rotating Rectangle");
-    // gameManager.AddGame(rotatingGame);
-
-    
 
     //define camera state (for 3d models)
     camera.position = (Vector3){ 10.0f, 5.0f, 10.0f }; // Camera position
