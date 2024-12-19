@@ -47,8 +47,10 @@ int main(void) {
     //minigames init
     //auto rotatingGame = std::make_shared<RotatingRectangleGame>(200, 150, 400, 300, "Rotating Rectangle");
     //gameManager.AddGame(rotatingGame);
-    auto finder = std::make_shared<FinderGame>(200, 150, 400, 300, "FinderGame");
-    gameManager.AddGame(finder);
+    //auto finder = std::make_shared<FinderGame>(200, 150, 400, 300, "FinderGame");
+    //gameManager.AddGame(finder);
+    gameManager.SetTotalTime(5.0f);
+
     auto connectingGame = std::make_shared<ConnectWiresGame>(700, 250, 400, 300, "window 1");
     gameManager.AddGame(connectingGame);
     // auto rotatingGame = std::make_shared<RotatingRectangleGame>(700, 250, 400, 300, "Rotating Rectangle");

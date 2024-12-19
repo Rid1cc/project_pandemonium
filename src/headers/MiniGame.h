@@ -8,7 +8,7 @@
 #include "raylib.h"
 
 // Unified MiniGame class
-class MiniGame : public std::enable_shared_from_this<MiniGame> {
+class MiniGame {
 public:
     MiniGame(float x, float y, float width, float height, const std::string& title);
     ~MiniGame() = default;
