@@ -76,6 +76,10 @@ int main(void) {
     while (!exitGame && !WindowShouldClose()) {
         Init3DTitleTexture();
         BeginTextureMode(target);
+
+        //Update mouse
+        mousePos = MapMouseToFlat(GetMousePosition(), {1280.0, 720.0});
+
         // UpdateMusicStream(main_theme);
         if (!IsWindowState(FLAG_WINDOW_RESIZABLE)) SetWindowState(FLAG_WINDOW_RESIZABLE);
 

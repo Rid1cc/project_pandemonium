@@ -15,9 +15,6 @@ void TitleUpdate() {
         framesCounter = 0;
     }
 
-    //mouse pointer collision
-    mousePos = GetMousePosition();
-
     //check if mouse over button
     
     //play

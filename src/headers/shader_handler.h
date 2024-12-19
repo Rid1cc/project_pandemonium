@@ -22,6 +22,7 @@ extern Vector2 sh_resolution;
 //Shader
 extern Shader shader;
 
+Vector2 MapMouseToFlat(Vector2 mousePos, Vector2 resolution);
 void InitializeShader();
 void ReloadShader();
 
