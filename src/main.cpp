@@ -137,8 +137,6 @@ int main(void) {
         EndTextureMode();
         BeginDrawing();
         ClearBackground(BLACK);
-        //commented because of working with graphics, shaders just get in the way with that. 
-        //to make it work uncomment beginshadermode and endshadermode.
         BeginShaderMode(shader);  // <----- SHADER COMMENT
         DrawTextureRec(target.texture, ShakeRectangleOnClick(TextureKernel, 5), (Vector2){ 0, 0 }, WHITE);         
         EndShaderMode(); // <----- SHADER COMMENT

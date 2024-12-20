@@ -1,4 +1,5 @@
 #include "./headers/MiniGameManager.h"
+#include "./headers/globals.h"
 
 // MiniGame Constructor
 MiniGame::MiniGame(float x, float y, float width, float height, const std::string& title)
@@ -7,7 +8,7 @@ MiniGame::MiniGame(float x, float y, float width, float height, const std::strin
 
 // Base Update method (can be overridden)
 void MiniGame::Update() {
-        Vector2 mousePosition = GetMousePosition();
+        Vector2 mousePosition = mousePos;
         HandleDrag(mousePosition); // Handle drag functionality
 }
 
@@ -41,7 +42,7 @@ void MiniGame::DrawWindow() {
     DrawRectangleRec(window, BLACK);                    // Background
     DrawRectangleLinesEx(window, 2, ORANGE);            // Border
     DrawText(title.c_str(), window.x + 10, window.y + 10, 20, WHITE); // Title
-    if (CheckCollisionPointRec(GetMousePosition(), {window.x + window.width - 20, window.y, 20, 20}) &&
+    if (CheckCollisionPointRec(mousePos, {window.x + window.width - 20, window.y, 20, 20}) &&
         IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
         Close(); // Close button clicked
     } else if (gameComplete) {
