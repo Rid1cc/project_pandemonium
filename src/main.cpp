@@ -42,7 +42,9 @@ int main(void) {
     //minigames init
     auto finder = std::make_shared<FinderGame>(200, 150, 400, 300, "FinderGame");
     gameManager.AddGame(finder);
-    auto connectingGame = std::make_shared<ConnectWiresGame>(700, 250, 400, 300, "Connect Wires in standard B");
+    gameManager.SetTotalTime(15.0f);
+
+    auto connectingGame = std::make_shared<ConnectWiresGame>(700, 250, 400, 300, "window 1");
     gameManager.AddGame(connectingGame);
 
     //define camera state (for 3d models)
@@ -57,9 +59,9 @@ int main(void) {
     model_data = LoadModel("../assets/models/data.obj");
     model_door = LoadModel("../assets/models/door.obj");
 
-    auto rotatingGame = std::make_shared<RotatingRectangleGame>(screen.x + (screenWidth/2) - 200, screen.y + (screenHeight/2) - 150, 400, 300, "Rotating Rectangle");
-    gameManager.AddGame(rotatingGame);
-    auto connectingGame2 = std::make_shared<ConnectWiresGame>(200, 150, 400, 300, "Connect Wires in standard B");
+    //auto rotatingGame = std::make_shared<RotatingRectangleGame>(screen.x + (screenWidth/2) - 200, screen.y + (screenHeight/2) - 150, 400, 300, "Rotating Rectangle");
+    //gameManager.AddGame(rotatingGame);
+    auto connectingGame2 = std::make_shared<ConnectWiresGame>(200, 150, 400, 300, "window 2");
     gameManager.AddGame(connectingGame2);
 
     while (!exitGame && !WindowShouldClose()) {
@@ -139,7 +141,7 @@ int main(void) {
         ClearBackground(BLACK);
         BeginShaderMode(shader);  // <----- SHADER COMMENT
         DrawTextureRec(target.texture, ShakeRectangleOnClick(TextureKernel, 5), (Vector2){ 0, 0 }, WHITE);         
-        EndShaderMode(); // <----- SHADER COMMENT
+        // EndShaderMode(); // <----- SHADER COMMENT
         EndDrawing();
     }
 

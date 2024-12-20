@@ -23,6 +23,7 @@ set(SOURCES
     #
     src/title_draw.cpp
     src/title_update.cpp
+    src/MiniGame.cpp
     src/MiniGameManager.cpp
     src/minigames/RotatingRectangleGame.cpp
     src/minigames/ConnectWiresGame.cpp
