@@ -12,8 +12,8 @@
 class MiniGameManager {
 private:
     std::vector<std::shared_ptr<MiniGame>> games; // List of mini-games
-    std::shared_ptr<MiniGame> currentlyDragged;
-    std::shared_ptr<MiniGame> activeGame;
+    std::shared_ptr<MiniGame> currentlyDragged;   // Currently dragged game window
+    std::shared_ptr<MiniGame> activeGame;         // Currently active game
 
     // Timer variables
     float totalTime;       // Total time allotted in seconds
@@ -27,35 +27,39 @@ private:
     bool win;                      // Flag to indicate if the level was completed successfully
 
     // Timer methods
-    void StartTimer(float duration);
-    void ResetTimer();
-    void UpdateTimer();
-    bool IsTimeUp() const;
+    void StartTimer(float duration); // Initializes and starts the global timer
+    void ResetTimer();               // Resets the global timer
+    void UpdateTimer();              // Updates the timer each frame
+    bool IsTimeUp() const;           // Checks if the timer has expired
 
     // Message display methods
-    void SetEndMessage(bool isWin);
+    void SetEndMessage(bool isWin);  // Sets the end message based on win/loss
 
-    // Existing methods
-    bool CanBeDragged(std::shared_ptr<MiniGame>& game);
-    void StartDragging(std::shared_ptr<MiniGame>& game);
-    void StopDragging(std::shared_ptr<MiniGame>& game);
-    void DragWindow(std::shared_ptr<MiniGame>& game, Vector2 mousePosition);
+    // Dragging and window management methods
+    bool CanBeDragged(std::shared_ptr<MiniGame>& game); // Checks if a game can be dragged
+    void StartDragging(std::shared_ptr<MiniGame>& game); // Begins dragging a game window
+    void StopDragging(std::shared_ptr<MiniGame>& game);  // Stops dragging a game window
+    void DragWindow(std::shared_ptr<MiniGame>& game, Vector2 mousePosition); // Handles window dragging logic
 
-    void SetWindowFirst(std::shared_ptr<MiniGame>& game);
-    bool CanBeInteracted(std::shared_ptr<MiniGame>& game, Vector2 mousePosition);
-    bool IsWindowFirst(std::shared_ptr<MiniGame>& game);
+    void SetWindowFirst(std::shared_ptr<MiniGame>& game); // Brings a window to the front
+    bool CanBeInteracted(std::shared_ptr<MiniGame>& game, Vector2 mousePosition); // Checks if a window can be interacted with
+    bool IsWindowFirst(std::shared_ptr<MiniGame>& game); // Determines if a window is the topmost
+    void UpdateDotTimer(std::shared_ptr<MiniGame>& game); // Updates the dot timer for visual indicators
 
-    void Close(std::shared_ptr<MiniGame>& game);
+    void Close(std::shared_ptr<MiniGame>& game); // Closes and removes a game from the manager
 
 public:
-    MiniGameManager();
+    MiniGameManager(); // Constructor
 
-    void AddGame(const std::shared_ptr<MiniGame>& game);
-    void Update();
-    void Draw();
+    // Game management methods
+    void AddGame(const std::shared_ptr<MiniGame>& game); // Adds a new mini-game to the manager
 
-    // Optional: Method to set the timer duration
-    void SetTotalTime(float duration);
+    // Core loop methods
+    void Update(); // Updates all managed games and timers
+    void Draw();   // Draws all managed games and UI elements
+
+    // Timer configuration
+    void SetTotalTime(float duration); // Sets the total duration for the timer
 };
 
 #endif // MINI_GAME_MANAGER_H

@@ -19,6 +19,7 @@ public:
     bool isOpen;           // Is the game window open?
     // bool isFirst;         // Is Game Window Active?
     bool gameComplete;     // Is Game Complete?
+    float dotTimer;        // Timer flag for flashing dot (better not use)
 
     // Virtual methods for game-specific behavior
     virtual void Update(); // To be overridden for specific logic
