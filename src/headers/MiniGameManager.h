@@ -50,6 +50,7 @@ private:
 
 public:
     MiniGameManager(); // Constructor
+    ~MiniGameManager() = default;
 
     // Game management methods
     void AddGame(const std::shared_ptr<MiniGame>& game); // Adds a new mini-game to the manager

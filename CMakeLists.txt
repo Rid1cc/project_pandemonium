@@ -12,6 +12,7 @@ set(SOURCES
     src/gameplay_update.cpp
     src/CommandInterpreter.cpp
     src/shader_handler.cpp
+    src/player.cpp
     # settings
     src/settings/settings_vars.cpp
     src/settings/settings_draw.cpp 
