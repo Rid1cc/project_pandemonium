@@ -26,6 +26,7 @@ set(SOURCES
     src/MiniGame.cpp
     # Managers
     src/managers/MiniGameManager.cpp
+    src/managers/EventManager.cpp
     #
     src/minigames/RotatingRectangleGame.cpp
     src/minigames/ConnectWiresGame.cpp
