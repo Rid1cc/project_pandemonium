@@ -1,5 +1,5 @@
-#include "./headers/MiniGameManager.h"
-#include "./headers/globals.h"
+#include "../headers/MiniGameManager.h"
+#include "../headers/globals.h"
 
 // Constructor initializes timer and state variables
 MiniGameManager::MiniGameManager()
