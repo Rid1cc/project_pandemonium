@@ -45,13 +45,13 @@ int main(void) {
     //gameManager.AddGame(rotatingGame);
 
     auto finder = std::make_shared<FinderGame>(200, 150, 400, 300, "FinderGame");
-    gameManager.AddGame(finder);
+    //gameManager.AddGame(finder);
 
     auto connectingGame = std::make_shared<ConnectWiresGame>(700, 250, 400, 300, "Connect Wires in standard B");
     // gameManager.AddGame(connectingGame);
     // auto rotatingGame = std::make_shared<RotatingRectangleGame>(700, 250, 400, 300, "Rotating Rectangle");
     // gameManager.AddGame(rotatingGame);
-    auto type = std::make_shared<TypeGame>(200, 60, 800, 600, "TypeGame");
+    auto type = std::make_shared<TypeGame>(150, 120, 1000, 400, "TypeGame");
     gameManager.AddGame(type);
 
 
