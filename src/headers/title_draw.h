@@ -4,6 +4,6 @@
 #include "raylib.h"
 
 void DrawTitle(); // Function to draw title
-
+void Init3DTitleTexture();
 
 #endif

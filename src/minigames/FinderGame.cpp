@@ -207,7 +207,6 @@ void FinderGame::DrawStartScreen(){
 void FinderGame::StartButton(){
     // start button click
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-        Vector2 mousePos = GetMousePosition();
         if (CheckCollisionPointRec(mousePos, startButton)) {
             currentScreen = GAMEPLAY; // chanche game state to GAMEPLAY
         }
@@ -252,8 +251,6 @@ bool FinderGame::checkCollision(const RandomObject& obj1, const RandomObject& ob
 bool FinderGame::IfTextClicked(RandomObject& obj){
     int TextWidth = MeasureText(obj.text.c_str(), 20);
     int TextHeight = 20;
-
-    Vector2 mousePos = GetMousePosition();
 
     if (mousePos.x >= obj.x && mousePos.x <= obj.x+TextWidth && 
         mousePos.y >= obj.y && mousePos.y <= obj.y + 20 &&

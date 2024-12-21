@@ -10,11 +10,12 @@ in vec2 fragTexCoord;
 out vec4 finalColor;       
 
 // Parameters - make a pipeline into settings
-const float curvature = 0.07;          // curvature strength
-const float bloomIntensity = 2.5;     // bloom strength
-const float scanlineIntensity = 1;  // scanline intensity
-const float brightness = 1.4;         // brightness
-const vec2 resolution = vec2(1920.0, 1080.0); //texture resolution
+uniform float curvature;          // curvature strength
+uniform float bloomIntensity;     // bloom strength
+uniform float glowIntensity;      // glow intensity
+uniform float scanlineIntensity;    // scanline intensity
+uniform float brightness;         // brightness
+uniform vec2 resolution; // texture resolution
 
 // mapping curvature
 vec2 applyCurvature(vec2 uv) {
@@ -29,16 +30,32 @@ vec4 applyBloom(vec2 uv) {
     vec4 color = vec4(0.0);
     vec2 texelSize = 1.0 / resolution;
 
-
-    for (int x = -1; x <= 1; x++) {
-        for (int y = -1; y <= 1; y++) {
-            color += texture(texture0, uv + vec2(x, y) * texelSize);
+    for (int x = -2; x <= 2; x++) {
+        for (int y = -2; y <= 2; y++) {
+            float weight = 1.0 - length(vec2(x, y)) / 3.0;
+            color += texture(texture0, uv + vec2(x, y) * texelSize) * weight;
         }
     }
-    color /= 9.0;  
+    color /= 16.0;  
     color *= bloomIntensity;
     
     return color;
+}
+
+// glow effect
+vec4 applyGlow(vec2 uv, vec4 baseColor) {
+    vec4 glow = vec4(0.0);
+    vec2 texelSize = 1.0 / resolution;
+
+    for (int x = -4; x <= 4; x++) {
+        for (int y = -4; y <= 4; y++) {
+            if (x == 0 && y == 0) continue;
+            glow += texture(texture0, uv + vec2(x, y) * texelSize);
+        }
+    }
+    glow /= 81.0;  
+    glow *= glowIntensity * baseColor.a; // Adjust glow intensity based on alpha
+    return glow;
 }
 
 // scanlines function
@@ -63,8 +80,9 @@ void main(void) {
     } else {
         vec4 baseColor = texture(texture0, curvedUV);
         vec4 bloomColor = applyBloom(curvedUV);
+        vec4 glowColor = applyGlow(curvedUV, baseColor);
         baseColor *= applyScanlines(curvedUV);
         baseColor = applyRGBGrid(fragTexCoord, baseColor);
-        finalColor = baseColor * vec4(vec3(brightness), 1.0) + bloomColor * 0.5;
+        finalColor = baseColor * vec4(vec3(brightness), 1.0) + bloomColor * 0.3 + glowColor * 0.5;
     }
 }

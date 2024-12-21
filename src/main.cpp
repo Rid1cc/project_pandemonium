@@ -11,6 +11,7 @@
 #include "minigames/FinderGame.h"
 #include "minigames/TypeGame.h"
 
+#include "headers/shader_handler.h"
 
 int main(void) {
 
@@ -22,13 +23,13 @@ int main(void) {
 
     //FONT INIT, LOADING INTO VRAM
     alagard = LoadFont("../assets/fonts/alagard.png"); // For ui related
-    pixeled = LoadFontEx("../assets/fonts/Minecraft.ttf", 16, 0, 317); //For system related
+    pixeled = LoadFontEx("../assets/fonts/Minecraft.ttf", 16, 0, 317); //For system related    
+    InitializeShader();
 
-    Shader shader = LoadShader(0, "../assets/shaders/fx.fs");
     //Initialize Scene, w. target
     RenderTexture2D target = LoadRenderTexture(screenWidth, screenHeight);
-    //Load Shader
-    //Shader shader = LoadShader(0, "../assets/shaders/fx.fs");
+    space3d = LoadRenderTexture((int)desc_window.width, (int)desc_window.height);
+
     /*
     // music initialization functions
     InitAudioDevice();
@@ -44,22 +45,48 @@ int main(void) {
     //auto rotatingGame = std::make_shared<RotatingRectangleGame>(200, 150, 400, 300, "Rotating Rectangle");
     //gameManager.AddGame(rotatingGame);
 
-    auto finder = std::make_shared<FinderGame>(200, 150, 400, 300, "FinderGame");
+    //auto finder = std::make_shared<FinderGame>(200, 150, 400, 300, "FinderGame");
     //gameManager.AddGame(finder);
 
-    auto connectingGame = std::make_shared<ConnectWiresGame>(700, 250, 400, 300, "Connect Wires in standard B");
+    //auto connectingGame = std::make_shared<ConnectWiresGame>(700, 250, 400, 300, "Connect Wires in standard B");
     // gameManager.AddGame(connectingGame);
     // auto rotatingGame = std::make_shared<RotatingRectangleGame>(700, 250, 400, 300, "Rotating Rectangle");
     // gameManager.AddGame(rotatingGame);
     auto type = std::make_shared<TypeGame>(150, 120, 1000, 400, "TypeGame");
     gameManager.AddGame(type);
 
+    auto finder = std::make_shared<FinderGame>(200, 150, 400, 300, "FinderGame");
+    gameManager.AddGame(finder);
+    gameManager.SetTotalTime(15.0f);
 
-    
+    auto connectingGame = std::make_shared<ConnectWiresGame>(700, 250, 400, 300, "window 1");
+    gameManager.AddGame(connectingGame);
 
-    while (!WindowShouldClose()) {
+    //define camera state (for 3d models)
+    camera.position = (Vector3){ 10.0f, 5.0f, 10.0f }; // Camera position
+    camera.target = (Vector3){ 0.0f, 0.0f, 0.0f }; // Camera looking at point
+    camera.up = (Vector3){ 0.0f, 1.0f, 0.0f }; // Camera up vector
+    camera.fovy = 45.0f; // Camera field-of-view Y
+    camera.projection = CAMERA_PERSPECTIVE; // Camera mode type
 
+    model_globe = LoadModel("../assets/models/globe.obj");
+    model_cog = LoadModel("../assets/models/cog.obj");
+    model_data = LoadModel("../assets/models/data.obj");
+    model_door = LoadModel("../assets/models/door.obj");
+
+    //auto rotatingGame = std::make_shared<RotatingRectangleGame>(screen.x + (screenWidth/2) - 200, screen.y + (screenHeight/2) - 150, 400, 300, "Rotating Rectangle");
+    //gameManager.AddGame(rotatingGame);
+    auto connectingGame2 = std::make_shared<ConnectWiresGame>(200, 150, 400, 300, "window 2");
+    gameManager.AddGame(connectingGame2);
+
+    while (!exitGame && !WindowShouldClose()) {
+       
+        Init3DTitleTexture();
         BeginTextureMode(target);
+
+        //Update mouse
+        mousePos = MapMouseToFlat(GetMousePosition(), {1280.0, 720.0});
+
         // UpdateMusicStream(main_theme);
         if (!IsWindowState(FLAG_WINDOW_RESIZABLE)) SetWindowState(FLAG_WINDOW_RESIZABLE);
 
@@ -75,6 +102,8 @@ int main(void) {
                 SettingsUpdate(general_volume, effects_volume, mute_audio);
             } break;
             case GAMEPLAY: {
+                if (!connectingGame) {
+                }
                 UpdateGameplay(currentScreen, textBox, command, letterCount, mouseOnText, framesCounter, backTimer, history, upTimes);
             } break;
             case ENDING: {
@@ -84,6 +113,8 @@ int main(void) {
         }
 
         ClearBackground(RAYWHITE);
+        
+        // Begin 3D mode
 
         switch (currentScreen) {
             case LOGO: {
@@ -106,23 +137,38 @@ int main(void) {
             } break;
             default: break;
         }
+
+
+        //Particles
+        int randomW;
+        int randomH;
+        if(framesCounter%3==0){
+        for(int i =0; i<=20; i++){
+            std::uniform_int_distribution<int> rW(50, screenWidth-100);
+            std::uniform_int_distribution<int> rH(25, screenHeight-50);
+            randomW = rW(rng);
+            randomH = rH(rng);
+            DrawText("-", randomW, randomH, 10, ORANGE);
+            }
+        }
+        Rectangle TextureKernel = { 0, 0, (float)target.texture.width, -(float)target.texture.height };
         EndTextureMode();
         BeginDrawing();
-
         ClearBackground(BLACK);
-
-        //commented because of working with graphics, shaders just get in the way with that. 
-        //to make it work uncomment beginshadermode and endshadermode.
-
-        //BeginShaderMode(shader);  // <----- SHADER COMMENT
-        DrawTextureRec(target.texture, (Rectangle){ 0, 0, (float)target.texture.width, -(float)target.texture.height }, (Vector2){ 0, 0 }, WHITE);
-        //EndShaderMode(); // <----- SHADER COMMENT
-
+        BeginShaderMode(shader);  // <----- SHADER COMMENT
+        DrawTextureRec(target.texture, ShakeRectangleOnClick(TextureKernel, 5), (Vector2){ 0, 0 }, WHITE);         
+        EndShaderMode(); // <----- SHADER COMMENT
         EndDrawing();
     }
 
     UnloadShader(shader);
+    UnloadModel(model_cog);
+    UnloadModel(model_door);
+    UnloadModel(model_data);
+    UnloadModel(model_globe);
     UnloadRenderTexture(target);
+    UnloadRenderTexture(space3d);
+    
     /*
     // Music De-Initialization
     UnloadMusicStream(main_theme);
