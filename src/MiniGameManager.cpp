@@ -20,7 +20,7 @@ void MiniGameManager::Update() {
         auto& game = *it;
         if (game->isOpen) {
             UpdateDotTimer(game); // Update visual dot timer
-            DragWindow(game, GetMousePosition()); // Handle window dragging
+            DragWindow(game, mousePos); // Handle window dragging
 
             if (IsWindowFirst(game)) {
                 game->Update(); // Update the topmost game
@@ -28,8 +28,8 @@ void MiniGameManager::Update() {
         }
 
         // Check if the close button is clicked or the game is complete
-        if ((CheckCollisionPointRec(GetMousePosition(), {game->window.x + game->window.width - 20, game->window.y, 20, 20}) &&
-             IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && CanBeInteracted(game, GetMousePosition())) || game->gameComplete) {
+        if ((CheckCollisionPointRec(mousePos, {game->window.x + game->window.width - 20, game->window.y, 20, 20}) &&
+             IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && CanBeInteracted(game, mousePos)) || game->gameComplete) {
             Close(game); // Close the game window
         }
     }
@@ -98,7 +98,7 @@ void MiniGameManager::UpdateDotTimer(std::shared_ptr<MiniGame>& game) {
 // Sets the specified game window to be the topmost window
 void MiniGameManager::SetWindowFirst(std::shared_ptr<MiniGame>& game) {
     auto it = std::find(games.begin(), games.end(), game);
-    if (it != games.end() && !CheckCollisionPointRec(GetMousePosition(), games.back()->window)) {
+    if (it != games.end() && !CheckCollisionPointRec(mousePos, games.back()->window)) {
         std::iter_swap(it, games.end() - 1); // Swap to make it the last element (topmost)
     }
 }

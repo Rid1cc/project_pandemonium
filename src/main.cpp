@@ -65,6 +65,7 @@ int main(void) {
     gameManager.AddGame(connectingGame2);
 
     while (!exitGame && !WindowShouldClose()) {
+       
         Init3DTitleTexture();
         BeginTextureMode(target);
 
@@ -141,7 +142,7 @@ int main(void) {
         ClearBackground(BLACK);
         BeginShaderMode(shader);  // <----- SHADER COMMENT
         DrawTextureRec(target.texture, ShakeRectangleOnClick(TextureKernel, 5), (Vector2){ 0, 0 }, WHITE);         
-        // EndShaderMode(); // <----- SHADER COMMENT
+        EndShaderMode(); // <----- SHADER COMMENT
         EndDrawing();
     }
 

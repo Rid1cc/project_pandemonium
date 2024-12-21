@@ -1,10 +1,11 @@
 #include "ConnectWiresGame.h"
+#include "../headers/globals.h"
 #define pairsNum 8
 #define pointsNum 16
 
 ConnectWiresGame::ConnectWiresGame(float x, float y, float width, float height, const std::string& title)
     : MiniGame(x, y, width, height, title), moveStartPoint(false), moveEndPoint(false),
-    mousePosition(GetMousePosition()), points(), isPointMovable(), targetAreas(), isAtTargetArea(), inTargetAreaCounter() {
+    mousePosition(mousePos), points(), isPointMovable(), targetAreas(), isAtTargetArea(), inTargetAreaCounter() {
     startArea = {window.x + 30, window.y + 40, 35, window.height - 60};
     endArea = {window.x + window.width - 65, window.y + 40, 35, window.height - 60};
     colors = {ORANGE, GREEN, BLUE, BROWN, WHITE};
@@ -49,12 +50,12 @@ void ConnectWiresGame::UpdatePoints() {
         }
 
         // check if point should be able to move
-        if ((CheckCollisionPointCircle(GetMousePosition(), points[i], 10.0f)) && (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) && !IsAnyMovable()) {
+        if ((CheckCollisionPointCircle(mousePos, points[i], 10.0f)) && (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) && !IsAnyMovable()) {
             isPointMovable[i] = true;
             TraceLog(LOG_INFO, "point %i is movable", i);
         }
         if (isPointMovable[i]) {
-            points[i] = GetMousePosition();
+            points[i] = mousePos;
             if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
                 isPointMovable[i] = false;
                 TraceLog(LOG_INFO, "point %i is not movable", i);
