@@ -123,3 +123,17 @@ float Clamp(float value, float min, float max) {
     if (value > max) return max;
     return value;
 }
+
+// Function to get the path to the assets directory
+std::string getAssetsPath() {
+    char buffer[1024];
+    uint32_t size = sizeof(buffer);
+    if (_NSGetExecutablePath(buffer, &size) == 0) {
+        std::string path(buffer);
+        size_t pos = path.find_last_of("/\\");
+        return path.substr(0, pos) + "/../assets/";
+    } else {
+        std::cerr << "Buffer too small; need size " << size << std::endl;
+        return "";
+    }
+}

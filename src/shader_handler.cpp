@@ -59,7 +59,8 @@ void ReloadShader(){
     GenerateCurvatureMap({static_cast<float>(screenWidth), static_cast<float>(screenHeight)}, curvature);
 }
 void InitializeShader() {
-    shader = LoadShader(0, "../assets/shaders/fx.fs");
+    std::string assetsPath = getAssetsPath();
+    shader = LoadShader(0, (assetsPath + "shaders/fx.fs").c_str());
 
     // Get locs
     curvatureLoc = GetShaderLocation(shader, "curvature");
