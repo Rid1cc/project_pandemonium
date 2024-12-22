@@ -5,6 +5,10 @@
 #include <string>
 #include <random>
 #include <chrono>
+#include <iostream>
+#include <string>
+#include <mach-o/dyld.h>
+
 
 typedef enum GameScreen { LOGO = 0, TITLE, SETTINGS, GAMEPLAY, ENDING } GameScreen;
 typedef enum SettingsScreen { GRAPHICS = 0, AUDIO, DISPLAY, CUSTOM } SettingsScreen;
@@ -70,4 +74,5 @@ Rectangle ShakeRectangleOnClick(Rectangle rec, float intensity);
 void ProjectModel(const char* objFilePath, Color modelColor, Rectangle destRect);
 float Clamp(float value, float min, float max);
 float Enround(float num, int pos);
+std::string getAssetsPath();
 

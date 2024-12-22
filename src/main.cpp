@@ -13,6 +13,7 @@
 
 #include "headers/shader_handler.h"
 
+
 int main(void) {
 
 
@@ -21,9 +22,12 @@ int main(void) {
     SetExitKey(0); // ESCAPE NO LONGER CLOSES THE GAME!
     SetTargetFPS(60);
 
+    // Get the assets path
+    std::string assetsPath = getAssetsPath();
+
     //FONT INIT, LOADING INTO VRAM
-    alagard = LoadFont("../assets/fonts/alagard.png"); // For ui related
-    pixeled = LoadFontEx("../assets/fonts/Minecraft.ttf", 16, 0, 317); //For system related    
+    alagard = LoadFont((assetsPath + "fonts/alagard.png").c_str()); // For ui related
+    pixeled = LoadFontEx((assetsPath + "fonts/Minecraft.ttf").c_str(), 16, 0, 317); //For system related    
     InitializeShader();
 
     //Initialize Scene, w. target
@@ -69,14 +73,15 @@ int main(void) {
     camera.fovy = 45.0f; // Camera field-of-view Y
     camera.projection = CAMERA_PERSPECTIVE; // Camera mode type
 
-    model_globe = LoadModel("../assets/models/globe.obj");
-    model_cog = LoadModel("../assets/models/cog.obj");
-    model_data = LoadModel("../assets/models/data.obj");
-    model_door = LoadModel("../assets/models/door.obj");
+    model_globe = LoadModel((assetsPath + "models/globe.obj").c_str());
+    model_cog = LoadModel((assetsPath + "models/cog.obj").c_str());
+    model_data = LoadModel((assetsPath + "models/data.obj").c_str());
+    model_door = LoadModel((assetsPath + "models/door.obj").c_str());
 
     //auto rotatingGame = std::make_shared<RotatingRectangleGame>(screen.x + (screenWidth/2) - 200, screen.y + (screenHeight/2) - 150, 400, 300, "Rotating Rectangle");
     //gameManager.AddGame(rotatingGame);
-    auto connectingGame2 = std::make_shared<ConnectWiresGame>(200, 150, 400, 300, "window 2");
+    //auto connectingGame2 = std::make_shared<ConnectWiresGame>(200, 150, 400, 300, "window 2");
+    //auto connectingGame2 = std::make_shared<ConnectWiresGame>(200, 150, 400, 300, "window 2");
     //gameManager.AddGame(connectingGame2);
 
     while (!exitGame && !WindowShouldClose()) {
@@ -102,8 +107,6 @@ int main(void) {
                 SettingsUpdate(general_volume, effects_volume, mute_audio);
             } break;
             case GAMEPLAY: {
-                if (!connectingGame) {
-                }
                 UpdateGameplay(currentScreen, textBox, command, letterCount, mouseOnText, framesCounter, backTimer, history, upTimes);
             } break;
             case ENDING: {
