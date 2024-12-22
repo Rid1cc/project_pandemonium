@@ -56,11 +56,11 @@ int main(void) {
     gameManager.AddGame(type);
 
     auto finder = std::make_shared<FinderGame>(200, 150, 400, 300, "FinderGame");
-    gameManager.AddGame(finder);
-    gameManager.SetTotalTime(15.0f);
+    //gameManager.AddGame(finder);
+    gameManager.SetTotalTime(10000.0f);
 
     auto connectingGame = std::make_shared<ConnectWiresGame>(700, 250, 400, 300, "window 1");
-    gameManager.AddGame(connectingGame);
+    //gameManager.AddGame(connectingGame);
 
     //define camera state (for 3d models)
     camera.position = (Vector3){ 10.0f, 5.0f, 10.0f }; // Camera position
@@ -77,7 +77,7 @@ int main(void) {
     //auto rotatingGame = std::make_shared<RotatingRectangleGame>(screen.x + (screenWidth/2) - 200, screen.y + (screenHeight/2) - 150, 400, 300, "Rotating Rectangle");
     //gameManager.AddGame(rotatingGame);
     auto connectingGame2 = std::make_shared<ConnectWiresGame>(200, 150, 400, 300, "window 2");
-    gameManager.AddGame(connectingGame2);
+    //gameManager.AddGame(connectingGame2);
 
     while (!exitGame && !WindowShouldClose()) {
        

@@ -46,6 +46,8 @@ TypeGame::TypeGame(float x, float y, float width, float height, const std::strin
 
         randomText = text[GetRandomValue(0, 7)]; // drawn text to display (for now we have 8 texts (0 - 7))
         //randomText = text[6];
+        typedText = std::string(randomText.length(), '0');
+
         isCursorVisible = true;
         currentNumber = 0;
 }
@@ -54,6 +56,7 @@ void TypeGame::Update(){
     MiniGame::Update(); // handle dragging
     UpdateCurrentNumber();
     UpdateCursor(GetFrameTime());
+    UpdateTypedText();
 }
 
 void TypeGame::Draw(){
@@ -77,48 +80,82 @@ void TypeGame::DrawRandomText(){
         int yPos = window.y + textY + lineNum * textLineHeight;
 
         DrawText(line.c_str(), xPos, yPos, textFontSize, GRAY);
-
-        if (lineNum == 0){
-            cursorX = xPos - 2;
-            cursorY = yPos;
-        }
         lineNum++;
-
     }   
 }
 
 void TypeGame::DrawCursor(){
     if (isCursorVisible){
-        DrawRectangle(cursorX, cursorY, 2, 30, ORANGE);
+        DrawRectangle(cursorX, cursorY, 4, 30, ORANGE);
     }
 }
 
 void TypeGame::UpdateCursor(float deltaTime){
+    // BLINKING
     timeSinceLastCursorBlink += deltaTime;
-
-    if (timeSinceLastCursorBlink >= cursorBlinkTime){
+    if (isTyping) {
+        isCursorVisible = true;
+        timeSinceLastCursorBlink = -0.5f;
+    }
+    else if (timeSinceLastCursorBlink >= cursorBlinkTime){
         isCursorVisible = !isCursorVisible;
         timeSinceLastCursorBlink = 0.0f;
     }
-    int key = GetCharPressed();
 
-    if (key > 0){
-        if (key >= 35 && key <= 125){
-            //int shift = MeasureText(&randomText[currentNumber], textFontSize);
-            int shift = MeasureText(randomText.substr(0, currentNumber).c_str(), textFontSize);
+    // CURSOR POSITION 
+    std::istringstream textStream(randomText);
+    std::string line;
+    int lineNum = 0;
 
-            cursorX += shift;
+    int currentChar = 0;
+    while(std::getline(textStream, line)){
+        if (currentChar + line.length() >= currentNumber) {
+            int lineWidthUpToCursor = MeasureText(line.substr(0, currentNumber - currentChar).c_str(), textFontSize);
+
+            cursorX = window.x + (window.width - MeasureText(line.c_str(), textFontSize)) / 2 + lineWidthUpToCursor;
+
+            cursorY = window.y + 100 + lineNum * (textFontSize + 5);
+
+            return;
         }
+        currentChar += line.length() + 1;
+        lineNum++;
     }
 }
 
 void TypeGame::UpdateCurrentNumber(){
-    int key = GetCharPressed();
+    int Key = GetKeyPressed();
+    
+    if (Key > 0){
+        std::cout << " key:  " << Key << std::endl;
 
-    if (key > 0){
-        if (key >= 35 && key <= 125){
+        if (Key >= 32 && Key <= 125){
             currentNumber++;
-        }
-        key = GetCharPressed();
+            isTyping = true;
+        } else if (Key == KEY_BACKSPACE && currentNumber > 0){
+            currentNumber--;
+            isTyping = true;
+        } 
+        std::cout << "currentNumber: " << currentNumber << std::endl;
+        //std::cout << "Typing: " << isTyping << std::endl;
+    } else {
+        isTyping = false;
     }
+}
+
+void TypeGame::UpdateTypedText(){
+    int typedkey = GetCharPressed();
+
+    while (typedkey > 0) {
+        if ((typedkey >= 32) && (typedkey <= 125)) {
+            typedText[currentNumber - 1] = (char)typedkey;
+            typedText[currentNumber] = '\0';
+        }
+        typedkey = GetCharPressed();
+        std::cout << "typed tex: " << typedText << std::endl;
+    }
+}
+
+void TypeGame::DrawTypedText(){
+
 }
