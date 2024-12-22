@@ -124,18 +124,18 @@ void FinderGame::Draw() {
             break;
         case GAMEPLAY:
             MiniGame::Draw(); // draw window
-            DrawTextB("Collect 10 positive messages (green!)", window.x + 10, window.y + 40, 20, ORANGE); // draw game instruction
+            DrawTextB("Collect 10 positive messages (green!)", window.x + 10, window.y + 40, 20, primaryColor); // draw game instruction
 
             // draw collected counter
             // collectedText = "Collected: " + std::to_string(collected);
-            // DrawText(collectedText.c_str(), window.x + 10, window.y + 80, 20, ORANGE);
-            DrawTextB("Collected: ", window.x + 10, window.y + 80, 20, ORANGE);
+            // DrawText(collectedText.c_str(), window.x + 10, window.y + 80, 20, primaryColor);
+            DrawTextB("Collected: ", window.x + 10, window.y + 80, 20, primaryColor);
             DrawTextB(std::to_string(collected).c_str(), window.x + 130, window.y + 80, 20, WHITE);
 
             // draw timer
             // timerText = "Time left: " + std::to_string(timer) + "s";
-            // DrawText(timerText.c_str(), window.x + 10, window.y + 120, 20, ORANGE);
-            DrawTextB("Time left: ", window.x + 10, window.y + 120, 20, ORANGE);
+            // DrawText(timerText.c_str(), window.x + 10, window.y + 120, 20, primaryColor);
+            DrawTextB("Time left: ", window.x + 10, window.y + 120, 20, primaryColor);
             DrawTextB((std::to_string(timer) + "s").c_str(), window.x + 120, window.y + 120, 20, RED);
 
             // IF CAN BE DELETED IN THE FUTURE!!!!
@@ -198,7 +198,7 @@ void FinderGame::DrawStartScreen(){
     }   
 
     //START BUTTON
-    DrawRectangleRec(startButton, ORANGE);
+    DrawRectangleRec(startButton, primaryColor);
     DrawRectangleLinesEx(startButton, 3, WHITE);
     DrawTextB("START", 
              startButton.x + (startButton.width - MeasureText("START", 25)) / 2, 
@@ -284,6 +284,6 @@ void FinderGame::DrawEndScreen(bool isWin) {
 
     Rectangle End = {recX - 50, recY - 50, MessageWidth + 100, MessageHeight + 100};
     DrawRectangleRec(End, BLACK);              // Background
-    DrawRectangleLinesEx(End, 5, ORANGE); 
+    DrawRectangleLinesEx(End, 5, primaryColor); 
     DrawTextC(message, recX, recY, MessageHeight, messageColor);  // MessageHeight is font size 
 }

@@ -20,6 +20,7 @@ extern Rectangle settings_desc;
 extern Rectangle button_return;
 extern Rectangle button_restore;
 extern Rectangle button_apply;
+extern Color displayColor; 
 
 extern float master_volume;
 extern float music_volume;

@@ -1,4 +1,5 @@
 #include "RotatingRectangleGame.h"
+#include "../headers/globals.h"
 
 RotatingRectangleGame::RotatingRectangleGame(float x, float y, float width, float height, const std::string& title)
     : MiniGame(x, y, width, height, title), rotation(0) {
@@ -18,5 +19,5 @@ void RotatingRectangleGame::Update() {
 
 void RotatingRectangleGame::Draw() {
     MiniGame::Draw(); // Draw window
-    DrawRectanglePro(rectInner, {rectInner.width / 2, rectInner.height / 2}, rotation, ORANGE);
+    DrawRectanglePro(rectInner, {rectInner.width / 2, rectInner.height / 2}, rotation, primaryColor);
 }

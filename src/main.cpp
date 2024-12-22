@@ -14,6 +14,8 @@
 
 
 int main(void) {
+    
+    primaryColor = ORANGE;
 
     // Core initialization
     InitWindow(screenWidth, screenHeight, "Pandemonium");
@@ -132,7 +134,7 @@ int main(void) {
             std::uniform_int_distribution<int> rH(25, screenHeight-50);
             randomW = rW(rng);
             randomH = rH(rng);
-            DrawText("-", randomW, randomH, 10, ORANGE);
+            DrawText("-", randomW, randomH, 10, primaryColor);
             }
         }
 

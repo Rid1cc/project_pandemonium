@@ -28,6 +28,8 @@ float master_volume = 0.5;
 float music_volume = 1.0;
 float sfx_volume = 1.0;
 
+Color displayColor;
+
 SettingState shaderQuality = LOW;
 
 //Slider drawing
@@ -38,12 +40,11 @@ float DrawSlider(Rectangle sliderRect, float minValue, float maxValue, float val
 
     // Slider draw
     DrawRectangleRec(sliderRect, BLACK); // Background
-    DrawRectangle(sliderRect.x, sliderRect.y, knobX - sliderRect.x, sliderRect.height, ORANGE); // Infill
-    DrawRectangleRec(knobRect, ORANGE); // Knob
+    DrawRectangle(sliderRect.x, sliderRect.y, knobX - sliderRect.x, sliderRect.height, primaryColor); // Infill
+    DrawRectangleRec(knobRect, primaryColor); // Knob
 
     // Mouse handler
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
-        Vector2 mousePos = GetMousePosition();
         if (CheckCollisionPointRec(mousePos, sliderRect) || CheckCollisionPointRec(mousePos, knobRect)) {
             // New value by mousePos
             float newValue = minValue + (mousePos.x - sliderRect.x) / sliderRect.width * (maxValue - minValue);

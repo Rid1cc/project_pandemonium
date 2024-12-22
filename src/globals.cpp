@@ -55,6 +55,7 @@ Rectangle screen = {50, 25, screenWidth-100, screenHeight-50};
 SettingsScreen currentSettings = GRAPHICS;
 float general_volume = 1.0f;
 float effects_volume = 1.0f;
+Color primaryColor;
 
 
 // Music

@@ -24,9 +24,6 @@ void SettingsUpdate(float& general_volume, float& effects_volume, bool& mute_aud
     if(framesCounter>=60){
         framesCounter = 0;
     }
-
-    //mouse pointer collision
-    mousePos = GetMousePosition();
  
     //Highlight Inhibitor
     switch (currentSettings) {
@@ -78,9 +75,11 @@ void SettingsUpdate(float& general_volume, float& effects_volume, bool& mute_aud
                 } break;
                 default: break;
             }
-            ReloadShader();
-            }
+            ReloadShader(); 
+            primaryColor = displayColor;
     } else apply_highl = false;
+    }
+
 
     //restore
     if(CheckCollisionPointRec(mousePos, button_restore)==true){
