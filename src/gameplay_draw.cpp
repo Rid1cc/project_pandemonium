@@ -5,8 +5,6 @@
 void DrawGameplay(Rectangle textBox, const char* command, int letterCount, bool mouseOnText, int framesCounter, std::string* historyDrawn) {
     ClearBackground(BLACK);
 
-    
-
     //Monitor
     DrawRectangleLinesEx(screen, 3, ORANGE);
     

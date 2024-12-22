@@ -10,6 +10,8 @@ std::mt19937 rng(std::chrono::steady_clock::now().time_since_epoch().count());
 
 // Global variables
 bool exitGame = false;
+std::string assetsPath;
+Rectangle TextureKernel;
 
 //3D stuff
 Model model_globe;
@@ -19,7 +21,7 @@ Model model_data;
 Camera camera;
 
 // Gameplay
-GameScreen currentScreen = TITLE;
+GameScreen currentScreen = LOGO;
 Rectangle textBox = { 640.0f, 180.0f, 225, 50 };
 char command[100] = "\0";
 int letterCount = 0;
