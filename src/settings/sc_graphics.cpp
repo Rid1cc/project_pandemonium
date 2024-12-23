@@ -20,26 +20,26 @@ Rectangle shader_quality_frame = {settings_screen.x+300,settings_screen.y+300,27
 void graphic_slider(string label, Rectangle slider, float &parameter, float min, float max){
    string text;
    parameter = DrawSlider(slider, min, max, parameter, 3);
-   DrawRectangleLinesEx(slider, 3, ORANGE);
+   DrawRectangleLinesEx(slider, 3, primaryColor);
    text = label+ " " + floatToString(Enround(parameter/max * 100, 1)) + "%";
-   DrawTextC(text.c_str(), slider.x-280, slider.y+5, 20, ORANGE);
+   DrawTextC(text.c_str(), slider.x-280, slider.y+5, 20, primaryColor);
 };
 
 void multiple_choice_button(float pos, Rectangle frame, string text, Vector2 &mousePos, SettingState &setting, SettingState state){
     if(CheckCollisionPointRec(mousePos, {frame.x+(pos*(frame.width/3)),frame.y,frame.width/3,frame.height})==true || setting == state){
-        DrawRectangle(frame.x+(pos*(frame.width/3)),frame.y,frame.width/3,frame.height, ORANGE);
+        DrawRectangle(frame.x+(pos*(frame.width/3)),frame.y,frame.width/3,frame.height, primaryColor);
         DrawTextC(text.c_str(), frame.x+(pos*(frame.width/3))+((frame.width/3)-(frame.width/3)/2)-(MeasureTextEx(pixeled, text.c_str(), 30, 2).x)/2, frame.y+15, 30, BLACK);
         if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT) == true){
             setting = state;
         }
-    } else DrawTextC(text.c_str(), frame.x+(pos*(frame.width/3))+((frame.width/3)-(frame.width/3)/2)-(MeasureTextEx(pixeled, text.c_str(), 30, 2).x)/2, frame.y+15, 30, ORANGE);
+    } else DrawTextC(text.c_str(), frame.x+(pos*(frame.width/3))+((frame.width/3)-(frame.width/3)/2)-(MeasureTextEx(pixeled, text.c_str(), 30, 2).x)/2, frame.y+15, 30, primaryColor);
 };
 
 void multiple_choice(string label ,Rectangle frame, string left, string mid, string right, Vector2 &mousePos, SettingState &setting){
-    DrawTextC(label.c_str(), frame.x-280, frame.y+15, 20, ORANGE);
-    DrawRectangleLinesEx(shader_quality_frame, 3, ORANGE);
-    DrawLineEx({frame.x+(frame.width/3), frame.y}, {frame.x+(frame.width/3), frame.y+frame.height}, 3, ORANGE);
-    DrawLineEx({frame.x+((frame.width/3)*2), frame.y}, {frame.x+((frame.width/3)*2), frame.y+frame.height}, 3, ORANGE);
+    DrawTextC(label.c_str(), frame.x-280, frame.y+15, 20, primaryColor);
+    DrawRectangleLinesEx(shader_quality_frame, 3, primaryColor);
+    DrawLineEx({frame.x+(frame.width/3), frame.y}, {frame.x+(frame.width/3), frame.y+frame.height}, 3, primaryColor);
+    DrawLineEx({frame.x+((frame.width/3)*2), frame.y}, {frame.x+((frame.width/3)*2), frame.y+frame.height}, 3, primaryColor);
     //LEFT BUTTON
     multiple_choice_button(0, frame, left, mousePos, setting, LOW);
     // MID BUTTON

@@ -10,6 +10,8 @@ std::mt19937 rng(std::chrono::steady_clock::now().time_since_epoch().count());
 
 // Global variables
 bool exitGame = false;
+std::string assetsPath;
+Rectangle TextureKernel;
 
 //3D stuff
 Model model_globe;
@@ -18,8 +20,15 @@ Model model_door;
 Model model_data;
 Camera camera;
 
+// Shader parameters
+extern float curvature;
+extern float bloomIntensity;
+extern float glowIntensity;
+extern float scanlineIntensity;
+extern float brightness;
+
 // Gameplay
-GameScreen currentScreen = TITLE;
+GameScreen currentScreen = LOGO;
 Rectangle healthBar = {screen.x + 30, screen.y + 30, 1117, 40};
 Rectangle attackMenu = {screen.x + 30, screen.y + 97, 249, 106};
 Rectangle infoPanel = {screen.x + 30, screen.y + 250, 249, 383};
@@ -59,6 +68,7 @@ Rectangle screen = {50, 25, screenWidth-100, screenHeight-50};
 SettingsScreen currentSettings = GRAPHICS;
 float general_volume = 1.0f;
 float effects_volume = 1.0f;
+Color primaryColor;
 
 
 // Music

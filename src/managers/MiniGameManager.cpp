@@ -49,11 +49,11 @@ void MiniGameManager::Draw() {
         auto& game = *it;
         if (game->isOpen) {
             DrawRectangleRec(game->window, BLACK); // Draw game window background
-            DrawRectangleLinesEx(game->window, 2, ORANGE); // Draw window border
+            DrawRectangleLinesEx(game->window, 2, primaryColor); // Draw window border
 
             // Draw flashing dot indicator
             if (((int)game->dotTimer % 2) != 0)
-                DrawCircle(game->window.x + 6, game-> window.y + 6, 2, ORANGE);
+                DrawCircle(game->window.x + 6, game-> window.y + 6, 2, primaryColor);
             
             DrawText(game->title.c_str(), game->window.x + 10, game->window.y + 10, 20, WHITE); // Draw window title
             DrawText("x", game->window.x + game->window.width - 15, game->window.y + 5, 20, RED); // Draw close button
@@ -69,7 +69,7 @@ void MiniGameManager::Draw() {
         
         // Position the timer text at the top-center of the screen
         int screenWidth = GetScreenWidth();
-        DrawText(timerText.c_str(), screenWidth / 2 - MeasureText(timerText.c_str(), 20) / 2, 10, 20, ORANGE);
+        DrawText(timerText.c_str(), screenWidth / 2 - MeasureText(timerText.c_str(), 20) / 2, 10, 20, primaryColor);
     }
 
     // Draw the end message if applicable //DON'T DELETE THIS!!!

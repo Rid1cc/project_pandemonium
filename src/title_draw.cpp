@@ -9,29 +9,29 @@ void Init3DTitleTexture() {
     UpdateCamera(&camera, CAMERA_ORBITAL);
     ClearBackground(BLACK);
     BeginMode3D(camera);
-    if(play_highl){DrawModel(model_globe, (Vector3){ 0.0f, 0.0f, 0.0f }, 0.40f, ORANGE);}
-    if(settings_highl){DrawModel(model_cog, (Vector3){ 0.0f, 0.0f, 0.0f }, 10.0f, ORANGE);}
-    if(data_highl){DrawModel(model_data, (Vector3){ 0.0f, -1.0f, 0.0f }, 0.1f, ORANGE);}
-    if(exit_highl){DrawModel(model_door, (Vector3){ 0.0f, 0.0f, 0.0f }, 0.5f, ORANGE);}
+    if(play_highl){DrawModel(model_globe, (Vector3){ 0.0f, 0.0f, 0.0f }, 0.40f, primaryColor);}
+    if(settings_highl){DrawModel(model_cog, (Vector3){ 0.0f, 0.0f, 0.0f }, 10.0f, primaryColor);}
+    if(data_highl){DrawModel(model_data, (Vector3){ 0.0f, -1.0f, 0.0f }, 0.1f, primaryColor);}
+    if(exit_highl){DrawModel(model_door, (Vector3){ 0.0f, 0.0f, 0.0f }, 0.5f, primaryColor);}
     EndMode3D();
     EndTextureMode();
 }
 
 void DrawButton(Rectangle button, const char* text, bool highlighted, float y_offset) {
     if (highlighted) {
-        DrawRectangleRec(button, ORANGE);
+        DrawRectangleRec(button, primaryColor);
         DrawRectangleLinesEx(button, 3, BLACK);
         DrawTextB(text, ShakeXY(110, 1.5), ShakeXY(y_offset, 1.5), 40, BLACK);
     } else {
         DrawRectangleRec(button, BLACK);
-        DrawRectangleLinesEx(button, 3, ORANGE);
-        DrawTextB(text, 110, y_offset, 40, ORANGE);
+        DrawRectangleLinesEx(button, 3, primaryColor);
+        DrawTextB(text, 110, y_offset, 40, primaryColor);
     }
 }
 
 void DrawDescription(const char* lines[], int lineCount, float y_start) {
     for (int i = 0; i < lineCount; i++) {
-        DrawTextC(lines[i], 890, y_start + i * 20, 20, ORANGE);
+        DrawTextC(lines[i], 890, y_start + i * 20, 20, primaryColor);
     }
 }
 
@@ -41,16 +41,16 @@ void DrawTitle() {
     
     //ScreenShake + Barriers
     if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT) == true){
-        DrawRectangleLinesEx(ShakeRectangle(screen, 5), 6, ORANGE);
+        DrawRectangleLinesEx(ShakeRectangle(screen, 5), 6, primaryColor);
     }
     else{
-        DrawRectangleLinesEx(screen, 3, ORANGE);
+        DrawRectangleLinesEx(screen, 3, primaryColor);
     }
     
     DrawTextC("ParadisiOS ver 7.3, up to date.", 5, 2, 12, WHITE);  
     //Title
-    DrawTextB("PANDEMONIUM", screenWidth/4, screenHeight/8, 100, ORANGE);
-    DrawRectangleLinesEx(title, 5, ORANGE);
+    DrawTextB("PANDEMONIUM", screenWidth/4, screenHeight/8, 100, primaryColor);
+    DrawRectangleLinesEx(title, 5, primaryColor);
 
     // Buttons
     DrawButton(button_exit, "QUIT", exit_highl, float(screenHeight) - 125);
@@ -59,8 +59,8 @@ void DrawTitle() {
     DrawButton(button_play, "MISSIONS", play_highl, float(screenHeight) - 365);
 
     // MOTD
-    DrawTextC("Good day to you EXORCIST_432.", float(screenWidth/5), float(screenHeight)-520, 15, ORANGE);
-    DrawTextC("All systems Online.", float(screenWidth/5), float(screenHeight)-500, 15, ORANGE);
+    DrawTextC("Good day to you EXORCIST_432.", float(screenWidth/5), float(screenHeight)-520, 15, primaryColor);
+    DrawTextC("All systems Online.", float(screenWidth/5), float(screenHeight)-500, 15, primaryColor);
 
     // models texture
     DrawTexturePro(space3d.texture,
@@ -71,10 +71,10 @@ void DrawTitle() {
     WHITE);
 
     // 3d window borders
-    DrawRectangleLinesEx(desc_window, 3, ORANGE);
+    DrawRectangleLinesEx(desc_window, 3, primaryColor);
     
     // Description window
-    DrawRectangleLinesEx(anim_window_title, 3, ORANGE);
+    DrawRectangleLinesEx(anim_window_title, 3, primaryColor);
 
     if (play_highl) {
         const char* play_desc[] = {

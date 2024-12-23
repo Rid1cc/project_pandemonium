@@ -47,6 +47,7 @@ void Player::setStatus(Status status) {
 bool Player::hasStatus(Status status) const{
     if (status_ == status)
         return true;
+    return false;
 }
 
 // Atrubutes

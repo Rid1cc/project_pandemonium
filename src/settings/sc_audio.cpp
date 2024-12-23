@@ -15,9 +15,9 @@ struct VolumeSlider {
 
 void DrawVolumeSlider(VolumeSlider& volumeSlider) {
     volumeSlider.volume = DrawSlider(volumeSlider.slider, 0.0, 1.0, volumeSlider.volume, 2);
-    DrawRectangleLinesEx(volumeSlider.slider, 3, ORANGE);
+    DrawRectangleLinesEx(volumeSlider.slider, 3, primaryColor);
     volumeSlider.text = string(volumeSlider.label) + " " + floatToString(volumeSlider.volume * 100) + "%";
-    DrawTextC(volumeSlider.text.c_str(), volumeSlider.slider.x - 280, volumeSlider.slider.y + 5, 20, ORANGE);
+    DrawTextC(volumeSlider.text.c_str(), volumeSlider.slider.x - 280, volumeSlider.slider.y + 5, 20, primaryColor);
 
 }
 

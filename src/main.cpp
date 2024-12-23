@@ -10,22 +10,27 @@
 #include "minigames/ConnectWiresGame.h"
 #include "minigames/FinderGame.h"
 #include "headers/shader_handler.h"
+#include "logoscreen/logo_screen.h"
 
 
 int main(void) {
+    
+    primaryColor = ORANGE;
 
-
+    // Core initialization
     InitWindow(screenWidth, screenHeight, "Pandemonium");
     SetWindowMinSize(screenWidth, screenHeight);
     SetExitKey(0); // ESCAPE NO LONGER CLOSES THE GAME!
     SetTargetFPS(60);
 
     // Get the assets path
-    std::string assetsPath = getAssetsPath();
+    assetsPath = getAssetsPath();
 
     //FONT INIT, LOADING INTO VRAM
     alagard = LoadFont((assetsPath + "fonts/alagard.png").c_str()); // For ui related
     pixeled = LoadFontEx((assetsPath + "fonts/Minecraft.ttf").c_str(), 16, 0, 317); //For system related    
+    
+    // Initialize shader
     InitializeShader();
 
     //Initialize Scene, w. target
@@ -43,12 +48,16 @@ int main(void) {
     }
     */
 
-    //minigames init
+    // Init Logo Screen
+    InitLogoScreen();
+
+    // Minigames decs
+    auto connectingGame = std::make_shared<ConnectWiresGame>(700, 250, 400, 300, "window 1");
     auto finder = std::make_shared<FinderGame>(200, 150, 400, 300, "FinderGame");
+    
+    // Add games to the game manager
     gameManager.AddGame(finder);
     gameManager.SetTotalTime(15.0f);
-
-    auto connectingGame = std::make_shared<ConnectWiresGame>(700, 250, 400, 300, "window 1");
     gameManager.AddGame(connectingGame);
 
     //define camera state (for 3d models)
@@ -58,16 +67,13 @@ int main(void) {
     camera.fovy = 45.0f; // Camera field-of-view Y
     camera.projection = CAMERA_PERSPECTIVE; // Camera mode type
 
+    // Load 3d models
     model_globe = LoadModel((assetsPath + "models/globe.obj").c_str());
     model_cog = LoadModel((assetsPath + "models/cog.obj").c_str());
     model_data = LoadModel((assetsPath + "models/data.obj").c_str());
     model_door = LoadModel((assetsPath + "models/door.obj").c_str());
 
-    //auto rotatingGame = std::make_shared<RotatingRectangleGame>(screen.x + (screenWidth/2) - 200, screen.y + (screenHeight/2) - 150, 400, 300, "Rotating Rectangle");
-    //gameManager.AddGame(rotatingGame);
-    //auto connectingGame2 = std::make_shared<ConnectWiresGame>(200, 150, 400, 300, "window 2");
-    //gameManager.AddGame(connectingGame2);
-
+    // Main game loop
     while (!exitGame && !WindowShouldClose()) {
        
         Init3DTitleTexture();
@@ -81,8 +87,7 @@ int main(void) {
 
         switch (currentScreen) {
             case LOGO: {
-                framesCounter++;
-                if (framesCounter > 120) currentScreen = TITLE;
+                UpdateLogoScreen();
             } break;
             case TITLE: {
                 TitleUpdate();
@@ -99,14 +104,9 @@ int main(void) {
             default: break;
         }
 
-        ClearBackground(RAYWHITE);
-        
-        // Begin 3D mode
-
         switch (currentScreen) {
             case LOGO: {
-                DrawText("UnderSmoked Studios", 20, 20, 40, LIGHTGRAY);
-                DrawText("WAIT for 2 SECONDS...", 290, 220, 20, GRAY);
+                DrawLogoScreen();
             } break;
             case TITLE: {
                 DrawTitle();
@@ -125,7 +125,6 @@ int main(void) {
             default: break;
         }
 
-
         //Particles
         int randomW;
         int randomH;
@@ -135,16 +134,19 @@ int main(void) {
             std::uniform_int_distribution<int> rH(25, screenHeight-50);
             randomW = rW(rng);
             randomH = rH(rng);
-            DrawText("-", randomW, randomH, 10, ORANGE);
+            DrawText("-", randomW, randomH, 10, primaryColor);
             }
         }
-        Rectangle TextureKernel = { 0, 0, (float)target.texture.width, -(float)target.texture.height };
+
+        TextureKernel = { 0, 0, (float)target.texture.width, -(float)target.texture.height };
         EndTextureMode();
+
+        //Main Shader drawing, texture linking
         BeginDrawing();
         ClearBackground(BLACK);
-        BeginShaderMode(shader);  // <----- SHADER COMMENT
-        DrawTextureRec(target.texture, ShakeRectangleOnClick(TextureKernel, 5), (Vector2){ 0, 0 }, WHITE);         
-        EndShaderMode(); // <----- SHADER COMMENT
+        BeginShaderMode(shader);  
+            DrawTextureRec(target.texture, ShakeRectangleOnClick(TextureKernel, 5), (Vector2){ 0, 0 }, WHITE);
+        EndShaderMode(); 
         EndDrawing();
     }
 

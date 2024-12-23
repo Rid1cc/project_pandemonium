@@ -41,6 +41,9 @@ extern Vector2 mousePos;
 extern Font alagard;
 extern Font pixeled;
 extern std::mt19937 rng;
+extern std::string assetsPath;
+extern Rectangle TextureKernel;
+extern Color primaryColor;
 
 
 extern Model model_globe;
