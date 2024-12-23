@@ -20,6 +20,13 @@ Model model_door;
 Model model_data;
 Camera camera;
 
+// Shader parameters
+extern float curvature;
+extern float bloomIntensity;
+extern float glowIntensity;
+extern float scanlineIntensity;
+extern float brightness;
+
 // Gameplay
 GameScreen currentScreen = LOGO;
 Rectangle textBox = { 640.0f, 180.0f, 225, 50 };
