@@ -1,0 +1,17 @@
+{
+    "bloomIntensity": 2.299999952316284,
+    "brightness": 1.399999976158142,
+    "curvature": 0.07000000029802322,
+    "glowIntensity": 1.5,
+    "master_volume": 0.5,
+    "music_volume": 1.0,
+    "primaryColor": [
+        255,
+        161,
+        0,
+        255
+    ],
+    "scanlineIntensity": 1.0,
+    "sfx_volume": 1.0,
+    "shaderQuality": 0
+}

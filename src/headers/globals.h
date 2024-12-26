@@ -8,6 +8,7 @@
 #include <iostream>
 #include <string>
 #include <mach-o/dyld.h>
+#include "../managers/FileSystemManager.h"
 
 
 typedef enum GameScreen { LOGO = 0, TITLE, SETTINGS, GAMEPLAY, ENDING } GameScreen;
@@ -44,7 +45,6 @@ extern std::mt19937 rng;
 extern std::string assetsPath;
 extern Rectangle TextureKernel;
 extern Color primaryColor;
-
 
 extern Model model_globe;
 extern Model model_cog;

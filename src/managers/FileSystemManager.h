@@ -1,3 +1,6 @@
+#ifndef FILESYSTEMMANAGER_H
+#define FILESYSTEMMANAGER_H
+
 #include <string>
 #include "../headers/json.hpp"
 #include "../headers/shader_handler.h"
@@ -14,3 +17,5 @@ private:
     nlohmann::json load(const std::string& filePath);
     std::string getConfigPath();
 };
+
+#endif // FILESYSTEMMANAGER_H

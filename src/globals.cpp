@@ -26,6 +26,7 @@ extern float bloomIntensity;
 extern float glowIntensity;
 extern float scanlineIntensity;
 extern float brightness;
+extern Vector2 sh_resolution;
 
 // Gameplay
 GameScreen currentScreen = LOGO;

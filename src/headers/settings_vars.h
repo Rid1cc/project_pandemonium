@@ -27,8 +27,10 @@ extern float music_volume;
 extern float sfx_volume;
 
 extern SettingState shaderQuality;
+extern Vector2 sh_resolution;
 
 float DrawSlider(Rectangle sliderRect, float minValue, float maxValue, float value, int position);
 std::string floatToString(float num);
+void LoadSettingsDefault();
 
 #endif // SETTINGS_VARS_H

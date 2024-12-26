@@ -1,6 +1,9 @@
 #include "raylib.h"
 #include <vector>
+#include <fstream>
+#include "./headers/json.hpp"
 #include "./headers/globals.h"
+#include "./headers/settings_vars.h"
 
 
 //Locations
@@ -57,10 +60,16 @@ void ReloadShader(){
     SetShaderValue(shader, brightnessLoc, &brightness, SHADER_UNIFORM_FLOAT);
     SetShaderValue(shader, sh_resolutionLoc, &sh_resolution, SHADER_UNIFORM_VEC2);
     GenerateCurvatureMap({static_cast<float>(screenWidth), static_cast<float>(screenHeight)}, curvature);
+    primaryColor = displayColor; // Ensure primaryColor is set to displayColor
 }
 void InitializeShader() {
     std::string assetsPath = getAssetsPath();
     shader = LoadShader(0, (assetsPath + "shaders/fx.fs").c_str());
+
+    if (shader.id == 0) {
+        std::cerr << "Failed to load shader" << std::endl;
+        return;
+    }
 
     // Get locs
     curvatureLoc = GetShaderLocation(shader, "curvature");
@@ -70,15 +79,28 @@ void InitializeShader() {
     brightnessLoc = GetShaderLocation(shader, "brightness");
     sh_resolutionLoc = GetShaderLocation(shader, "resolution");
 
-    // Set params DEFAULT
-    curvature = 0.07f;
-    bloomIntensity = 2.3f;
-    glowIntensity = 1.5f;
-    scanlineIntensity = 1.0f;
-    brightness = 1.4f;
-    sh_resolution = { 1920.0f, 1080.0f };
-    
-    ReloadShader();
+    // Load default settings first
+    LoadSettingsDefault();
 
+    // Check if settings file exists and is readable
+    std::ifstream settingsFile("settings.json");
+    if (!settingsFile.good()) {
+        // Create settings.json with default settings
+        FileSystemManager fsm;
+        fsm.saveSettings("settings.json");
+    } else {
+        try {
+            // Load settings from file
+            FileSystemManager fsm;
+            fsm.loadSettings("settings.json");
+        } catch (const nlohmann::json::parse_error& e) {
+            std::cerr << "Failed to parse settings.json: " << e.what() << std::endl;
+            // Create settings.json with default settings
+            FileSystemManager fsm;
+            fsm.saveSettings("settings.json");
+        }
+    }
+
+    ReloadShader();
 }
 

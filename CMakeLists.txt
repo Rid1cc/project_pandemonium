@@ -38,6 +38,18 @@ if(APPLE)
     add_custom_command(TARGET pandemonium_bundle POST_BUILD
         COMMAND chmod -R 755 $<TARGET_BUNDLE_DIR:pandemonium_bundle>/Contents/assets
     )
+    # Create config folder in bundle
+    add_custom_command(TARGET pandemonium_bundle POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_BUNDLE_DIR:pandemonium_bundle>/Contents/config
+    )
+    # Copy settings.json to config folder in bundle
+    add_custom_command(TARGET pandemonium_bundle POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/config/settings.json $<TARGET_BUNDLE_DIR:pandemonium_bundle>/Contents/config/settings.json
+    )
+    # Set permissions for config folder in bundle
+    add_custom_command(TARGET pandemonium_bundle POST_BUILD
+        COMMAND chmod -R 755 $<TARGET_BUNDLE_DIR:pandemonium_bundle>/Contents/config
+    )
     # Copy assets folder for normal executable
     add_custom_command(TARGET pandemonium POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory

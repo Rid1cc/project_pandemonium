@@ -2,6 +2,8 @@
 #include <raylib.h>
 #include "../headers/MiniGameManager.h"
 #include "../headers/globals.h"
+#include "../headers/shader_handler.h"
+#include "../managers/FileSystemManager.h"
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -59,4 +61,19 @@ std::string floatToString(float num) {
     std::ostringstream oss;
     oss << num; 
     return oss.str(); 
+}
+
+void LoadSettingsDefault(){
+    master_volume = 0.5;
+    music_volume = 1.0;
+    sfx_volume = 1.0;
+    shaderQuality = LOW;
+    primaryColor = ORANGE;
+    curvature = 0.07f;
+    bloomIntensity = 2.3f;
+    glowIntensity = 1.5f;
+    scanlineIntensity = 1.0f;
+    brightness = 1.4f;
+    sh_resolution = {1920, 1080}; // Add this line to set default resolution
+    displayColor = ORANGE; // Ensure displayColor is set to a default value
 }

@@ -4,6 +4,8 @@
 #include "../headers/settings_vars.h"
 #include "../headers/shader_handler.h"
 
+FileSystemManager fsm;
+
 void sc_switcher(Vector2 &mousePos, Rectangle button, bool &highlight, enum SettingsScreen parseToScreen){
     if(CheckCollisionPointRec(mousePos, button)==true){
         highlight = true;
@@ -75,11 +77,11 @@ void SettingsUpdate(float& general_volume, float& effects_volume, bool& mute_aud
                 } break;
                 default: break;
             }
+            primaryColor = displayColor; // Ensure primaryColor is set to displayColor
+            fsm.saveSettings("settings.json");
             ReloadShader(); 
-            primaryColor = displayColor;
+        }
     } else apply_highl = false;
-    }
-
 
     //restore
     if(CheckCollisionPointRec(mousePos, button_restore)==true){
@@ -87,6 +89,8 @@ void SettingsUpdate(float& general_volume, float& effects_volume, bool& mute_aud
         restore_highl = true;
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
             restore_highl = false;
+            LoadSettingsDefault();
+            ReloadShader();
             }
     } else restore_highl = false;
 }
