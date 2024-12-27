@@ -11,6 +11,7 @@ std::mt19937 rng(std::chrono::steady_clock::now().time_since_epoch().count());
 // Global variables
 bool exitGame = false;
 std::string assetsPath;
+std::string configPath;
 Rectangle TextureKernel;
 
 //3D stuff
@@ -142,13 +143,13 @@ float Clamp(float value, float min, float max) {
 }
 
 // Function to get the path to the assets directory
-std::string getAssetsPath() {
+std::string getSubfolderPath(std::string subfolder){
     char buffer[1024];
     uint32_t size = sizeof(buffer);
     if (_NSGetExecutablePath(buffer, &size) == 0) {
         std::string path(buffer);
         size_t pos = path.find_last_of("/\\");
-        return path.substr(0, pos) + "/../assets/";
+        return path.substr(0, pos) + "/../" + subfolder + "/";
     } else {
         std::cerr << "Buffer too small; need size " << size << std::endl;
         return "";

@@ -24,7 +24,8 @@ int main(void) {
     SetTargetFPS(60);
 
     // Get the assets path
-    assetsPath = getAssetsPath();
+    assetsPath = getSubfolderPath("assets");
+    configPath = getSubfolderPath("config");
 
     //FONT INIT, LOADING INTO VRAM
     alagard = LoadFont((assetsPath + "fonts/alagard.png").c_str()); // For ui related

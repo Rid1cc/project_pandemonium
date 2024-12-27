@@ -43,6 +43,7 @@ extern Font alagard;
 extern Font pixeled;
 extern std::mt19937 rng;
 extern std::string assetsPath;
+extern std::string configPath;
 extern Rectangle TextureKernel;
 extern Color primaryColor;
 
@@ -82,5 +83,5 @@ Rectangle ShakeRectangleOnClick(Rectangle rec, float intensity);
 void ProjectModel(const char* objFilePath, Color modelColor, Rectangle destRect);
 float Clamp(float value, float min, float max);
 float Enround(float num, int pos);
-std::string getAssetsPath();
+std::string getSubfolderPath(std::string subfolder);
 

@@ -78,7 +78,7 @@ void SettingsUpdate(float& general_volume, float& effects_volume, bool& mute_aud
                 default: break;
             }
             primaryColor = displayColor; // Ensure primaryColor is set to displayColor
-            fsm.saveSettings("settings.json");
+            fsm.saveSettings((configPath + "settings.json").c_str());
             ReloadShader(); 
         }
     } else apply_highl = false;

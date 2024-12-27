@@ -3,34 +3,19 @@
 #include <fstream>
 #include "../headers/settings_vars.h"
 
-// Function to get the path to the assets directory
-std::string FileSystemManager::getConfigPath() {
-    char buffer[1024];
-    uint32_t size = sizeof(buffer);
-    if (_NSGetExecutablePath(buffer, &size) == 0) {
-        std::string path(buffer);
-        size_t pos = path.find_last_of("/\\");
-        return path.substr(0, pos) + "/../config/";
-    } else {
-        std::cerr << "Buffer too small; need size " << size << std::endl;
-        return "";
-    }
-}
 
 void FileSystemManager::save(const std::string& filePath, const nlohmann::json& data) {
-    std::string configPath = getConfigPath();
-    std::ofstream file((configPath + filePath).c_str());
+    std::ofstream file(filePath.c_str());
     if (file.is_open()) {
         file << data.dump(4); // Pretty print with 4 spaces
         file.close();
     } else {
-        printf("Error saving file: %s\n", (configPath + filePath).c_str());
+        printf("Error saving file: %s\n", filePath.c_str());
     }
 }
 
 nlohmann::json FileSystemManager::load(const std::string& filePath) {
-    std::string configPath = getConfigPath();
-    std::ifstream file((configPath + filePath).c_str());
+    std::ifstream file(filePath.c_str());
     nlohmann::json data;
     if (file.is_open()) {
         file >> data;

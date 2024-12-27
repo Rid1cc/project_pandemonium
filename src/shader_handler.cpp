@@ -63,7 +63,6 @@ void ReloadShader(){
     primaryColor = displayColor; // Ensure primaryColor is set to displayColor
 }
 void InitializeShader() {
-    std::string assetsPath = getAssetsPath();
     shader = LoadShader(0, (assetsPath + "shaders/fx.fs").c_str());
 
     if (shader.id == 0) {
@@ -83,21 +82,21 @@ void InitializeShader() {
     LoadSettingsDefault();
 
     // Check if settings file exists and is readable
-    std::ifstream settingsFile("settings.json");
+    std::ifstream settingsFile((configPath + "settings.json").c_str());
     if (!settingsFile.good()) {
         // Create settings.json with default settings
         FileSystemManager fsm;
-        fsm.saveSettings("settings.json");
+        fsm.saveSettings((configPath + "settings.json").c_str());
     } else {
         try {
             // Load settings from file
             FileSystemManager fsm;
-            fsm.loadSettings("settings.json");
+            fsm.loadSettings((configPath + "settings.json").c_str());
         } catch (const nlohmann::json::parse_error& e) {
             std::cerr << "Failed to parse settings.json: " << e.what() << std::endl;
             // Create settings.json with default settings
             FileSystemManager fsm;
-            fsm.saveSettings("settings.json");
+            fsm.saveSettings((configPath + "settings.json").c_str());
         }
     }
 
