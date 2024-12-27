@@ -4,6 +4,7 @@
 #include "./headers/json.hpp"
 #include "./headers/globals.h"
 #include "./headers/settings_vars.h"
+#include <filesystem>
 
 
 //Locations
@@ -77,6 +78,11 @@ void InitializeShader() {
     scanlineIntensityLoc = GetShaderLocation(shader, "scanlineIntensity");
     brightnessLoc = GetShaderLocation(shader, "brightness");
     sh_resolutionLoc = GetShaderLocation(shader, "resolution");
+
+    // Check if configPath directory exists, if not, create it
+    if (!std::filesystem::exists(configPath)) {
+        std::filesystem::create_directory(configPath);
+    }
 
     // Load default settings first
     LoadSettingsDefault();
