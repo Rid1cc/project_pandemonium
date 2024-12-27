@@ -30,7 +30,7 @@ set(SOURCES
     src/minigames/FinderGame.cpp
     src/minigames/TypeGame.cpp
 # Add your sources
-
+)
 file(GLOB SOURCES
     # sources
     src/*.cpp

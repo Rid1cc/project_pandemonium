@@ -4,22 +4,24 @@
 #include <string>
 #include <iostream>
 #include "headers/MiniGameManager.h"
+#include "minigames/TypeGame.h"
 
 void UpdateGameplay(GameScreen& currentScreen, Rectangle& textBox, char* command, int& letterCount, bool& mouseOnText, int& framesCounter, int& backTimer, std::string* history, int& upTimes) {
     if (CheckCollisionPointRec(GetMousePosition(), textBox)) mouseOnText = true;
     else mouseOnText = true;
     
     static CommandInterpreter cmdInterpreter;
-    
-    int key = GetCharPressed();
+    if (!TypeGame::isTypeActive){
+        int key = GetCharPressed();
 
-    while (key > 0) {
-        if ((key >= 32) && (key <= 125) && (letterCount < 99)) {
-            command[letterCount] = (char)key;
-            command[letterCount + 1] = '\0';
-            letterCount++;
+        while (key > 0) {
+            if ((key >= 32) && (key <= 125) && (letterCount < 99)) {
+                command[letterCount] = (char)key;
+                command[letterCount + 1] = '\0';
+                letterCount++;
+            }
+            key = GetCharPressed();
         }
-        key = GetCharPressed();
     }
 
     if (IsKeyPressed(KEY_ENTER)){

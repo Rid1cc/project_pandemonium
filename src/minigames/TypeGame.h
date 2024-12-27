@@ -13,6 +13,9 @@ private:
     
     std::string typedText; 
 
+    std::vector<bool> correctness;
+    bool allCorrect;
+
     int textFontSize = 35;
     bool isCursorVisible;
     int cursorX = 0;
@@ -22,16 +25,21 @@ private:
     float timeSinceLastCursorBlink = 0.0f;
     bool isTyping;
     
-
+    void UpdateCorrectness();
     void UpdateCurrentNumber(); // update cuurent text[] number
     void DrawRandomText(); // draw drawn text
     void DrawCursor(); // draw cursor 
     void UpdateCursor(float deltaTime); // cursor blinking and position
     void DrawTypedText(); // draw typed letters red or green
     void UpdateTypedText();
+    bool AllCorrect();
+    void shakeWindow(float intensity, float duration);
 public:
     TypeGame(float x, float y, float width, float height, const std::string& title);
-    // bool isTypeWin;
+
+    static bool isTypeActive;
+    bool isTypeWin; // WIN OR LOSE
+
     void Update() override;
     void Draw() override;
 };

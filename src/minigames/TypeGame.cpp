@@ -1,8 +1,14 @@
 #include "TypeGame.h"
 
+bool TypeGame::isTypeActive = false;
+
 TypeGame::TypeGame(float x, float y, float width, float height, const std::string& title)
     : MiniGame(x, y, width, height, title) {
         text = {
+            // TEXT INSTRUCTION:
+            // add \n after every endline and do not add space behind or after '\n'
+            // every line should be in " "
+
             "Firewall activated.\n"
             "Unauthorized access attempts logged.\n"
             "System integrity checks in progress.\n"
@@ -43,20 +49,28 @@ TypeGame::TypeGame(float x, float y, float width, float height, const std::strin
             "Biometric verification in progress.\n"
             "Defenses are holding strong.", // text 8 [7]
         };
-
+        isTypeActive = true;
+        isTypeWin = false;
         randomText = text[GetRandomValue(0, 7)]; // drawn text to display (for now we have 8 texts (0 - 7))
-        //randomText = text[6];
-        typedText = std::string(randomText.length(), '0');
+        //randomText = text[0];
+        typedText = std::string(randomText.length(), '\0');
 
+        correctness = std::vector<bool>(randomText.length(), true);
         isCursorVisible = true;
         currentNumber = 0;
 }
 
 void TypeGame::Update(){
     MiniGame::Update(); // handle dragging
-    UpdateCurrentNumber();
-    UpdateCursor(GetFrameTime());
+    UpdateCorrectness(); 
     UpdateTypedText();
+    UpdateCursor(GetFrameTime());
+    if (AllCorrect() && currentNumber == randomText.length()){
+        gameComplete = true;
+        isTypeWin = true;
+        isTypeActive = false;
+        std::cout << "TypeGame Compete - win." << std::endl;
+    }
 }
 
 void TypeGame::Draw(){
@@ -65,24 +79,69 @@ void TypeGame::Draw(){
     DrawCursor();
 }
 
-void TypeGame::DrawRandomText(){
+void TypeGame::UpdateCorrectness(){
+    for (size_t i = 0; i < randomText.length(); i++){
+        // if (randomText[i] == ' ') {
+        //     correctness[i] = true;
+        //     // thanks to this, when player enter the space correctly, you don't see the red rectangle even for a moment
+        // }
+        if (typedText[i] == '\0'){
+            continue;
+        }
+        else if (typedText[i] == randomText[i] || (randomText[i] == '\n' && typedText[i] == ' ')){
+            correctness[i] = true;
+        } else {
+            correctness[i] = false;
+        }
+    }
+}
 
-    // int textFontSize = 35;
+void TypeGame::DrawRandomText(){
     int textLineHeight = textFontSize + 5; // line height with spacing
     int textY = 100;
-
+    
     std::istringstream textStream(randomText);
     std::string line;
+
+    int globalIndex = 0; // tracks index in typedText/randomText/correctness
     int lineNum = 0;
+
+    int n = 0; // for '\n' in text (DrawText ignore it)
+
     while (std::getline(textStream, line)) {
         int lineWidth = MeasureText(line.c_str(), textFontSize);
         int xPos = window.x + (window.width - lineWidth) / 2;
         int yPos = window.y + textY + lineNum * textLineHeight;
 
-        DrawText(line.c_str(), xPos, yPos, textFontSize, GRAY);
+        // DRAWING  TEXT:
+        for (size_t i = 0; i < line.length(); i++){
+            std::string subText = line.substr(0, i);
+            float currentX = xPos + MeasureText(subText.c_str(), textFontSize);
+
+            std::string letter(1, line[i]);
+            Color colorText = GRAY; // default text color         
+            if (typedText[globalIndex + n] != '\0'){
+                if (correctness[globalIndex + n]){
+                    colorText = GREEN;
+                } else {
+                    colorText = RED;
+                    if (randomText[globalIndex + n] == ' '){
+                        DrawRectangle(ShakeXY(currentX, 3), ShakeXY(yPos, 3), MeasureText(" ", textFontSize), textFontSize, colorText); // drawing red rectangle, when player input is incorrect
+                    }
+                    DrawText(letter.c_str(), ShakeXY(currentX, 3), ShakeXY(yPos, 3), textFontSize, colorText);
+                }
+                    //std::cout << "globalIndex: " << globalIndex << std::endl;
+            }
+            DrawText(letter.c_str(), currentX, yPos, textFontSize, colorText);
+
+            globalIndex++;
+        }
+        n++;
         lineNum++;
-    }   
+    }
+    //std::cout << "globalIndex: " << globalIndex << std::endl;
 }
+
 
 void TypeGame::DrawCursor(){
     if (isCursorVisible){
@@ -119,43 +178,52 @@ void TypeGame::UpdateCursor(float deltaTime){
             return;
         }
         currentChar += line.length() + 1;
+        
         lineNum++;
     }
 }
 
-void TypeGame::UpdateCurrentNumber(){
-    int Key = GetKeyPressed();
-    
-    if (Key > 0){
-        std::cout << " key:  " << Key << std::endl;
+void TypeGame::UpdateTypedText(){
+    int typedKey = GetCharPressed();
 
-        if (Key >= 32 && Key <= 125){
-            currentNumber++;
-            isTyping = true;
-        } else if (Key == KEY_BACKSPACE && currentNumber > 0){
-            currentNumber--;
-            isTyping = true;
-        } 
-        std::cout << "currentNumber: " << currentNumber << std::endl;
-        //std::cout << "Typing: " << isTyping << std::endl;
+    
+    if ((typedKey > 0) && (typedKey >= 32) && (typedKey <= 125) && (currentNumber < randomText.length())) {
+        isTyping = true;
+        typedText[currentNumber] = (char)typedKey;
+        currentNumber++;
     } else {
         isTyping = false;
     }
-}
 
-void TypeGame::UpdateTypedText(){
-    int typedkey = GetCharPressed();
+    if (IsKeyPressed(KEY_BACKSPACE) && currentNumber > 0){
+        currentNumber--;
+        isTyping = true;
+        typedText[currentNumber] = '\0';
+    }
 
-    while (typedkey > 0) {
-        if ((typedkey >= 32) && (typedkey <= 125)) {
-            typedText[currentNumber - 1] = (char)typedkey;
+    if (IsKeyDown(KEY_BACKSPACE)) {
+        if (backTimer >= 30) {
+            currentNumber--;
+            if (currentNumber < 0) currentNumber = 0;
             typedText[currentNumber] = '\0';
         }
-        typedkey = GetCharPressed();
-        std::cout << "typed tex: " << typedText << std::endl;
+        else {
+            backTimer++;
+        }
+    } else {
+        backTimer = 0;
     }
+    std::cout << "currentNumber: " << currentNumber << std::endl;
+    std::cout << "typed text: " << typedText << std::endl;
 }
 
-void TypeGame::DrawTypedText(){
-
+bool TypeGame::AllCorrect(){
+    for (bool c : correctness){
+        if (!c){
+            return false;
+        }
+    }
+    return true;
 }
+
+
