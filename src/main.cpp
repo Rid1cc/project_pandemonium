@@ -9,6 +9,8 @@
 #include "minigames/RotatingRectangleGame.h"
 #include "minigames/ConnectWiresGame.h"
 #include "minigames/FinderGame.h"
+#include "minigames/TypeGame.h"
+
 #include "headers/shader_handler.h"
 #include "logoscreen/logo_screen.h"
 
@@ -54,6 +56,19 @@ int main(void) {
 
     // Minigames decs
     auto connectingGame = std::make_shared<ConnectWiresGame>(700, 250, 400, 300, "window 1");
+    //auto rotatingGame = std::make_shared<RotatingRectangleGame>(200, 150, 400, 300, "Rotating Rectangle");
+    //gameManager.AddGame(rotatingGame);
+
+    //auto finder = std::make_shared<FinderGame>(200, 150, 400, 300, "FinderGame");
+    //gameManager.AddGame(finder);
+
+    //auto connectingGame = std::make_shared<ConnectWiresGame>(700, 250, 400, 300, "Connect Wires in standard B");
+    // gameManager.AddGame(connectingGame);
+    // auto rotatingGame = std::make_shared<RotatingRectangleGame>(700, 250, 400, 300, "Rotating Rectangle");
+    // gameManager.AddGame(rotatingGame);
+    auto type = std::make_shared<TypeGame>(150, 120, 1000, 400, "TypeGame");
+    gameManager.AddGame(type);
+
     auto finder = std::make_shared<FinderGame>(200, 150, 400, 300, "FinderGame");
     
     // Add games to the game manager

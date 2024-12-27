@@ -5,6 +5,7 @@
 #include <iostream>
 #include <algorithm> // For std::copy
 #include "headers/MiniGameManager.h"
+#include "minigames/TypeGame.h"
 
 // Function Declarations
 void UpdateGameplay(GameScreen& currentScreen, Rectangle& textBox, char* command, int& letterCount, bool& mouseOnText, int& framesCounter, int& backTimer, std::string* history, int& upTimes);
@@ -62,14 +63,15 @@ bool IsMouseOnTextBox(const Rectangle& textBox) {
 }
 
 void CaptureTextInput(char* command, int& letterCount) {
-    int key = GetCharPressed();
-    while (key > 0) {
-        if ((key >= 32) && (key <= 125) && (letterCount < 99)) {
-            command[letterCount] = static_cast<char>(key);
-            command[letterCount + 1] = '\0';
-            letterCount++;
+    if (!TypeGame::isTypeActive){
+        int key = GetCharPressed();
+        while (key > 0) {
+            if ((key >= 32) && (key <= 125) && (letterCount < 99)) {
+                command[letterCount] = static_cast<char>(key);
+                command[letterCount + 1] = '\0';
+                letterCount++;
+            }
         }
-        key = GetCharPressed();
     }
 }
 
