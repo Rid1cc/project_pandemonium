@@ -10,7 +10,7 @@
 #include "minigames/ConnectWiresGame.h"
 #include "minigames/FinderGame.h"
 #include "minigames/TypeGame.h"
-
+#include "minigames/BallGame.h"
 #include "headers/shader_handler.h"
 #include "logoscreen/logo_screen.h"
 
@@ -55,7 +55,7 @@ int main(void) {
     InitLogoScreen();
 
     // Minigames decs
-    auto connectingGame = std::make_shared<ConnectWiresGame>(700, 250, 400, 300, "window 1");
+    //auto connectingGame = std::make_shared<ConnectWiresGame>(700, 250, 400, 300, "window 1");
     //auto rotatingGame = std::make_shared<RotatingRectangleGame>(200, 150, 400, 300, "Rotating Rectangle");
     //gameManager.AddGame(rotatingGame);
 
@@ -71,10 +71,12 @@ int main(void) {
 
     auto finder = std::make_shared<FinderGame>(200, 150, 400, 300, "FinderGame");
     
+    auto bouncingballGame = std::make_shared<BallGame>(0,0,1280,720, "Ball Game");
+    gameManager.AddGame(bouncingballGame);
     // Add games to the game manager
     gameManager.AddGame(finder);
     gameManager.SetTotalTime(15.0f);
-    gameManager.AddGame(connectingGame);
+    //gameManager.AddGame(connectingGame);
 
     //define camera state (for 3d models)
     camera.position = (Vector3){ 10.0f, 5.0f, 10.0f }; // Camera position
@@ -86,7 +88,6 @@ int main(void) {
     // Load 3d models
     model_globe = LoadModel((assetsPath + "models/globe.obj").c_str());
     model_cog = LoadModel((assetsPath + "models/cog.obj").c_str());
-    model_data = LoadModel((assetsPath + "models/data.obj").c_str());
     model_door = LoadModel((assetsPath + "models/door.obj").c_str());
 
     // Main game loop
@@ -169,7 +170,6 @@ int main(void) {
     UnloadShader(shader);
     UnloadModel(model_cog);
     UnloadModel(model_door);
-    UnloadModel(model_data);
     UnloadModel(model_globe);
     UnloadRenderTexture(target);
     UnloadRenderTexture(space3d);
