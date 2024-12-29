@@ -17,6 +17,8 @@ void GameplayManager::gameplayEnd() {
     // Cleanup code
 
     // Unsubscribe from events if necessary
+    gameplayEvent.unsubscribe("startGame", [this]() { this->onStartCommand(); });
+    gameplayEvent.unsubscribe("stopGame", [this]() { this->onStopCommand(); });
 }
 
 // Event handler for "startGame" command

@@ -54,6 +54,8 @@ int main(void) {
     // Init Logo Screen
     InitLogoScreen();
 
+    gameplayManager.gameplayInit();
+
     // Minigames decs
     auto connectingGame = std::make_shared<ConnectWiresGame>(700, 250, 400, 300, "window 1");
     auto type = std::make_shared<TypeGame>(150, 120, 1000, 400, "TypeGame");
