@@ -61,7 +61,7 @@ void CommandInterpreter::parseCommand(const std::string& command, std::string* h
             output += a + " ";
         }
         historyDrawn[0] = output;
-    } else if (cmd == "ifconfig") {
+    } else if (cmd == "ipconfig") {
         historyDrawnUp();
         historyDrawn[0] = "IP address: 192.168.100.1";
     } 

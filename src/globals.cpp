@@ -30,7 +30,7 @@ extern float brightness;
 extern Vector2 sh_resolution;
 
 // Gameplay
-GameScreen currentScreen = GAMEPLAY;
+GameScreen currentScreen = LOGO;
 Rectangle healthBar = {screen.x + 30, screen.y + 30, 1117, 40};
 Rectangle attackMenu = {screen.x + 30, screen.y + 97, 249, 106};
 Rectangle infoPanel = {screen.x + 30, screen.y + 250, 249, 383};

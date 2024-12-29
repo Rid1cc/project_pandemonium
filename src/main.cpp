@@ -56,8 +56,8 @@ int main(void) {
 
     // Minigames decs
     auto connectingGame = std::make_shared<ConnectWiresGame>(700, 250, 400, 300, "window 1");
-    //auto type = std::make_shared<TypeGame>(150, 120, 1000, 400, "TypeGame");
-    //gameManager.AddGame(type);
+    auto type = std::make_shared<TypeGame>(150, 120, 1000, 400, "TypeGame");
+    gameManager.AddGame(type);
     //auto finder = std::make_shared<FinderGame>(200, 150, 400, 300, "FinderGame");
     auto bouncingballGame = std::make_shared<BallGame>(300,200,600,500, "Ball Game");
     gameManager.AddGame(bouncingballGame);
