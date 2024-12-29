@@ -2,22 +2,39 @@
 #include "../headers/globals.h"
 #include <unordered_set>
 
-// int randomW;
-//         int randomH;
-//         if(framesCounter%3==0){
-//         for(int i =0; i<=20; i++){
-//             std::uniform_int_distribution<int> rW(50, screenWidth-100);
-//             std::uniform_int_distribution<int> rH(25, screenHeight-50);
-//             randomW = rW(rng);
-//             randomH = rH(rng);
-//             DrawText("-", randomW, randomH, 10, primaryColor);
-//             }
-//         }
-std::mt19937 rng2(std::chrono::steady_clock::now().time_since_epoch().count());
+// TimeManager implementation
+// Its a simple class that counts down from a given number of seconds
+TimeManager::TimeManager() : countdownFrames(0) {}
 
+void TimeManager::setCountdown(int seconds) {
+    countdownFrames = seconds * 60; // 60 frames per second
+}
+
+bool TimeManager::updateCountdown() {
+    if (countdownFrames > 0) {
+        countdownFrames--;
+        printf("Countdown: %d\n", countdownFrames);
+        if (countdownFrames <= 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool TimeManager::isCounting() {
+    if (countdownFrames > 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+// GameplayManager implementation
 GameplayManager::GameplayManager() : 
     difficulty(1)
-    { 
+    {
+        std::mt19937 rng2(std::chrono::steady_clock::now().time_since_epoch().count()); 
 }
 
 GameplayManager::~GameplayManager() {
@@ -65,6 +82,7 @@ void GameplayManager::gameplayInit() {
     
     gameplayEvent.subscribe("startGame", [this]() { this->onStartCommand(); });
     gameplayEvent.subscribe("stopGame", [this]() { this->onStopCommand(); });
+
 }
 
 void GameplayManager::gameplayEnd() {
@@ -74,12 +92,12 @@ void GameplayManager::gameplayEnd() {
     gameplayEvent.unsubscribe("startGame", [this]() { this->onStartCommand(); });
     gameplayEvent.unsubscribe("stopGame", [this]() { this->onStopCommand(); });
 }
-
 // Event handler for "startGame" command
 void GameplayManager::onStartCommand() {
     // Handle start game event
     if(debugMode != LOW)std::cout << "Game Started with difficulty level: " << difficulty << std::endl;
-    // Additional start game logic
+    timer.setCountdown(30); // Set countdown to 30 seconds
+    printf("Countdown initialized to 30 seconds.\n");
 }
 
 // Event handler for "stopGame" command

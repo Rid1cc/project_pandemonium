@@ -28,6 +28,9 @@ void UpdateGameplay(GameScreen& currentScreen, Rectangle& textBox, char* command
     // Update game manager
     gameManager.Update();
 
+    // Update gameplayManager timer
+    gameplayManager.timer.updateCountdown();
+
     // Handle text input
     CaptureTextInput(command, letterCount);
 

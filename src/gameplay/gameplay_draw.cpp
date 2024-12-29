@@ -1,8 +1,7 @@
 #include "../headers/gameplay_draw.h"
 #include "../headers/globals.h"  // Wczytanie zmiennych globalnych, jeśli są potrzebne
+#include "Pid.h"     // Include Pid header
 #include <string>
-
-
 
 // Forward declarations of helper functions
 void DrawMonitor();
@@ -19,6 +18,9 @@ void DrawTerminalInput(const char* command, int letterCount, int framesCounter, 
 void DrawTerminalOutput(const std::string* historyDrawn, int historySize);
 void DrawVersionInfo();
 void DrawGameManager();
+
+// Instantiate Pid
+Pid pidMenuInstance;
 
 void DrawGameplay(Rectangle textBox, const char* command, int letterCount, bool mouseOnText, int framesCounter, std::string* historyDrawn) {
     ClearBackground(BLACK);
@@ -81,13 +83,8 @@ void DrawTerminal() {
 }
 
 void DrawPIDMenu() {
-    DrawRectangleLinesEx(PIDMenu, 2, primaryColor);
+    pidMenuInstance.Render();
 }
-
-
-
-
-
 
 void DrawLines() {
     // Horizontal Lines
