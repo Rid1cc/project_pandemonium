@@ -5,7 +5,7 @@
 #include <iostream>
 #include <algorithm> // For std::copy
 #include "headers/MiniGameManager.h"
-#include "minigames/TypeGame.h"
+#include "minigames/TypeGame.h" // Updated include path
 
 // Function Declarations
 void UpdateGameplay(GameScreen& currentScreen, Rectangle& textBox, char* command, int& letterCount, bool& mouseOnText, int& framesCounter, int& backTimer, std::string* history, int& upTimes);
@@ -23,6 +23,12 @@ void HandleEscapeKey(GameScreen& currentScreen);
 void UpdateGameplay(GameScreen& currentScreen, Rectangle& textBox, char* command, int& letterCount, bool& mouseOnText, int& framesCounter, int& backTimer, std::string* history, int& upTimes) {
     // Update mouse state
     mouseOnText = IsMouseOnTextBox(textBox);
+
+    // Update game manager
+    gameManager.Update();
+
+    // Set isTypeActive based on active TypeGame instances
+    // TypeGame::isTypeActive = gameManager.hasActiveTypeGame();
 
     // Handle text input
     CaptureTextInput(command, letterCount);
@@ -50,9 +56,6 @@ void UpdateGameplay(GameScreen& currentScreen, Rectangle& textBox, char* command
     // Update cursor and frame counter
     UpdateCursorState(mouseOnText, framesCounter);
 
-    // Update game manager
-    gameManager.Update();
-
     // Handle escape key to return to title screen
     HandleEscapeKey(currentScreen);
 }
@@ -63,7 +66,7 @@ bool IsMouseOnTextBox(const Rectangle& textBox) {
 }
 
 void CaptureTextInput(char* command, int& letterCount) {
-    if (!TypeGame::isTypeActive){
+    if (!gameManager.hasActiveTypeGame()) { // Use gameManager's method
         int key = GetCharPressed();
         while (key > 0) {
             if ((key >= 32) && (key <= 125) && (letterCount < 99)) {
@@ -71,6 +74,7 @@ void CaptureTextInput(char* command, int& letterCount) {
                 command[letterCount + 1] = '\0';
                 letterCount++;
             }
+            key = GetCharPressed(); // Add this line to continue retrieving keys
         }
     }
 }
@@ -91,11 +95,11 @@ void ExecuteCommand(CommandInterpreter& cmdInterpreter, char* command, std::stri
     cmdInterpreter.executeCommand(command);
 
     // Clear the command input
-    ClearCommand(command, upTimes);
+    ClearCommand(command, letterCount); // Changed from upTimes to letterCount
 }
 
 void ClearCommand(char* command, int& letterCount) {
-    for(int i = 0; i <= 100; ++i) {
+    for(int i = 0; i < 100; ++i) { // Changed from i <= 100 to i < 100
         if (letterCount > 0) letterCount--;
         command[i] = '\0';
     }
@@ -129,6 +133,7 @@ void NavigateHistory(char* command, int& letterCount, std::string* history, int&
         if (upTimes < 29 && !history[upTimes].empty()) {
             std::string previousCommand = history[upTimes];
             letterCount = previousCommand.length();
+            if(letterCount >= 100) letterCount = 99; // Ensure letterCount does not exceed buffer
             upTimes++;
             std::copy(previousCommand.begin(), previousCommand.end(), command);
             command[letterCount] = '\0'; 
@@ -138,6 +143,7 @@ void NavigateHistory(char* command, int& letterCount, std::string* history, int&
             upTimes--;
             std::string nextCommand = history[upTimes - 1];
             letterCount = nextCommand.length();
+            if(letterCount >= 100) letterCount = 99; // Ensure letterCount does not exceed buffer
             std::copy(nextCommand.begin(), nextCommand.end(), command);
             command[letterCount] = '\0';
         } else if (upTimes == 0) {

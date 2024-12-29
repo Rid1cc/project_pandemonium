@@ -3,57 +3,74 @@
 #define pairsNum 8
 #define pointsNum 16
 
+ConnectWiresRectangle::ConnectWiresRectangle(float x, float y, float width, float height)
+    : rect{ x, y, width, height } {
+}
+
+void ConnectWiresRectangle::draw(){
+    DrawRectangleLinesEx(rect, 1, PURPLE);
+}
+
+void ConnectWiresRectangle::update(){
+    // Implement if any dynamic behavior is needed
+}
+
 ConnectWiresGame::ConnectWiresGame(float x, float y, float width, float height, const std::string& title)
     : MiniGame(x, y, width, height, title), moveStartPoint(false), moveEndPoint(false),
-    mousePosition(mousePos), points(), isPointMovable(), targetAreas(), isAtTargetArea(), inTargetAreaCounter() {
-    startArea = {window.x + 30, window.y + 40, 35, window.height - 60};
-    endArea = {window.x + window.width - 65, window.y + 40, 35, window.height - 60};
-    colors = {ORANGE, GREEN, BLUE, BROWN, WHITE};
+      inTargetAreaCounter(0),
+      startArea(window.x + 30, window.y + 40, 35, window.height - 60),
+      endArea(window.x + window.width - 65, window.y + 40, 35, window.height - 60),
+      colors{ ORANGE, GREEN, BLUE, BROWN, WHITE },
+      points(pointsNum, Vector2{0,0}),
+      isPointMovable(pointsNum, false),
+      isAtTargetArea(pointsNum, false),
+      targetAreas(pointsNum, ConnectWiresRectangle(0,0,0,0)) {
     CreateWires();
 }
 
-
 void ConnectWiresGame::Update() {
     MiniGame::Update(); // Handle dragging
-    // if (manager->onTop == GetThis()) {
-    // } 
-        UpdatePoints();
+    UpdatePoints();
 }
-
 
 void ConnectWiresGame::Draw() {
     MiniGame::Draw(); // Draw window 
     DrawWires();
 }
 
-
 void ConnectWiresGame::UpdatePoints() {
     Vector2 mousePositionDelta = GetMouseDelta();
+    
     /*handle window drag*/
-        if (isDragable && IsMouseButtonDown(MOUSE_BUTTON_LEFT)) { // if window is beeing dragged
-            // update areas coordinates for start-end points && start-end areas
-            startArea.x += mousePositionDelta.x;
-            startArea.y += mousePositionDelta.y;
-            endArea.x += mousePositionDelta.x;
-            endArea.y += mousePositionDelta.y;
+    if (isDragable && IsMouseButtonDown(MOUSE_BUTTON_LEFT)) { // if window is being dragged
+        // update areas coordinates for start-end points && start-end areas
+        startArea.rect.x += mousePositionDelta.x;
+        startArea.rect.y += mousePositionDelta.y;
+        endArea.rect.x += mousePositionDelta.x;
+        endArea.rect.y += mousePositionDelta.y;
+        
+        for(auto &area : targetAreas){
+            area.rect.x += mousePositionDelta.x;
+            area.rect.y += mousePositionDelta.y;
         }
+
+        for(auto &point : points){
+            point.x += mousePositionDelta.x;
+            point.y += mousePositionDelta.y;
+        }
+    }
 
     /*handle moving the points*/
     for (int i = pointsNum - 1; i >= 0; i--) { // for all points
         
-        // Drag points with window
-        if (isDragable && IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
-        points[i].x += mousePositionDelta.x;
-        points[i].y += mousePositionDelta.y;
-        targetAreas[i].x += mousePositionDelta.x;
-        targetAreas[i].y += mousePositionDelta.y;
-        }
-
         // check if point should be able to move
-        if ((CheckCollisionPointCircle(mousePos, points[i], 10.0f)) && (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) && !IsAnyMovable()) {
+        if ((CheckCollisionPointCircle(mousePos, points[i], 10.0f)) && 
+            (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) && 
+            !IsAnyMovable()) {
             isPointMovable[i] = true;
             TraceLog(LOG_INFO, "point %i is movable", i);
         }
+
         if (isPointMovable[i]) {
             points[i] = mousePos;
             if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
@@ -64,88 +81,86 @@ void ConnectWiresGame::UpdatePoints() {
 
         /*move points back to their area*/
         if (i % 2 == 0) { // for start area
-            if ((points[i].x >= (startArea.x + startArea.width))) points[i].x = startArea.x + startArea.width;
-            else if (points[i].x <= (startArea.x)) points[i].x = startArea.x;
-            if (points[i].y >= (startArea.y + startArea.height)) points[i].y = startArea.y + startArea.height;
-            else if (points[i].y <= startArea.y) points[i].y = startArea.y;
+            points[i].x = std::clamp(points[i].x, startArea.rect.x, startArea.rect.x + startArea.rect.width);
+            points[i].y = std::clamp(points[i].y, startArea.rect.y, startArea.rect.y + startArea.rect.height);
         }
-        else {
-            if ((points[i].x >= (endArea.x + endArea.width))) points[i].x = endArea.x + endArea.width;
-            else if (points[i].x <= (endArea.x)) points[i].x = endArea.x;
-            if (points[i].y >= (endArea.y + endArea.height)) points[i].y = endArea.y + endArea.height;
-            else if (points[i].y <= endArea.y) points[i].y = endArea.y;
+        else { // for end area
+            points[i].x = std::clamp(points[i].x, endArea.rect.x, endArea.rect.x + endArea.rect.width);
+            points[i].y = std::clamp(points[i].y, endArea.rect.y, endArea.rect.y + endArea.rect.height);
         }
-    
         
-        if (CheckCollisionCircleRec(points[i], 10.0f, targetAreas[i])){
-            if(isAtTargetArea[i] == false) {
+        if (CheckCollisionCircleRec(points[i], 10.0f, targetAreas[i].rect)){
+            if(!isAtTargetArea[i]) {
                 isAtTargetArea[i] = true;
                 inTargetAreaCounter++;
                 TraceLog(LOG_INFO, "Point %i is in right spot!", i);
             }
         } 
-        else if(!CheckCollisionCircleRec(points[i], 10.0f, targetAreas[i])) {
-            if(isAtTargetArea[i] == true) {
+        else {
+            if(isAtTargetArea[i]) {
                 isAtTargetArea[i] = false;
                 inTargetAreaCounter--;
                 TraceLog(LOG_INFO, "Point %i is not in right spot!", i);
             }
         }
         
-        if (inTargetAreaCounter == 14 && CheckCollisionCircleRec(points[7], 10.0f, targetAreas[11]) && CheckCollisionCircleRec(points[11], 10.0f, targetAreas[7])) {
+        if (inTargetAreaCounter >= 14 && 
+            CheckCollisionCircleRec(points[7], 10.0f, targetAreas[11].rect) && 
+            CheckCollisionCircleRec(points[11], 10.0f, targetAreas[7].rect)) {
             if(!gameComplete) {
-            TraceLog(LOG_INFO, "MiniGame Complete!");
-            gameComplete = true;
+                TraceLog(LOG_INFO, "MiniGame Complete!");
+                gameComplete = true;
             }
         }
     }
 
 }
 
-
 bool ConnectWiresGame::IsAnyMovable() {
-    for (int i = 0; i < pointsNum; i++) {
-        if (isPointMovable[i] == true) return true;
-    }
-    return false;
+    return std::any_of(isPointMovable.begin(), isPointMovable.end(), [](bool movable) { return movable; });
 }
-
 
 void ConnectWiresGame::DrawWires() {
-    // DrawLineBezier(wirePoints[0], wirePoints[1], 4.0f, ORANGE);
     for (int i = 0; i < pairsNum; i++) {
-        DrawLineBezier(points[2*i], points[(2*i)+1], 4.0f,(i%2==0)? colors[i/2]:colors[(i-1)/2]);
-        DrawCircleV(points[i*2], CheckCollisionPointCircle(mousePosition, points[i*2], 10.0f)? 14.0f : 8.0f,(i%2==0)? WHITE:colors[i/2]);
-        DrawCircleV(points[(i*2)+1], CheckCollisionPointCircle(mousePosition, points[(i*2)+1], 10.0f)? 14.0f : 8.0f,(i%2==0)? WHITE:colors[i/2]);
+        if (2*i + 1 >= pointsNum || i >= targetAreas.size()) {
+            // Prevent out-of-bounds access
+            continue;
+        }
+        DrawLineBezier(points[2*i], points[(2*i)+1], 4.0f, (i%2==0) ? colors[i/2] : colors[(i-1)/2]);
+        DrawCircleV(points[i*2], CheckCollisionPointCircle(mousePosition, points[i*2], 10.0f) ? 14.0f : 8.0f, (i%2==0) ? WHITE : colors[i/2]);
+        DrawCircleV(points[(i*2)+1], CheckCollisionPointCircle(mousePosition, points[(i*2)+1], 10.0f) ? 14.0f : 8.0f, (i%2==0) ? WHITE : colors[i/2]);
     }
-    for (int i = 0; i < pointsNum; i++) {
-        DrawRectangleLinesEx(targetAreas[i], 1, PURPLE);
+    for (size_t i = 0; i < targetAreas.size(); ++i) {
+        // Ensure each area is valid before drawing
+        if (i < targetAreas.size()) {
+            targetAreas[i].draw();
+        }
     }
 }
 
-
 void ConnectWiresGame::CreateWires() {
-    points.reserve(pointsNum);
-    isPointMovable.reserve(pointsNum);
-    targetAreas.reserve(pointsNum);
-    isAtTargetArea.reserve(pointsNum);
     for (int i = 0; i < pointsNum; i++) {
-        // set points to not movable
-        isPointMovable[i] = false;
-        isAtTargetArea[i] = false;
+        // Initialize points
         if (i % 2 == 0){ // for startArea
-            // set points (x, y)
-            points[i] = {startArea.x + (startArea.width/2), startArea.y + (startArea.height/8)/2 + (startArea.height/8)*(i/2)};
-            // set targetAreas
-            targetAreas[i] = {startArea.x, startArea.y + (startArea.height/8)*(i/2), startArea.width, (startArea.height/8)};}
-        else if (i % 2 == 1) { // for endArea
-            // set points (x, y)
-            points[i] = {endArea.x + (endArea.width/2), endArea.y + endArea.height - ((endArea.height/8)/2) - (startArea.height/8)*(i/2)};
-            TraceLog(LOG_INFO, "succesfully created pair %i", ((i + 1)/2));
-            // set targetAreas
-            targetAreas[i] = {endArea.x,endArea.y + (endArea.height/8)*(i/2),endArea.width, (endArea.height/8)};
+            points[i] = { startArea.rect.x + (startArea.rect.width / 2), 
+                         startArea.rect.y + (startArea.rect.height / 8) / 2 + (startArea.rect.height / 8) * (i / 2) };
+            targetAreas[i] = ConnectWiresRectangle(startArea.rect.x, 
+                                                  startArea.rect.y + (startArea.rect.height / 8) * (i / 2), 
+                                                  startArea.rect.width, 
+                                                  startArea.rect.height / 8);
+        }
+        else { // for endArea
+            points[i] = { endArea.rect.x + (endArea.rect.width / 2), 
+                         endArea.rect.y + endArea.rect.height - ((endArea.rect.height / 8) / 2) - (endArea.rect.height / 8) * (i / 2) };
+            TraceLog(LOG_INFO, "successfully created pair %i", ((i + 1)/2));
+            targetAreas[i] = ConnectWiresRectangle(endArea.rect.x, 
+                                                  endArea.rect.y + (endArea.rect.height / 8) * (i / 2), 
+                                                  endArea.rect.width, 
+                                                  endArea.rect.height / 8);
             TraceLog(LOG_INFO, "successfully created target %i", (i + 1)/2);
         }
+        isPointMovable[i] = false;
+        isAtTargetArea[i] = false;
     }
 }
 

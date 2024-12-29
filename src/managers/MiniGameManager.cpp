@@ -1,5 +1,6 @@
 #include "../headers/MiniGameManager.h"
 #include "../headers/globals.h"
+#include "../minigames/TypeGame.h" // Ensure this include is present
 
 // Constructor initializes timer and state variables
 MiniGameManager::MiniGameManager()
@@ -223,4 +224,22 @@ void MiniGameManager::Close(std::shared_ptr<MiniGame>& game) {
         SetEndMessage(true); // Set win message
         timerActive = false;
     }
+}
+
+bool MiniGameManager::allGamesClosed() const {
+    for (const auto& game : games) {
+        if (game->isOpen) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool MiniGameManager::hasActiveTypeGame() const {
+    for (const auto& game : games) {
+        if (dynamic_cast<TypeGame*>(game.get()) && game->isOpen) {
+            return true;
+        }
+    }
+    return false;
 }

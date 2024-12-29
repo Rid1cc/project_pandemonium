@@ -1,13 +1,11 @@
 #include "TypeGame.h"
 
-bool TypeGame::isTypeActive = false;
-
 TypeGame::TypeGame(float x, float y, float width, float height, const std::string& title)
     : MiniGame(x, y, width, height, title) {
         text = {
             // TEXT INSTRUCTION:
-            // add \n after every endline and do not add space behind or after '\n'
-            // every line should be in " "
+            // Add \n after every endline without adding space behind or after '\n'
+            // Every line should be in " "
 
             "Firewall activated.\n"
             "Unauthorized access attempts logged.\n"
@@ -17,12 +15,12 @@ TypeGame::TypeGame(float x, float y, float width, float height, const std::strin
             "Encryption keys verified successfully.\n"
             "Suspicious activity neutralized.\n"
             "Real-time traffic monitoring engaged.\n" 
-            "Secure communication channel established." , // text 2 [1]
+            "Secure communication channel established.", // text 2 [1]
 
             "Alert! Possible phishing attack detected.\n"
             "User credentials remain uncompromised.\n"
             "Training staff on security protocols.\n"
-            "Audit scheduled for vulnerable systems." , // text 3 [2]
+            "Audit scheduled for vulnerable systems.", // text 3 [2]
 
             "Multiple login attempts blocked.\n"
             "Account locked for security reasons.\n"
@@ -49,7 +47,6 @@ TypeGame::TypeGame(float x, float y, float width, float height, const std::strin
             "Biometric verification in progress.\n"
             "Defenses are holding strong.", // text 8 [7]
         };
-        isTypeActive = true;
         isTypeWin = false;
         randomText = text[GetRandomValue(0, 7)]; // drawn text to display (for now we have 8 texts (0 - 7))
         //randomText = text[0];
@@ -60,6 +57,9 @@ TypeGame::TypeGame(float x, float y, float width, float height, const std::strin
         currentNumber = 0;
 }
 
+TypeGame::~TypeGame(){
+}
+
 void TypeGame::Update(){
     MiniGame::Update(); // handle dragging
     UpdateCorrectness(); 
@@ -68,8 +68,7 @@ void TypeGame::Update(){
     if (AllCorrect() && currentNumber == randomText.length()){
         gameComplete = true;
         isTypeWin = true;
-        isTypeActive = false;
-        std::cout << "TypeGame Compete - win." << std::endl;
+        std::cout << "TypeGame Complete - win." << std::endl;
     }
 }
 
@@ -81,10 +80,6 @@ void TypeGame::Draw(){
 
 void TypeGame::UpdateCorrectness(){
     for (size_t i = 0; i < randomText.length(); i++){
-        // if (randomText[i] == ' ') {
-        //     correctness[i] = true;
-        //     // thanks to this, when player enter the space correctly, you don't see the red rectangle even for a moment
-        // }
         if (typedText[i] == '\0'){
             continue;
         }
@@ -184,12 +179,16 @@ void TypeGame::UpdateCursor(float deltaTime){
 }
 
 void TypeGame::UpdateTypedText(){
+    std::lock_guard<std::mutex> lock(inputMutex); // Ensure thread safety
+    if (!gameManager.hasActiveTypeGame()) {
+        return; // Exit if TypeGame is no longer active
+    }
+
     int typedKey = GetCharPressed();
 
-    
     if ((typedKey > 0) && (typedKey >= 32) && (typedKey <= 125) && (currentNumber < randomText.length())) {
         isTyping = true;
-        typedText[currentNumber] = (char)typedKey;
+        typedText[currentNumber] = static_cast<char>(typedKey);
         currentNumber++;
     } else {
         isTyping = false;

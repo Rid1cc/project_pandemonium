@@ -5,103 +5,110 @@ using namespace std;
 
 BallGame::BallGame(float x, float y, float width, float height, const std::string& title)
     : MiniGame(x, y, width, height, title),
-        rec1(width, height),
-        rec2(width, height),
-        rec3(width, height)
-        {
-        ball.radius = 20;
-        ball.x = 20;
-        ball.y = window.height / 2;
-        rec1.x = window.width / 2;
-        rec1.y = window.height / 2 - 50;
-        rec2.x = window.width / 2 - 100;
-        rec2.y = window.height / 2 - 75;
-        rec3.x = window.width / 2 + 100;
-        rec3.y = window.height / 2 + 75;
-        rec1.speed_y = 10;
-        rec2.speed_y = -12;
-        rec3.speed_y = 9;
+      window_width(width),
+      window_height(height)
+{
+    // Initialize ball properties based on window size
+    ball_radius = window_width * 0.05f;
+    ball_x = window_width * 0.05f;
+    ball_y = window_height / 2;
+    ball_speed = 6;
+
+    // Initialize rectangles' positions and speeds relative to window size
+    RectangleEntity rect1;
+    rect1.x = window_width / 2;
+    rect1.y = window_height / 2 - (window_height * 0.1f);
+    rect1.speed_y = static_cast<int>(window_height * 0.025f);
+    
+    RectangleEntity rect2;
+    rect2.x = window_width / 2 - (window_width * 0.2f);
+    rect2.y = window_height / 2 - (window_height * 0.15f);
+    rect2.speed_y = -static_cast<int>(window_height * 0.03f);
+    
+    RectangleEntity rect3;
+    rect3.x = window_width / 2 + (window_width * 0.2f);
+    rect3.y = window_height / 2 + (window_height * 0.15f);
+    rect3.speed_y = static_cast<int>(window_height * 0.0225f);
+    
+    rectangles.push_back(rect1);
+    rectangles.push_back(rect2);
+    rectangles.push_back(rect3);
 }
 
 void BallGame::BallReset(){
-    ball.x = 20;
-    ball.y = 400;
+    ball_x = window_width * 0.05f;
+    ball_y = window_height / 2;
 }
 
 void BallGame::GameOver(){
-    DrawText("GameOver", window.width - 100, (window.height / 4)- 100, 80, WHITE);
+    DrawText("GameOver", window.width - 100, (window.height / 4) - 100, 80, WHITE);
+}
+
+void BallGame::DrawBall(){
+    DrawCircle(window.x + ball_x, window.y + ball_y, ball_radius, PINK);
+}
+
+void BallGame::DrawRectangles(){
+    for(auto &rect : rectangles){
+        DrawRectangle(window.x + rect.x, window.y + rect.y, window_width * 0.05f, window_height * 0.4f, BLUE);
+    }
+}
+
+void BallGame::UpdateRectangles(){
+    for(auto &rect : rectangles){
+        rect.y += rect.speed_y;
+        if(rect.y + (window_height * 0.4f) >= window_height || rect.y <= 0){
+            rect.speed_y *= -1;
+        }
+    }
+}
+
+void BallGame::HandleCollision(){
+    for(auto &rect : rectangles){
+        if(CheckCollisionCircleRec(Vector2{ball_x + window.x, ball_y + window.y}, ball_radius, Rectangle{rect.x + window.x, rect.y + window.y, window_width * 0.05f, window_height * 0.4f})){
+            BallReset();
+            break;
+        }
+    }
 }
 
 void BallGame::Update(){
     if(IsKeyDown(KEY_RIGHT)){
-        ball.x += 6;
+        ball_x += ball_speed;
     }
-    else if(IsKeyDown(KEY_LEFT)){
-        ball.x -= 6;
+    if(IsKeyDown(KEY_LEFT)){
+        ball_x -= ball_speed;
     }
-    else if(IsKeyDown(KEY_DOWN)){
-        ball.y += 6;
+    if(IsKeyDown(KEY_DOWN)){
+        ball_y += ball_speed;
     }
-    else if(IsKeyDown(KEY_UP)){
-        ball.y -= 6;
+    if(IsKeyDown(KEY_UP)){
+        ball_y -= ball_speed;
     }
-    rec1.update();
-    rec2.update();
-    rec3.update();
+
+    // Ensure the ball stays within window bounds
+    if(ball_x - ball_radius < 0){
+        ball_x = ball_radius;
+    }
+    
+    // Check if the ball touches the right wall
+    if(ball_x + ball_radius > window_width){
+        ball_x = window_width - ball_radius; // Keep the ball within bounds
+        gameComplete = true; // Set game as complete
+    }
+
+    if(ball_y - ball_radius < 0){
+        ball_y = ball_radius;
+    }
+    if(ball_y + ball_radius > window_height){
+        ball_y = window_height - ball_radius;
+    }
+
+    UpdateRectangles();
+    HandleCollision();
 }
 
 void BallGame::Draw(){
-    if(CheckCollisionCircleRec(Vector2{ball.x, ball.y}, ball.radius, Rectangle{rec1.x, rec1.y, 50, 200})){
-        GameOver();
-        BallReset();
-    }
-    if(CheckCollisionCircleRec(Vector2{ball.x, ball.y}, ball.radius, Rectangle{rec2.x, rec2.y, 50, 200})){
-        GameOver();
-        BallReset();
-    }
-    if(CheckCollisionCircleRec(Vector2{ball.x, ball.y}, ball.radius, Rectangle{rec3.x, rec3.y, 50, 200})){
-        GameOver();
-        BallReset();
-    }
-    ball.draw();
-    rec1.draw();
-    rec2.draw();
-    rec3.draw();
-}
-
-void Rec1::draw(){
-    DrawRectangle(x, y, 50, 200, BLUE);
-}
-
-void Rec1::update(){
-    y += speed_y;
-    if(y + 200 >= window_height || y <= 0){
-        speed_y *= -1;
-    }
-}
-
-void Rec2::draw(){
-    DrawRectangle(x, y, 50, 200, BLUE);
-}
-
-void Rec2::update(){
-    y += speed_y;
-    if(y + 200 >= window_height || y <= 0){
-        speed_y *= -1;
-    }
-}
-
-void Rec3::draw(){
-    DrawRectangle(x, y, 50, 200, BLUE);
-}
-
-void Rec3::update(){
-    y += speed_y;
-    if(y + 200 >= window_height || y <= 0){
-        speed_y *= -1;
-    }
-}
-
-void Ball::draw(){
-    DrawCircle(x, y, radius, PINK);
+    DrawRectangles();
+    DrawBall();
 }

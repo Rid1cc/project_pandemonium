@@ -5,6 +5,7 @@
 #include "../headers/globals.h"
 #include <sstream>
 #include <iostream>
+#include <mutex>
 
 class TypeGame: public MiniGame {
 private:
@@ -34,14 +35,17 @@ private:
     void UpdateTypedText();
     bool AllCorrect();
     void shakeWindow(float intensity, float duration);
+    std::mutex inputMutex; // Added mutex for thread safety
+
 public:
     TypeGame(float x, float y, float width, float height, const std::string& title);
 
-    static bool isTypeActive;
     bool isTypeWin; // WIN OR LOSE
+
+    ~TypeGame(); // Ensure destructor is declared
 
     void Update() override;
     void Draw() override;
 };
 
-#endif 
+#endif

@@ -55,28 +55,16 @@ int main(void) {
     InitLogoScreen();
 
     // Minigames decs
-    //auto connectingGame = std::make_shared<ConnectWiresGame>(700, 250, 400, 300, "window 1");
-    //auto rotatingGame = std::make_shared<RotatingRectangleGame>(200, 150, 400, 300, "Rotating Rectangle");
-    //gameManager.AddGame(rotatingGame);
-
+    auto connectingGame = std::make_shared<ConnectWiresGame>(700, 250, 400, 300, "window 1");
+    //auto type = std::make_shared<TypeGame>(150, 120, 1000, 400, "TypeGame");
+    //gameManager.AddGame(type);
     //auto finder = std::make_shared<FinderGame>(200, 150, 400, 300, "FinderGame");
-    //gameManager.AddGame(finder);
-
-    //auto connectingGame = std::make_shared<ConnectWiresGame>(700, 250, 400, 300, "Connect Wires in standard B");
-    // gameManager.AddGame(connectingGame);
-    // auto rotatingGame = std::make_shared<RotatingRectangleGame>(700, 250, 400, 300, "Rotating Rectangle");
-    // gameManager.AddGame(rotatingGame);
-    auto type = std::make_shared<TypeGame>(150, 120, 1000, 400, "TypeGame");
-    gameManager.AddGame(type);
-
-    auto finder = std::make_shared<FinderGame>(200, 150, 400, 300, "FinderGame");
-    
-    auto bouncingballGame = std::make_shared<BallGame>(0,0,1280,720, "Ball Game");
+    auto bouncingballGame = std::make_shared<BallGame>(300,200,600,500, "Ball Game");
     gameManager.AddGame(bouncingballGame);
     // Add games to the game manager
-    gameManager.AddGame(finder);
-    gameManager.SetTotalTime(15.0f);
-    //gameManager.AddGame(connectingGame);
+    //gameManager.AddGame(finder);
+    gameManager.SetTotalTime(900.0f);
+    gameManager.AddGame(connectingGame);
 
     //define camera state (for 3d models)
     camera.position = (Vector3){ 10.0f, 5.0f, 10.0f }; // Camera position

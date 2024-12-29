@@ -61,6 +61,10 @@ public:
 
     // Timer configuration
     void SetTotalTime(float duration); // Sets the total duration for the timer
+
+    bool allGamesClosed() const; // Add this line
+
+    bool hasActiveTypeGame() const; // Ensure this line exists
 };
 
 #endif // MINI_GAME_MANAGER_H

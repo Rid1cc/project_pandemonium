@@ -6,61 +6,34 @@
 #include <ctime>
 #include <cstdlib>
 #include <unistd.h>
+#include <vector>
 using namespace std;
-
-class Ball {
-public:
-    float x, y;
-    int radius;
-    int speed;
-    void draw();
-};
-
-class Rec1 {
-public:
-    float x, y;
-    int speed_y;
-    float window_width;
-    float window_height;
-
-    Rec1(float win_width, float win_height) : window_width(win_width), window_height(win_height) {}
-    void draw();
-    void update();
-};
-
-class Rec2 {
-public:
-    float x, y;
-    int speed_y;
-    float window_width;
-    float window_height;
-
-    Rec2(float win_width, float win_height) : window_width(win_width), window_height(win_height) {}
-    void draw();
-    void update();
-};
-
-class Rec3 {
-public:
-    float x, y;
-    int speed_y;
-    float window_width;
-    float window_height;
-
-    Rec3(float win_width, float win_height) : window_width(win_width), window_height(win_height) {}
-    void draw();
-    void update();
-};
 
 class BallGame : public MiniGame {
 private:
     Color kolor;
-    Ball ball;
-    Rec1 rec1;
-    Rec2 rec2;
-    Rec3 rec3;
+    
+    // Integrated Ball properties
+    float ball_x, ball_y;
+    int ball_radius;
+    int ball_speed;
+    
+    // Integrated Rectangle properties
+    struct RectangleEntity {
+        float x, y;
+        int speed_y;
+    };
+    std::vector<RectangleEntity> rectangles;
+    
+    float window_width;
+    float window_height;
+
     void BallReset();
     void GameOver();
+    void DrawBall();
+    void DrawRectangles();
+    void UpdateRectangles();
+    void HandleCollision();
 
 public:
     BallGame(float x, float y, float width, float height, const std::string& title);

@@ -11,7 +11,7 @@
 class MiniGame {
 public:
     MiniGame(float x, float y, float width, float height, const std::string& title);
-    ~MiniGame() = default;
+    virtual ~MiniGame(); // Add this line
 
     Rectangle window;      // Game window dimensions
     std::string title;     // Title of the window

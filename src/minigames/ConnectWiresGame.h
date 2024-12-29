@@ -2,7 +2,17 @@
 #define CONNECT_WIRES_GAME_H
 
 #include "../headers/MiniGameManager.h"
+#include <vector>
 
+class ConnectWiresRectangle {
+public:
+    Rectangle rect;
+    // Additional properties if needed
+
+    ConnectWiresRectangle(float x, float y, float width, float height);
+    void draw();
+    void update();
+};
 
 class ConnectWiresGame : public MiniGame
 {
@@ -12,9 +22,9 @@ private:
     
     int inTargetAreaCounter;
     Vector2 mousePosition;
-    Rectangle startArea;
-    Rectangle endArea;
-    std::vector<Rectangle> targetAreas;
+    ConnectWiresRectangle startArea;
+    ConnectWiresRectangle endArea;
+    std::vector<ConnectWiresRectangle> targetAreas;
     std::vector<Color> colors; // 4 colors (orange, green, blue, brown, white)
     std::vector<Vector2> points;
     std::vector<bool> isPointMovable;
