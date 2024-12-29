@@ -1,8 +1,8 @@
-#include "headers/CommandInterpreter.h"
+#include "../headers/CommandInterpreter.h"
 #include <iostream>
 #include <sstream>
-#include "headers/globals.h"
-#include "managers/GameplayManager.h"
+#include "../headers/globals.h"
+#include "../managers/GameplayManager.h"
 
 CommandInterpreter::CommandInterpreter(GameplayManager* manager) : currentCommand(""), gameplayManager(manager) {
     // Feature NYD
