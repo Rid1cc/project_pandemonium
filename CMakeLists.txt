@@ -12,32 +12,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsanitize=address")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
 # Dodanie wszystkich plików źródłowych
-set(SOURCES
-    src/main.cpp
-    src/globals.cpp
-    src/gameplay_draw.cpp
-    src/gameplay_update.cpp
-    src/CommandInterpreter.cpp
-    src/shader_handler.cpp
-    # settings
-    src/settings/settings_vars.cpp
-    src/settings/settings_draw.cpp 
-    src/settings/settings_update.cpp
-    src/settings/sc_audio.cpp
-    src/settings/sc_graphics.cpp
-    src/settings/sc_display.cpp
-    src/settings/sc_custom.cpp
-    #
-    src/title_draw.cpp
-    src/title_update.cpp
-    src/MiniGame.cpp
-    src/MiniGameManager.cpp
-    src/minigames/RotatingRectangleGame.cpp
-    src/minigames/ConnectWiresGame.cpp
-    src/minigames/FinderGame.cpp
-    src/minigames/TypeGame.cpp
-# Add your sources
-)
+
 file(GLOB SOURCES
     # sources
     src/*.cpp
@@ -87,11 +62,12 @@ if(APPLE)
     add_custom_command(TARGET pandemonium POST_BUILD
         COMMAND chmod -R 755 $<TARGET_FILE_DIR:pandemonium>/assets
     )
+    target_link_libraries(pandemonium_bundle PRIVATE raylib)
 elseif(UNIX)
     add_executable(pandemonium ${SOURCES})
 endif()
 
 find_package(raylib CONFIG REQUIRED)
 target_link_libraries(pandemonium PRIVATE raylib)
-target_link_libraries(pandemonium_bundle PRIVATE raylib)
+
 
