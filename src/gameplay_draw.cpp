@@ -34,13 +34,13 @@ void DrawGameplay(Rectangle textBox, const char* command, int letterCount, bool 
     DrawHealthBar();
     //=============
     DrawTerminalInput(command, letterCount, framesCounter, mouseOnText);
-    DrawTerminalOutput(historyDrawn, 15);
+    DrawTerminalOutput(historyDrawn, 25);
     DrawGameManager();
 }
 
 void DrawMonitor() {
     // Monitor border
-    DrawRectangleLinesEx(screen, 3.0f, ORANGE);
+    DrawRectangleLinesEx(screen, 3.0f, primaryColor);
 }
 
 void DrawLabels() {
@@ -56,32 +56,32 @@ void DrawLabels() {
 }
 
 void DrawHealthBar() {
-    DrawRectangle(healthBar.x, healthBar.y, healthBar.width, healthBar.height, ORANGE);
+    DrawRectangle(healthBar.x, healthBar.y, healthBar.width, healthBar.height, primaryColor);
     DrawRectangleLinesEx(healthBar, 1, GRAY);
 }
 
 void DrawAttackMenu() {
-    DrawRectangleLinesEx(attackMenu, 2, ORANGE);
+    DrawRectangleLinesEx(attackMenu, 2, primaryColor);
 
     // icon 1
-    DrawRectangle(attackMenu.x + 20, attackMenu.y + 25, 56, 56, ORANGE);
+    DrawRectangle(attackMenu.x + 20, attackMenu.y + 25, 56, 56, primaryColor);
     // icon 2
-    DrawRectangle(attackMenu.x + 96, attackMenu.y + 25, 56, 56, ORANGE);
+    DrawRectangle(attackMenu.x + 96, attackMenu.y + 25, 56, 56, primaryColor);
     // icon 1
-    DrawRectangle(attackMenu.x + 172, attackMenu.y + 25, 56, 56, ORANGE);
+    DrawRectangle(attackMenu.x + 172, attackMenu.y + 25, 56, 56, primaryColor);
 }
 
 void DrawInfoPanel() {
-    DrawRectangleLinesEx(infoPanel, 2, ORANGE);
+    DrawRectangleLinesEx(infoPanel, 2, primaryColor);
 }
 
 void DrawTerminal() {
-    DrawRectangleLinesEx(terminalWindow, 2, ORANGE);
-    // DrawRectangleLinesEx(textBox, 2, ORANGE);
+    DrawRectangleLinesEx(terminalWindow, 2, primaryColor);
+    // DrawRectangleLinesEx(textBox, 2, primaryColor);
 }
 
 void DrawPIDMenu() {
-    DrawRectangleLinesEx(PIDMenu, 2, ORANGE);
+    DrawRectangleLinesEx(PIDMenu, 2, primaryColor);
 }
 
 
@@ -96,7 +96,7 @@ void DrawLines() {
     DrawLineEx({50, halfHeight - 5}, {static_cast<float>(screenWidth) - 350, halfHeight - 5}, 3, BLUE);
 
     // Vertical Lines
-    DrawLineEx({static_cast<float>(screenWidth) - 350, 25}, {static_cast<float>(screenWidth) - 350, halfHeight - 5}, 3, ORANGE);
+    DrawLineEx({static_cast<float>(screenWidth) - 350, 25}, {static_cast<float>(screenWidth) - 350, halfHeight - 5}, 3, primaryColor);
     DrawLineEx({static_cast<float>(screenWidth) - 350, halfHeight + 5}, {static_cast<float>(screenWidth) - 350, static_cast<float>(screenHeight) - 25}, 3, PURPLE);
     DrawLineEx({static_cast<float>(screenWidth) - 340, 25}, {static_cast<float>(screenWidth) - 340, static_cast<float>(screenHeight) - 25}, 3, YELLOW);
 }
@@ -109,23 +109,23 @@ void DrawVersionInfo() {
 void DrawTerminalInput(const char* command, int letterCount, int framesCounter, bool mouseOnText) {
     // Terminal Input Prompt
     int terminalY = terminalWindow.y + terminalWindow.height - 25;
-    // DrawText(">", 55, terminalY, 20, ORANGE);
-    DrawText(">", terminalWindow.x + 5, terminalWindow.y + terminalWindow.height - 25, 20, ORANGE);
-    // DrawTextB(command, 65, terminalY, 20, ORANGE);
-    DrawTextB(command, terminalWindow.x + 5, terminalWindow.y + terminalWindow.height - 25, 20, ORANGE);
+    // DrawText(">", 55, terminalY, 20, primaryColor);
+    DrawText(">", terminalWindow.x + 5, terminalWindow.y + terminalWindow.height - 25, 20, primaryColor);
+    // DrawTextB(command, 65, terminalY, 20, primaryColor);
+    DrawTextB(command, terminalWindow.x + MeasureText("> ", 20), terminalWindow.y + terminalWindow.height - 25, 20, primaryColor);
 
     // Blinking Cursor
     if (letterCount < 40 && ((framesCounter / 20) % 2) == 0) {
         float textWidth = MeasureTextEx(alagard, command, 20, 2).x;
-        DrawTextB("_", 69 + static_cast<int>(textWidth), terminalY, 20, ORANGE);
+        DrawTextB("_", terminalWindow.x + static_cast<int>(textWidth) + MeasureText("> ", 20), terminalY, 20, primaryColor);
     }
 }
 
 void DrawTerminalOutput(const std::string* historyDrawn, int historySize) {
     // Terminal Output History
-    int baseY = GetScreenHeight() - 70;
+    int baseY = GetScreenHeight() - 105;
     for(int i = 0; i < historySize; i++) {
-        DrawTextB(historyDrawn[i].c_str(), 55, baseY - (i * 20), 20, ORANGE);
+        DrawTextB(historyDrawn[i].c_str(), terminalWindow.x + 5, baseY - (i * 20), 20, primaryColor);
     }
 }
 

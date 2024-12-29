@@ -6,6 +6,7 @@
 #include <algorithm> // For std::copy
 #include "headers/MiniGameManager.h"
 #include "minigames/TypeGame.h" // Updated include path
+#include "managers/GameplayManager.h" // Include GameplayManager
 
 // Function Declarations
 void UpdateGameplay(GameScreen& currentScreen, Rectangle& textBox, char* command, int& letterCount, bool& mouseOnText, int& framesCounter, int& backTimer, std::string* history, int& upTimes);
@@ -27,14 +28,11 @@ void UpdateGameplay(GameScreen& currentScreen, Rectangle& textBox, char* command
     // Update game manager
     gameManager.Update();
 
-    // Set isTypeActive based on active TypeGame instances
-    // TypeGame::isTypeActive = gameManager.hasActiveTypeGame();
-
     // Handle text input
     CaptureTextInput(command, letterCount);
 
-    // Initialize Command Interpreter
-    static CommandInterpreter cmdInterpreter;
+    // Initialize Command Interpreter with GameplayManager pointer
+    static CommandInterpreter cmdInterpreter(&gameplayManager);
 
     // Handle command execution on Enter key press
     if (IsKeyPressed(KEY_ENTER)) {
@@ -81,7 +79,7 @@ void CaptureTextInput(char* command, int& letterCount) {
 
 void UpdateHistory(std::string* history, const char* command) {
     // Shift history buffer
-    for(int i = 29; i > 0; --i) {
+    for(int i = 49; i > 0; --i) {
         history[i] = history[i - 1];
     }
     history[0] = std::string(command);
@@ -130,7 +128,7 @@ void HandleBackspace(char* command, int& letterCount, int& backTimer) {
 
 void NavigateHistory(char* command, int& letterCount, std::string* history, int& upTimes, bool isUp) {
     if (isUp) {
-        if (upTimes < 29 && !history[upTimes].empty()) {
+        if (upTimes < 49 && !history[upTimes].empty()) {
             std::string previousCommand = history[upTimes];
             letterCount = previousCommand.length();
             if(letterCount >= 100) letterCount = 99; // Ensure letterCount does not exceed buffer

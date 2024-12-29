@@ -63,7 +63,7 @@ void ReloadShader(){
     GenerateCurvatureMap({static_cast<float>(screenWidth), static_cast<float>(screenHeight)}, curvature);
     primaryColor = displayColor; // Ensure primaryColor is set to displayColor
 }
-void InitializeShader() {
+void InitializeShader() { //and load + initialize settings, extremely important, graphics wont work without this
     shader = LoadShader(0, (assetsPath + "shaders/fx.fs").c_str());
 
     if (shader.id == 0) {

@@ -7,9 +7,17 @@
 #include <chrono>
 #include <iostream>
 #include <string>
-#include <mach-o/dyld.h>
 #include "../managers/FileSystemManager.h"
+#include "../managers/EventManager.h"
+#include "../managers/GameplayManager.h"
 
+#if defined(_WIN32)
+#include <windows.h>
+#elif defined(__APPLE__)
+#include <mach-o/dyld.h>
+#else
+#include <dlfcn.h>
+#endif
 
 typedef enum GameScreen { LOGO = 0, TITLE, SETTINGS, GAMEPLAY, ENDING } GameScreen;
 typedef enum SettingsScreen { GRAPHICS = 0, AUDIO, DISPLAY, CUSTOM } SettingsScreen;
@@ -34,8 +42,8 @@ extern int backTimer;
 extern std::string input;
 extern const int screenWidth;
 extern const int screenHeight;
-extern std::string history[30];
-extern std::string historyDrawn[30];
+extern std::string history[50];
+extern std::string historyDrawn[50];
 extern int upTimes;
 extern bool exitGame;
 extern Vector2 mousePos;
@@ -72,6 +80,9 @@ extern float effects_volume;
 extern Music main_theme;
 extern bool mute_audio;
 extern TraceLogCallback failed_to_load_music;
+
+extern GameplayManager gameplayManager;
+
 #endif // GLOBALS_H
 
 // Funcs

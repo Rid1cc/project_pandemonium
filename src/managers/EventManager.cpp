@@ -14,6 +14,14 @@ int main() {
 
 */
 
+EventManager::EventManager() {
+    // Constructor implementation
+}
+
+EventManager::~EventManager() {
+    // Destructor implementation
+}
+
 void EventManager::subscribe(const std::string& eventName, EventCallback callback) {
     eventListeners[eventName].push_back(callback);
 }

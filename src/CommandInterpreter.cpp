@@ -2,8 +2,9 @@
 #include <iostream>
 #include <sstream>
 #include "headers/globals.h"
+#include "managers/GameplayManager.h"
 
-CommandInterpreter::CommandInterpreter() : currentCommand("") {
+CommandInterpreter::CommandInterpreter(GameplayManager* manager) : currentCommand(""), gameplayManager(manager) {
     // Feature NYD
 }
 
@@ -35,7 +36,7 @@ const std::vector<std::string>& CommandInterpreter::getHistory() const {
 }
 
 void CommandInterpreter::historyDrawnUp() {
-    for(int i = 29; i > 0; i--) {
+    for(int i = 49; i > 0; i--) {
         historyDrawn[i] = historyDrawn[i - 1];
     }
 }
@@ -48,7 +49,6 @@ void CommandInterpreter::parseCommand(const std::string& command, std::string* h
     iss >> cmd;
 
     std::string arg;
-   
 
     while (iss >> arg) {
         args.push_back(arg);
@@ -57,7 +57,7 @@ void CommandInterpreter::parseCommand(const std::string& command, std::string* h
     if (cmd == "echo") {
         historyDrawnUp();
         std::string output;
-        for (const auto& a : args) {  // chceck every arg
+        for (const auto& a : args) {  // check every arg
             output += a + " ";
         }
         historyDrawn[0] = output;
@@ -65,7 +65,17 @@ void CommandInterpreter::parseCommand(const std::string& command, std::string* h
         historyDrawnUp();
         historyDrawn[0] = "IP address: 192.168.100.1";
     } 
-
+    // Subscribe to events based on commands
+    else if (cmd == "start") {
+        gameplayManager->gameplayEvent.triggerEvent("startGame");
+        historyDrawnUp();
+        historyDrawn[0] = "Start command executed.";
+    }
+    else if (cmd == "stop") {
+        gameplayManager->gameplayEvent.triggerEvent("stopGame");
+        historyDrawnUp();
+        historyDrawn[0] = "Stop command executed.";
+    }
     //ADD COMMANDS HERE AS ELSEIF, ADD ARGS AS ARGS, REMEMBER TO EXECUTE historyDrawnUp EVERY TIME LINE IS UPPED.
     else {
         historyDrawnUp();      

@@ -5,6 +5,15 @@
 #include <random>
 #include <chrono>
 
+#if defined(_WIN32)
+#include <windows.h>
+#elif defined(__APPLE__)
+#include <mach-o/dyld.h>
+#else
+#include <dlfcn.h>
+#include <unistd.h>
+#endif
+
 //Random init
 std::mt19937 rng(std::chrono::steady_clock::now().time_since_epoch().count());
 
@@ -30,7 +39,7 @@ extern float brightness;
 extern Vector2 sh_resolution;
 
 // Gameplay
-GameScreen currentScreen = LOGO;
+GameScreen currentScreen = GAMEPLAY;
 Rectangle healthBar = {screen.x + 30, screen.y + 30, 1117, 40};
 Rectangle attackMenu = {screen.x + 30, screen.y + 97, 249, 106};
 Rectangle infoPanel = {screen.x + 30, screen.y + 250, 249, 383};
@@ -44,10 +53,11 @@ bool mouseOnText = false;
 int framesCounter = 0;
 int backTimer = 0;
 int upTimes = 0;
-std::string history[30] = {" "};
-std::string historyDrawn[30] = {" "};
+std::string history[50] = {" "};
+std::string historyDrawn[50] = {" "};
 std::string input = "";
 MiniGameManager gameManager;
+GameplayManager gameplayManager;
 Vector2 mousePos = { 0.0f, 0.0f};
 
 //Title
@@ -145,13 +155,36 @@ float Clamp(float value, float min, float max) {
 // Function to get the path to the assets directory
 std::string getSubfolderPath(std::string subfolder){
     char buffer[1024];
-    uint32_t size = sizeof(buffer);
-    if (_NSGetExecutablePath(buffer, &size) == 0) {
-        std::string path(buffer);
-        size_t pos = path.find_last_of("/\\");
-        return path.substr(0, pos) + "/../" + subfolder + "/";
-    } else {
-        std::cerr << "Buffer too small; need size " << size << std::endl;
+    std::string path;
+
+    #if defined(_WIN32)
+        DWORD size = GetModuleFileNameA(NULL, buffer, sizeof(buffer));
+        if (size == 0 || size == sizeof(buffer)) {
+            std::cerr << "Failed to get executable path." << std::endl;
+            return "";
+        }
+        path = std::string(buffer);
+    #elif defined(__APPLE__)
+        uint32_t size = sizeof(buffer);
+        if (_NSGetExecutablePath(buffer, &size) != 0) {
+            std::cerr << "Buffer too small; need size " << size << std::endl;
+            return "";
+        }
+        path = std::string(buffer);
+    #else
+        ssize_t count = readlink("/proc/self/exe", buffer, sizeof(buffer) - 1);
+        if (count == -1) {
+            std::cerr << "Failed to get executable path." << std::endl;
+            return "";
+        }
+        buffer[count] = '\0';
+        path = std::string(buffer);
+    #endif
+
+    size_t pos = path.find_last_of("/\\");
+    if (pos == std::string::npos) {
+        std::cerr << "Invalid executable path." << std::endl;
         return "";
     }
+    return path.substr(0, pos) + "/../" + subfolder + "/";
 }
