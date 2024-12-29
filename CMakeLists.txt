@@ -4,15 +4,6 @@ project(pandemonium)
 set(CMAKE_C_STANDARD 23)
 set(CMAKE_CXX_STANDARD 23)
 
-#Enable debugging symbols
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
-
-#Enable Address Sanitizer
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsanitize=address")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
-# Dodanie wszystkich plików źródłowych
-
 file(GLOB SOURCES
     # sources
     src/*.cpp
