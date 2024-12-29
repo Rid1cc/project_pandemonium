@@ -1,5 +1,5 @@
-#include "headers/gameplay_draw.h"
-#include "headers/globals.h"  // Wczytanie zmiennych globalnych, jeśli są potrzebne
+#include "../headers/gameplay_draw.h"
+#include "../headers/globals.h"  // Wczytanie zmiennych globalnych, jeśli są potrzebne
 #include <string>
 
 

@@ -1,4 +1,4 @@
-#include "headers/player.h"
+#include "../headers/player.h"
 #include <algorithm>
 #include <iostream>
 

@@ -1,12 +1,12 @@
-#include "headers/gameplay_update.h"
-#include "headers/globals.h"  
-#include "headers/CommandInterpreter.h" 
+#include "../headers/gameplay_update.h"
+#include "../headers/globals.h"  
+#include "../headers/CommandInterpreter.h" 
 #include <string>
 #include <iostream>
 #include <algorithm> // For std::copy
-#include "headers/MiniGameManager.h"
-#include "minigames/TypeGame.h" // Updated include path
-#include "managers/GameplayManager.h" // Include GameplayManager
+#include "../headers/MiniGameManager.h"
+#include "../minigames/TypeGame.h" // Updated include path
+#include "../managers/GameplayManager.h" // Include GameplayManager
 
 // Function Declarations
 void UpdateGameplay(GameScreen& currentScreen, Rectangle& textBox, char* command, int& letterCount, bool& mouseOnText, int& framesCounter, int& backTimer, std::string* history, int& upTimes);
