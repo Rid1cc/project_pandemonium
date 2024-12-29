@@ -6,6 +6,7 @@
 #include "sc_audio.h"
 #include "sc_graphics.h"
 #include "sc_custom.h"
+#include "sc_display.h"
 
 void settings_button(std::string label ,bool &highl, Rectangle button, float xpos, float ypos){
     if(highl == true){
@@ -58,8 +59,7 @@ void DrawSettings(float& general_volume, float& effects_volume) {
                 HandleSetAudio();
             } break;
             case DISPLAY: {
-                DrawText("UnderSmoked Studios", 20, 20, 40, LIGHTGRAY);
-                DrawText("WAIT for 2 SECONDS...", 290, 220, 20, GRAY);
+                HandleSetDisplay();
             } break;
             case CUSTOM: {
                 HandleSetCustom();

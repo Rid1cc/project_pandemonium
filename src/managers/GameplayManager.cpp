@@ -1,7 +1,20 @@
 #include "GameplayManager.h"
 
-GameplayManager::GameplayManager() : difficulty(1) { // Initialize difficulty
-    // Constructor implementation
+// int randomW;
+//         int randomH;
+//         if(framesCounter%3==0){
+//         for(int i =0; i<=20; i++){
+//             std::uniform_int_distribution<int> rW(50, screenWidth-100);
+//             std::uniform_int_distribution<int> rH(25, screenHeight-50);
+//             randomW = rW(rng);
+//             randomH = rH(rng);
+//             DrawText("-", randomW, randomH, 10, primaryColor);
+//             }
+//         }
+
+GameplayManager::GameplayManager() : 
+    difficulty(1)
+    { 
 }
 
 GameplayManager::~GameplayManager() {

@@ -25,29 +25,6 @@ void graphic_slider(string label, Rectangle slider, float &parameter, float min,
    DrawTextC(text.c_str(), slider.x-280, slider.y+5, 20, primaryColor);
 };
 
-void multiple_choice_button(float pos, Rectangle frame, string text, Vector2 &mousePos, SettingState &setting, SettingState state){
-    if(CheckCollisionPointRec(mousePos, {frame.x+(pos*(frame.width/3)),frame.y,frame.width/3,frame.height})==true || setting == state){
-        DrawRectangle(frame.x+(pos*(frame.width/3)),frame.y,frame.width/3,frame.height, primaryColor);
-        DrawTextC(text.c_str(), frame.x+(pos*(frame.width/3))+((frame.width/3)-(frame.width/3)/2)-(MeasureTextEx(pixeled, text.c_str(), 30, 2).x)/2, frame.y+15, 30, BLACK);
-        if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT) == true){
-            setting = state;
-        }
-    } else DrawTextC(text.c_str(), frame.x+(pos*(frame.width/3))+((frame.width/3)-(frame.width/3)/2)-(MeasureTextEx(pixeled, text.c_str(), 30, 2).x)/2, frame.y+15, 30, primaryColor);
-};
-
-void multiple_choice(string label ,Rectangle frame, string left, string mid, string right, Vector2 &mousePos, SettingState &setting){
-    DrawTextC(label.c_str(), frame.x-280, frame.y+15, 20, primaryColor);
-    DrawRectangleLinesEx(shader_quality_frame, 3, primaryColor);
-    DrawLineEx({frame.x+(frame.width/3), frame.y}, {frame.x+(frame.width/3), frame.y+frame.height}, 3, primaryColor);
-    DrawLineEx({frame.x+((frame.width/3)*2), frame.y}, {frame.x+((frame.width/3)*2), frame.y+frame.height}, 3, primaryColor);
-    //LEFT BUTTON
-    multiple_choice_button(0, frame, left, mousePos, setting, LOW);
-    // MID BUTTON
-    multiple_choice_button(1, frame, mid, mousePos, setting, MID);
-    // RIGHT BUTTON
-    multiple_choice_button(2, frame, right, mousePos, setting, HI);
-};
-
 void HandleSetShader(){
     graphic_slider("CURVATURE", curvature_slider, curvature, 0.00, 0.07);
     graphic_slider("BLOOM", bloomIntensity_slider, bloomIntensity, 0.00, 2.3);

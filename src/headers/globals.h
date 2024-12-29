@@ -25,6 +25,7 @@ typedef enum SettingState { LOW = 0, MID, HI} SettingState;
 
 // Deklaracja zmiennych globalnych
 extern GameScreen currentScreen;
+extern SettingState debugMode;
 extern SettingsScreen currentSettings;
 extern MiniGameManager gameManager;
 extern Rectangle healthBar;

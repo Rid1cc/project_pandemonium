@@ -3,6 +3,17 @@
 
 #include "raylib.h"
 #include "globals.h"
+#include <string>
+#include <raylib.h>
+#include "../headers/MiniGameManager.h"
+#include "../headers/globals.h"
+#include "../headers/shader_handler.h"
+#include "../managers/FileSystemManager.h"
+#include <iostream>
+#include <sstream>
+#include <string>
+
+using namespace std;
 
 extern bool graph_highl;
 extern bool audio_highl;
@@ -32,5 +43,7 @@ extern Vector2 sh_resolution;
 float DrawSlider(Rectangle sliderRect, float minValue, float maxValue, float value, int position);
 std::string floatToString(float num);
 void LoadSettingsDefault();
+void multiple_choice_button(float pos, Rectangle frame, string text, Vector2 &mousePos, SettingState &setting, SettingState state);
+void multiple_choice(string label ,Rectangle frame, string left, string mid, string right, Vector2 &mousePos, SettingState &setting);
 
 #endif // SETTINGS_VARS_H

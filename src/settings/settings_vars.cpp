@@ -1,12 +1,6 @@
-#include <string>
-#include <raylib.h>
-#include "../headers/MiniGameManager.h"
-#include "../headers/globals.h"
-#include "../headers/shader_handler.h"
-#include "../managers/FileSystemManager.h"
-#include <iostream>
-#include <sstream>
-#include <string>
+#include "../headers/settings_vars.h"
+
+using namespace std;
 
 bool graph_highl;
 bool audio_highl;
@@ -62,6 +56,29 @@ std::string floatToString(float num) {
     oss << num; 
     return oss.str(); 
 }
+
+void multiple_choice_button(float pos, Rectangle frame, string text, Vector2 &mousePos, SettingState &setting, SettingState state){
+    if(CheckCollisionPointRec(mousePos, {frame.x+(pos*(frame.width/3)),frame.y,frame.width/3,frame.height})==true || setting == state){
+        DrawRectangle(frame.x+(pos*(frame.width/3)),frame.y,frame.width/3,frame.height, primaryColor);
+        DrawTextC(text.c_str(), frame.x+(pos*(frame.width/3))+((frame.width/3)-(frame.width/3)/2)-(MeasureTextEx(pixeled, text.c_str(), 30, 2).x)/2, frame.y+15, 30, BLACK);
+        if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT) == true){
+            setting = state;
+        }
+    } else DrawTextC(text.c_str(), frame.x+(pos*(frame.width/3))+((frame.width/3)-(frame.width/3)/2)-(MeasureTextEx(pixeled, text.c_str(), 30, 2).x)/2, frame.y+15, 30, primaryColor);
+};
+
+void multiple_choice(string label ,Rectangle frame, string left, string mid, string right, Vector2 &mousePos, SettingState &setting){
+    DrawTextC(label.c_str(), frame.x-280, frame.y+15, 20, primaryColor);
+    DrawRectangleLinesEx(frame, 3, primaryColor);
+    DrawLineEx({frame.x+(frame.width/3), frame.y}, {frame.x+(frame.width/3), frame.y+frame.height}, 3, primaryColor);
+    DrawLineEx({frame.x+((frame.width/3)*2), frame.y}, {frame.x+((frame.width/3)*2), frame.y+frame.height}, 3, primaryColor);
+    //LEFT BUTTON
+    multiple_choice_button(0, frame, left, mousePos, setting, LOW);
+    // MID BUTTON
+    multiple_choice_button(1, frame, mid, mousePos, setting, MID);
+    // RIGHT BUTTON
+    multiple_choice_button(2, frame, right, mousePos, setting, HI);
+};
 
 void LoadSettingsDefault(){
     master_volume = 0.5;

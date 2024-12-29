@@ -52,7 +52,6 @@ void SettingsUpdate(float& general_volume, float& effects_volume, bool& mute_aud
 
     //return
     if(CheckCollisionPointRec(mousePos, button_return)==true){
-        printf("powrot\n");
         return_highl = true;
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
             currentScreen = TITLE;
@@ -62,7 +61,6 @@ void SettingsUpdate(float& general_volume, float& effects_volume, bool& mute_aud
 
     //apply
     if(CheckCollisionPointRec(mousePos, button_apply)==true){
-        printf("apply\n");
         apply_highl = true;
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
             switch (shaderQuality) {
@@ -85,7 +83,6 @@ void SettingsUpdate(float& general_volume, float& effects_volume, bool& mute_aud
 
     //restore
     if(CheckCollisionPointRec(mousePos, button_restore)==true){
-        printf("restore\n");
         restore_highl = true;
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
             restore_highl = false;

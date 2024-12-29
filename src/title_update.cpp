@@ -19,7 +19,6 @@ void TitleUpdate() {
     
     //play
     if(CheckCollisionPointRec(mousePos, button_play)==true){
-        printf("graj\n");
         play_highl = true;
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
             currentScreen = GAMEPLAY;
@@ -29,7 +28,6 @@ void TitleUpdate() {
     
     //settings
     if(CheckCollisionPointRec(mousePos, button_settings)==true){
-        printf("opcje\n");
         settings_highl = true;
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
             currentScreen = SETTINGS;
@@ -39,13 +37,11 @@ void TitleUpdate() {
 
     //lore
     if(CheckCollisionPointRec(mousePos, button_lore)==true){
-        printf("lore\n");
         data_highl = true;
     } else data_highl = false;
 
     //quit
     if(CheckCollisionPointRec(mousePos, button_exit)==true){
-        printf("quit\n");
         exit_highl = true;
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
             exitGame = true;
