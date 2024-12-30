@@ -7,6 +7,7 @@
 #include "../headers/MiniGameManager.h"
 #include "../minigames/TypeGame.h" // Updated include path
 #include "../managers/GameplayManager.h" // Include GameplayManager
+#include "gameplay_vars.h"
 
 // Function Declarations
 void UpdateGameplay(GameScreen& currentScreen, Rectangle& textBox, char* command, int& letterCount, bool& mouseOnText, int& framesCounter, int& backTimer, std::string* history, int& upTimes);
@@ -27,6 +28,7 @@ void UpdateGameplay(GameScreen& currentScreen, Rectangle& textBox, char* command
 
     // Update game manager
     gameManager.Update();
+    isCounting = gameplayManager.timer.isCounting();
 
     // Update gameplayManager timer
     gameplayManager.timer.updateCountdown();

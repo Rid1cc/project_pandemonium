@@ -1,6 +1,7 @@
 #include "GameplayManager.h"
 #include "../headers/globals.h"
 #include <unordered_set>
+#include <vector> // Added to use std::vector
 
 // TimeManager implementation
 // Its a simple class that counts down from a given number of seconds
@@ -29,12 +30,12 @@ bool TimeManager::isCounting() {
     }
 }
 
-
 // GameplayManager implementation
 GameplayManager::GameplayManager() : 
-    difficulty(1)
-    {
-        std::mt19937 rng2(std::chrono::steady_clock::now().time_since_epoch().count()); 
+    difficulty(1),
+    rng2(std::random_device{}())
+{
+    
 }
 
 GameplayManager::~GameplayManager() {
@@ -75,13 +76,26 @@ void GameplayManager::gameplayInit() {
     }
 
     //Enemy IP
-    std::uniform_int_distribution<int> enemyIPDist(0, 249);
+    std::uniform_int_distribution<int> enemyIPDist(0, 99);
     enemyIp = ipPool[enemyIPDist(rng2)];
     if(debugMode != LOW)printf("Enemy IP: %s\n", enemyIp.c_str());
 
+    // Add randomizer for enemyHostname with biblical demon names
+    const std::vector<std::string> demonNames = {
+        "Asmodeus", "Belial", "Beelzebub", "Leviathan", "Mammon",
+        "Astaroth", "Baal", "Lilith", "Samael", "Azazel",
+        "Mephisto", "Paimon", "Abaddon", "Bifrons", "Dantalion",
+        "Furfur", "Hai", "Ipos", "Jinn", "Marbas",
+        "Orobas", "Phenex", "Stolas", "Vassago", "Zagan",
+        "Andras", "Forneus", "Glasya", "Leraje", "Ronove"
+    };
+    std::uniform_int_distribution<int> nameDist(0, demonNames.size() - 1);
+    enemyHostname = demonNames[nameDist(rng2)];
+    if(debugMode != LOW)printf("Enemy Hostname: %s\n", enemyHostname.c_str());
     
     gameplayEvent.subscribe("startGame", [this]() { this->onStartCommand(); });
     gameplayEvent.subscribe("stopGame", [this]() { this->onStopCommand(); });
+    gameplayEvent.subscribe("drain", [this]() { this->onDrainCommand(); });
 
 }
 
@@ -106,5 +120,13 @@ void GameplayManager::onStopCommand() {
     if(debugMode != LOW)std::cout << "Game Stopped." << std::endl;
     timer.setCountdown(0); // Stop countdown
     // Additional stop game logic
+}
+
+void GameplayManager::onDrainCommand() {
+    // Handle drain command
+    if(debugMode != LOW)std::cout << "Draining enemy resources..." << std::endl;
+    enemyHp -= 10; // Drain enemy resources
+    if(debugMode != LOW)std::cout << "Enemy HP: " << enemyHp << std::endl;
+    // Additional drain logic
 }
 

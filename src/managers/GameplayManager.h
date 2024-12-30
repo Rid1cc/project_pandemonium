@@ -3,6 +3,7 @@
 
 #include "EventManager.h"
 #include <random>
+#include <string> // Added to include std::string
 
 // Forward declaration of TimeManager
 class TimeManager {
@@ -31,6 +32,8 @@ public:
     std::string enemyIp;        // Variable to store enemy IP
     std::string botnetFlag[10]; // Variable to flag botnet computers
     int enemyHp;                // Variable to store enemy health points
+    std::string enemyHostname;  // Changed from int to std::string
+    int enemyMail;              // Variable to store enemy mail
 
 private:
     // Add TimeManager instance
@@ -39,6 +42,7 @@ private:
     // Event handler functions
     void onStartCommand();
     void onStopCommand();
+    void onDrainCommand();
 };
 
 #endif

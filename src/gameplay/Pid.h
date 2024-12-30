@@ -10,7 +10,6 @@ public:
     void Render();
 private:
     Rectangle pidMenu;
-    void RenderIcons();
     bool idle;
 };
 

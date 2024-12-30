@@ -1,6 +1,7 @@
 #include "../headers/gameplay_draw.h"
 #include "../headers/globals.h"  // Wczytanie zmiennych globalnych, jeśli są potrzebne
 #include "Pid.h"     // Include Pid header
+#include "InfoPanel.h" // Include InfoPanel header
 #include <string>
 
 // Forward declarations of helper functions
@@ -19,8 +20,9 @@ void DrawTerminalOutput(const std::string* historyDrawn, int historySize);
 void DrawVersionInfo();
 void DrawGameManager();
 
-// Instantiate Pid
+// Instantiate Segments
 Pid pidMenuInstance;
+InfoPanel infoPanelInstance;
 
 void DrawGameplay(Rectangle textBox, const char* command, int letterCount, bool mouseOnText, int framesCounter, std::string* historyDrawn) {
     ClearBackground(BLACK);
@@ -74,7 +76,7 @@ void DrawAttackMenu() {
 }
 
 void DrawInfoPanel() {
-    DrawRectangleLinesEx(infoPanel, 2, primaryColor);
+    infoPanelInstance.Render();
 }
 
 void DrawTerminal() {

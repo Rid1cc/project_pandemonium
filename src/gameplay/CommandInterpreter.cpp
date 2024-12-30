@@ -3,6 +3,7 @@
 #include <sstream>
 #include "../headers/globals.h"
 #include "../managers/GameplayManager.h"
+#include "gameplay_vars.h"
 
 CommandInterpreter::CommandInterpreter(GameplayManager* manager) : currentCommand(""), gameplayManager(manager) {
     // Feature NYD
@@ -41,6 +42,11 @@ void CommandInterpreter::historyDrawnUp() {
     }
 }
 
+void CommandInterpreter::outputLine(std::string output) {
+    historyDrawnUp();
+    historyDrawn[0] = output;
+}
+
 void CommandInterpreter::parseCommand(const std::string& command, std::string* historyDrawn) {
     std::istringstream iss(command);
     std::string cmd;
@@ -62,46 +68,65 @@ void CommandInterpreter::parseCommand(const std::string& command, std::string* h
         }
         historyDrawn[0] = output;
     } else if (cmd == "ipconfig") {
-        historyDrawnUp();
-        historyDrawn[0] = "IP address: 192.168.100.1";
+        outputLine("IP Address: " + gameplayManager->ipPool[0]);
     } 
     // Subscribe to events based on commands
     else if (cmd == "start") {
         gameplayManager->gameplayEvent.triggerEvent("startGame");
-        historyDrawnUp();
-        historyDrawn[0] = "Start command executed.";
+        outputLine("Game started.");
     }
     else if (cmd == "stop") {
         gameplayManager->gameplayEvent.triggerEvent("stopGame");
-        historyDrawnUp();
-        historyDrawn[0] = "Stop command executed.";
+        outputLine("Game stopped.");
     }
+    //Netscan command
     else if (cmd == "netscan"){
-        if (args.size() != 1) {
-            historyDrawnUp();
-            historyDrawn[0] = "Usage: netscan <page_number>";
-        } else {
-            int page = std::stoi(args[0]);
-            if(page < 1 || page > 5){
-                historyDrawnUp();
-                historyDrawn[0] = "Usage: netscan <page_number>";
-            } else {
-                historyDrawnUp();
-                historyDrawn[0] = "Scanning network... Page " + std::to_string(page);
-                int start = (page - 1) * 24;
-                int end = std::min(start + 24, 100);
-                for(int i = start; i < end; i++) {
-                    historyDrawnUp();
-                    historyDrawn[0] = gameplayManager->ipPool[i];
-                }
+        if (args.size() == 2 && args[0] == "drain") {
+            if(args[1] == gameplayManager->enemyHostname){
+                outputLine("Netscan: Drain successful");
+            }
+            else{
+                outputLine("Netscan: Drain failed");
+                printf("Expected: %s\n", gameplayManager->enemyHostname.c_str());
             }
         }
-    }
+        else if (args.size() == 2 && args[0] == "list"){
+            // Check if args[1] is a number
+            bool isNumber = true;
+            for(char c : args[1]){
+                if(!std::isdigit(c)){
+                    isNumber = false;
+                    break;
+                }
+            }
+            if(!isNumber){
+                outputLine("Usage: netscan list <page_number>");
+            }
+            else {
+                int page = std::stoi(args[1]);
+                if(page < 1 || page > 5){
+                    outputLine("No Page " + std::to_string(page));
+                    outputLine("Usage: netscan list <page_number>");
+                } else {
+                    outputLine("Scanning network... Page " + std::to_string(page));
+                    int start = (page - 1) * 24;
+                    int end = std::min(start + 24, 100);
+                    for(int i = start; i < end; i++) {
+                        outputLine(gameplayManager->ipPool[i]);
+                    }
+                }
+            }
+        }else {
+            outputLine("Usage: ");
+            outputLine("netscan list <page_number>");
+            outputLine("netscan drain <hostname>");
+        }  
+    } 
+
     else if (cmd == "help") {
         historyDrawnUp();
         historyDrawn[0] = "Available commands: echo, ipconfig, start, stop, netscan, help";
     }
-    //ADD COMMANDS HERE AS ELSEIF, ADD ARGS AS ARGS, REMEMBER TO EXECUTE historyDrawnUp EVERY TIME LINE IS UPPED.
     else {
         historyDrawnUp();      
         historyDrawn[0] = "Unknown command: " + command;

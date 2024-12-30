@@ -1,5 +1,6 @@
 #include "Pid.h"
 #include "../headers/globals.h"
+#include "gameplay_vars.h"
 
 // Constructor to initialize PID menu properties
 Pid::Pid() {
@@ -10,15 +11,13 @@ Pid::Pid() {
 // Render the PID menu
 void Pid::RenderIdle() {
     DrawRectangleRec(pidMenu, BLACK);
-    DrawText("NO", pidMenu.x + 20, pidMenu.y + (pidMenu.height/2) - 50, 40, WHITE);
-    DrawText("PROCESS", pidMenu.x + 20, pidMenu.y + (pidMenu.height/2), 40, WHITE);
-    DrawText("ACTIVE", pidMenu.x + 20, pidMenu.y + (pidMenu.height/2) + 50, 40, WHITE);
+    DrawTextC("NO", pidMenu.x + 20, pidMenu.y + (pidMenu.height/2) - 50, 40, primaryColor);
+    DrawTextC("PROCESS", pidMenu.x + 20, pidMenu.y + (pidMenu.height/2), 40, primaryColor);
+    DrawTextC("ACTIVE", pidMenu.x + 20, pidMenu.y + (pidMenu.height/2) + 50, 40, primaryColor);
 }
 
 void Pid::Render() {
     // Debug: Check timer status
-    bool isCounting = gameplayManager.timer.isCounting();
-    
     if(!isCounting) {
         RenderIdle();
         DrawRectangleLinesEx(pidMenu, 2, primaryColor);
@@ -29,14 +28,4 @@ void Pid::Render() {
         DrawText("MANAGER", pidMenu.x + 20, (pidMenu.height/2) + 50, 40, WHITE);
         DrawRectangleLinesEx(pidMenu, 2, primaryColor);
     }
-}
-
-// Render icons within the PID menu
-void Pid::RenderIcons() {
-    // Icon 1
-    DrawRectangle(pidMenu.x + 20, pidMenu.y + 25, 56, 56, primaryColor);
-    // Icon 2
-    DrawRectangle(pidMenu.x + 96, pidMenu.y + 25, 56, 56, primaryColor);
-    // Icon 3
-    DrawRectangle(pidMenu.x + 172, pidMenu.y + 25, 56, 56, primaryColor);
 }
