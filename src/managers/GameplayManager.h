@@ -25,17 +25,16 @@ public:
     
     EventManager gameplayEvent; // EventManager instance
     TimeManager timer;          // TimeManager instance
-
-private:
-    // Add TimeManager instance
-    
     int difficulty;             // Variable to store difficulty level
     int port[5];                // Variable to store open port numbers
-    std::string ipPool[250];    // Variable to store IP pool
+    std::string ipPool[100];    // Variable to store IP pool
     std::string enemyIp;        // Variable to store enemy IP
     std::string botnetFlag[10]; // Variable to flag botnet computers
     int enemyHp;                // Variable to store enemy health points
 
+private:
+    // Add TimeManager instance
+    
     std::mt19937 rng2;          // Random number generator
     // Event handler functions
     void onStartCommand();

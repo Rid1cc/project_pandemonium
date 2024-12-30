@@ -76,6 +76,31 @@ void CommandInterpreter::parseCommand(const std::string& command, std::string* h
         historyDrawnUp();
         historyDrawn[0] = "Stop command executed.";
     }
+    else if (cmd == "netscan"){
+        if (args.size() != 1) {
+            historyDrawnUp();
+            historyDrawn[0] = "Usage: netscan <page_number>";
+        } else {
+            int page = std::stoi(args[0]);
+            if(page < 1 || page > 5){
+                historyDrawnUp();
+                historyDrawn[0] = "Usage: netscan <page_number>";
+            } else {
+                historyDrawnUp();
+                historyDrawn[0] = "Scanning network... Page " + std::to_string(page);
+                int start = (page - 1) * 24;
+                int end = std::min(start + 24, 100);
+                for(int i = start; i < end; i++) {
+                    historyDrawnUp();
+                    historyDrawn[0] = gameplayManager->ipPool[i];
+                }
+            }
+        }
+    }
+    else if (cmd == "help") {
+        historyDrawnUp();
+        historyDrawn[0] = "Available commands: echo, ipconfig, start, stop, netscan, help";
+    }
     //ADD COMMANDS HERE AS ELSEIF, ADD ARGS AS ARGS, REMEMBER TO EXECUTE historyDrawnUp EVERY TIME LINE IS UPPED.
     else {
         historyDrawnUp();      

@@ -104,6 +104,7 @@ void GameplayManager::onStartCommand() {
 void GameplayManager::onStopCommand() {
     // Handle stop game event
     if(debugMode != LOW)std::cout << "Game Stopped." << std::endl;
+    timer.setCountdown(0); // Stop countdown
     // Additional stop game logic
 }
 
