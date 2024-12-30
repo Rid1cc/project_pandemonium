@@ -12,8 +12,9 @@ public:
     void setCountdown(int seconds);
     bool updateCountdown();
     bool isCounting();
-private:
     int countdownFrames;
+private:
+
 };
 
 class GameplayManager {
@@ -34,15 +35,18 @@ public:
     int enemyHp;                // Variable to store enemy health points
     std::string enemyHostname;  // Changed from int to std::string
     int enemyMail;              // Variable to store enemy mail
+    std::vector<std::string> selectedIpPool; // Variable to store selected IP pool
 
 private:
     // Add TimeManager instance
+    int silentdraintimes = 0;
     
     std::mt19937 rng2;          // Random number generator
     // Event handler functions
     void onStartCommand();
     void onStopCommand();
-    void onDrainCommand();
+    void onDrainSilent();
+    void onDrainBruteforce();
 };
 
 #endif

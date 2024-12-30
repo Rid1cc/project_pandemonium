@@ -1,4 +1,5 @@
 #include "GameplayManager.h"
+#include "../gameplay/gameplay_vars.h"
 #include "../headers/globals.h"
 #include <unordered_set>
 #include <vector> // Added to use std::vector
@@ -95,7 +96,8 @@ void GameplayManager::gameplayInit() {
     
     gameplayEvent.subscribe("startGame", [this]() { this->onStartCommand(); });
     gameplayEvent.subscribe("stopGame", [this]() { this->onStopCommand(); });
-    gameplayEvent.subscribe("drain", [this]() { this->onDrainCommand(); });
+    gameplayEvent.subscribe("drainSilent", [this]() { this->onDrainSilent(); });
+    gameplayEvent.subscribe("drainBruteforce", [this]() { this->onDrainBruteforce(); });
 
 }
 
@@ -122,11 +124,44 @@ void GameplayManager::onStopCommand() {
     // Additional stop game logic
 }
 
-void GameplayManager::onDrainCommand() {
-    // Handle drain command
-    if(debugMode != LOW)std::cout << "Draining enemy resources..." << std::endl;
-    enemyHp -= 10; // Drain enemy resources
-    if(debugMode != LOW)std::cout << "Enemy HP: " << enemyHp << std::endl;
-    // Additional drain logic
+void GameplayManager::onDrainBruteforce() {
+    pidState = B_DRAIN;
+    timer.setCountdown(30); //30 seconds
 }
+
+void GameplayManager::onDrainSilent() {
+    pidState = S_DRAIN;
+    timer.setCountdown(5); //30 seconds
+
+    if(silentdraintimes == 0){
+        // Initial drain: Select half of ipPool
+        int halfSize = sizeof(ipPool) / sizeof(ipPool[0]) / 2;
+        selectedIpPool.assign(ipPool, ipPool + halfSize);
+        
+        // Ensure enemyIp is included
+        if (std::find(selectedIpPool.begin(), selectedIpPool.end(), enemyIp) == std::end(selectedIpPool)) {
+            selectedIpPool[0] = enemyIp;
+        }
+    }
+    else {
+        // Subsequent drains: Halve the selectedIpPool
+        int currentSize = selectedIpPool.size();
+        int halfSize = currentSize / 2 + currentSize % 2; // Take one more if odd
+        selectedIpPool.assign(selectedIpPool.begin(), selectedIpPool.begin() + halfSize);
+        
+        // Ensure enemyIp is included
+        if (std::find(selectedIpPool.begin(), selectedIpPool.end(), enemyIp) == std::end(selectedIpPool)) {
+            selectedIpPool[0] = enemyIp;
+        }
+
+        // If only one address remains, print it
+        if(selectedIpPool.size() == 1){
+            printf("Final Address: %s\n", selectedIpPool[0].c_str());
+        }
+    }
+
+    // Increment silentdraintimes
+    silentdraintimes++;
+}
+
 

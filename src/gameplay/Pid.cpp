@@ -20,12 +20,32 @@ void Pid::Render() {
     // Debug: Check timer status
     if(!isCounting) {
         RenderIdle();
-        DrawRectangleLinesEx(pidMenu, 2, primaryColor);
     } else {
-        DrawRectangleRec(pidMenu, BLACK);
-        DrawText("PID", pidMenu.x + 20, (pidMenu.height/2) - 50, 40, WHITE);
-        DrawText("PROCESS", pidMenu.x + 20, (pidMenu.height/2), 40, WHITE);
-        DrawText("MANAGER", pidMenu.x + 20, (pidMenu.height/2) + 50, 40, WHITE);
-        DrawRectangleLinesEx(pidMenu, 2, primaryColor);
+        switch(pidState) {
+            case B_DRAIN:
+                DrawTextC("DRAINING", pidMenu.x + 20, pidMenu.y + (pidMenu.height/2), 40, primaryColor);
+                if(gameplayManager.timer.countdownFrames <= 1){
+                    isEnemyIpKnown = true;
+                }
+                break;
+            case S_DRAIN:
+                DrawTextC("SILENT DRAIN", pidMenu.x + 20, pidMenu.y + (pidMenu.height/2), 40, primaryColor);
+                break;
+            case MAIL:
+                DrawTextC("MAIL", pidMenu.x + 20, pidMenu.y + (pidMenu.height/2), 40, primaryColor);
+                break;
+            case DDOS:
+                DrawTextC("DDOS", pidMenu.x + 20, pidMenu.y + (pidMenu.height/2), 40, primaryColor);
+                break;
+            case ADD_BOTNET:
+                DrawTextC("ADD BOTNET", pidMenu.x + 20, pidMenu.y + (pidMenu.height/2), 40, primaryColor);
+                break;
+            case ATK_BOTNET:
+                DrawTextC("ATTACK BOTNET", pidMenu.x + 20, pidMenu.y + (pidMenu.height/2), 40, primaryColor);
+                break;
+            default:
+                break;
+        }
     }
+    DrawRectangleLinesEx(pidMenu, 2, primaryColor);
 }

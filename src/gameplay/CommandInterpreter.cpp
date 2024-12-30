@@ -81,14 +81,36 @@ void CommandInterpreter::parseCommand(const std::string& command, std::string* h
     }
     //Netscan command
     else if (cmd == "netscan"){
-        if (args.size() == 2 && args[0] == "drain") {
+        //DRAIN
+        if (args.size() == 3 && args[0] == "drain") {
             if(args[1] == gameplayManager->enemyHostname){
-                outputLine("Netscan: Drain successful");
+                if(args[2] == "-s"){
+                    if(!isCounting){
+                        outputLine("Netscan: Silent Draining started");
+                        gameplayManager->gameplayEvent.triggerEvent("drainSilent");}
+                    else{
+                        outputLine("error: process already running");
+                    }
+                }
+                else if(args[2] == "-b"){
+                    if(!isCounting){
+                        outputLine("Netscan: Bruteforce Draining started");
+                        gameplayManager->gameplayEvent.triggerEvent("drainBruteforce");}
+                    else{
+                        outputLine("error: process already running");
+                    }
+                }
+                else{
+                    outputLine("Error: Third argument '-s' or '-b' is needed.");
+                }
             }
             else{
-                outputLine("Netscan: Drain failed");
+                outputLine("Netscan: Unknown hostname.");
                 printf("Expected: %s\n", gameplayManager->enemyHostname.c_str());
             }
+        }
+        else if (args.size() == 2 && args[0] == "drain") {
+            outputLine("Error: Third argument '-s' or '-b' is needed.");
         }
         else if (args.size() == 2 && args[0] == "list"){
             // Check if args[1] is a number
@@ -119,7 +141,7 @@ void CommandInterpreter::parseCommand(const std::string& command, std::string* h
         }else {
             outputLine("Usage: ");
             outputLine("netscan list <page_number>");
-            outputLine("netscan drain <hostname>");
+            outputLine("netscan drain <hostname> (-s) (-b)");
         }  
     } 
 

@@ -14,5 +14,6 @@ void InfoPanel::Render() {
     DrawTextC("Daemon name: ", infoPanel.x + 10, infoPanel.y + 20, 20, primaryColor);
     DrawTextC(gameplayManager.enemyHostname.c_str(), infoPanel.x + 10, infoPanel.y + 40, 20, primaryColor);
     DrawTextC("Daemon IP: ", infoPanel.x + 10, infoPanel.y + 70, 20, primaryColor);
-    DrawTextC(gameplayManager.enemyIp.c_str(), infoPanel.x + 10, infoPanel.y + 90, 20, primaryColor);
+    if(isEnemyIpKnown)DrawTextC(gameplayManager.enemyIp.c_str(), infoPanel.x + 10, infoPanel.y + 90, 20, primaryColor);
+    else DrawTextC("Unknown", infoPanel.x + 10, infoPanel.y + 90, 20, primaryColor);
 }
