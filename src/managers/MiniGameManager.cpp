@@ -22,6 +22,7 @@ void MiniGameManager::Update() {
         if (game->isOpen) {
             UpdateDotTimer(game); // Update visual dot timer
             DragWindow(game, mousePos); // Handle window dragging
+            SetMouseState(mousePos, game);
 
             if (IsWindowFirst(game)) {
                 game->Update(); // Update the topmost game
@@ -42,6 +43,17 @@ void MiniGameManager::Update() {
             showEndMessage = false; // Hide the message after 1 second
         }
     }
+}
+
+void MiniGameManager::SetMouseState(Vector2 mousePosition, std::shared_ptr<MiniGame>& game) {
+    if (CheckCollisionPointRec(mousePosition, game->window) && !isMouseOnMiniGameWindow)
+        isMouseOnMiniGameWindow = true;
+    else if (!CheckCollisionPointRec(mousePosition, game->window) && isMouseOnMiniGameWindow)
+        isMouseOnMiniGameWindow = false;
+}
+
+bool MiniGameManager::CheckMouseState() const {
+    return isMouseOnMiniGameWindow;
 }
 
 // Draw method called every frame to render games and UI elements

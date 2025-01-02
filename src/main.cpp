@@ -40,6 +40,9 @@ int main(void) {
     RenderTexture2D target = LoadRenderTexture(screenWidth, screenHeight);
     space3d = LoadRenderTexture((int)desc_window.width, (int)desc_window.height);
 
+    Texture2D botnetTexture = LoadTexture("../assets/images/botnet.png");
+    Texture2D ddosTexture = LoadTexture("../assets/images/ddos.png");
+    Texture2D mailbombTexture = LoadTexture("../assets/images/mailbomb.png");
     /*
     // music initialization functions
     InitAudioDevice();
@@ -103,6 +106,9 @@ int main(void) {
                 SettingsUpdate(general_volume, effects_volume, mute_audio);
             } break;
             case GAMEPLAY: {
+                DrawTextureEx(botnetTexture, {botnetIcon.x, botnetIcon.y}, 0.0f, 1.75f, WHITE);
+                DrawTextureEx(ddosTexture, {ddosIcon.x, ddosIcon.y}, 0.0f, 1.75f, WHITE);
+                DrawTextureEx(mailbombTexture, {mailbombIcon.x, mailbombIcon.y}, 0.0f, 1.75f, WHITE);
                 UpdateGameplay(currentScreen, textBox, command, letterCount, mouseOnText, framesCounter, backTimer, history, upTimes);
             } break;
             case ENDING: {
@@ -122,6 +128,7 @@ int main(void) {
                 DrawSettings(general_volume, effects_volume);
             } break;
             case GAMEPLAY: {
+                
                 DrawGameplay(textBox, command, letterCount, mouseOnText, framesCounter, historyDrawn);
             } break;
             case ENDING: {
@@ -151,9 +158,9 @@ int main(void) {
         //Main Shader drawing, texture linking
         BeginDrawing();
         ClearBackground(BLACK);
-        BeginShaderMode(shader);  
+        //BeginShaderMode(shader);  
             DrawTextureRec(target.texture, ShakeRectangleOnClick(TextureKernel, 5), (Vector2){ 0, 0 }, WHITE);
-        EndShaderMode(); 
+        //EndShaderMode(); 
         EndDrawing();
     }
 
@@ -161,6 +168,7 @@ int main(void) {
     UnloadModel(model_cog);
     UnloadModel(model_door);
     UnloadModel(model_globe);
+    UnloadTexture(botnetTexture);
     UnloadRenderTexture(target);
     UnloadRenderTexture(space3d);
     

@@ -67,12 +67,16 @@ void DrawHealthBar() {
 void DrawAttackMenu() {
     DrawRectangleLinesEx(attackMenu, 2, primaryColor);
 
+    
     // icon 1
-    DrawRectangle(attackMenu.x + 20, attackMenu.y + 25, 56, 56, primaryColor);
+    DrawRectangleLinesEx(botnetIcon,1.0f, GRAY);
+    //DrawTexture(botnetTexture, attackMenu.x + 20, attackMenu.y + 25, WHITE);
     // icon 2
-    DrawRectangle(attackMenu.x + 96, attackMenu.y + 25, 56, 56, primaryColor);
-    // icon 1
-    DrawRectangle(attackMenu.x + 172, attackMenu.y + 25, 56, 56, primaryColor);
+    DrawRectangleLinesEx(ddosIcon, 1.0f, GRAY);
+    //DrawRectangle(attackMenu.x + 96, attackMenu.y + 25, 56, 56, primaryColor);
+    // icon 3
+    DrawRectangleLinesEx(mailbombIcon, 1.0f, GRAY);
+    //DrawRectangle(attackMenu.x + 172, attackMenu.y + 25, 56, 56, primaryColor);
 }
 
 void DrawInfoPanel() {

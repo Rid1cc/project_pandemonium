@@ -14,6 +14,7 @@ private:
     std::vector<std::shared_ptr<MiniGame>> games; // List of mini-games
     std::shared_ptr<MiniGame> currentlyDragged;   // Currently dragged game window
     std::shared_ptr<MiniGame> activeGame;         // Currently active game
+    bool isMouseOnMiniGameWindow;
 
     // Timer variables
     float totalTime;       // Total time allotted in seconds
@@ -41,6 +42,7 @@ private:
     void StopDragging(std::shared_ptr<MiniGame>& game);  // Stops dragging a game window
     void DragWindow(std::shared_ptr<MiniGame>& game, Vector2 mousePosition); // Handles window dragging logic
 
+    void SetMouseState(Vector2 mousePosition, std::shared_ptr<MiniGame>& game);
     void SetWindowFirst(std::shared_ptr<MiniGame>& game); // Brings a window to the front
     bool CanBeInteracted(std::shared_ptr<MiniGame>& game, Vector2 mousePosition); // Checks if a window can be interacted with
     bool IsWindowFirst(std::shared_ptr<MiniGame>& game); // Determines if a window is the topmost
@@ -63,7 +65,7 @@ public:
     void SetTotalTime(float duration); // Sets the total duration for the timer
 
     bool allGamesClosed() const; // Add this line
-
+    bool CheckMouseState() const;
     bool hasActiveTypeGame() const; // Ensure this line exists
 };
 
