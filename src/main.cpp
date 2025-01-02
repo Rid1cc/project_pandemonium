@@ -158,9 +158,9 @@ int main(void) {
         //Main Shader drawing, texture linking
         BeginDrawing();
         ClearBackground(BLACK);
-        //BeginShaderMode(shader);  
+        BeginShaderMode(shader);  
             DrawTextureRec(target.texture, ShakeRectangleOnClick(TextureKernel, 5), (Vector2){ 0, 0 }, WHITE);
-        //EndShaderMode(); 
+        EndShaderMode(); 
         EndDrawing();
     }
 
