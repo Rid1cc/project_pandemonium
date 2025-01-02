@@ -3,12 +3,13 @@
 #include "../headers/globals.h"
 #include <unordered_set>
 #include <vector> // Added to use std::vector
+#include <functional> // Added to use std::function
 
 // TimeManager implementation
 // Its a simple class that counts down from a given number of seconds
 TimeManager::TimeManager() : countdownFrames(0) {}
 
-void TimeManager::setCountdown(int seconds) {
+void TimeManager::setCountdown(float seconds) {
     countdownFrames = seconds * 60; // 60 frames per second
 }
 
@@ -17,6 +18,7 @@ bool TimeManager::updateCountdown() {
         countdownFrames--;
         printf("Countdown: %d\n", countdownFrames);
         if (countdownFrames <= 0) {
+            countdownFrames = 0;
             return false;
         }
     }
@@ -28,6 +30,13 @@ bool TimeManager::isCounting() {
         return true;
     } else {
         return false;
+    }
+}
+
+void TimeManager::waitThen(float seconds, void (*func)()) {
+    setCountdown(seconds);
+    if(countdownFrames <= 0){
+        func();
     }
 }
 
@@ -131,7 +140,7 @@ void GameplayManager::onDrainBruteforce() {
 
 void GameplayManager::onDrainSilent() {
     pidState = S_DRAIN;
-    timer.setCountdown(5); //30 seconds
+    timer.setCountdown(5);
 
     if(silentdraintimes == 0){
         // Initial drain: Select half of ipPool
@@ -156,10 +165,11 @@ void GameplayManager::onDrainSilent() {
 
         // If only one address remains, print it
         if(selectedIpPool.size() == 1){
+            timer.setCountdown(0);
             printf("Final Address: %s\n", selectedIpPool[0].c_str());
+            isEnemyIpKnown = true;
         }
     }
-
     // Increment silentdraintimes
     silentdraintimes++;
 }

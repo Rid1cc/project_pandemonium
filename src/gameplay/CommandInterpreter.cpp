@@ -83,30 +83,35 @@ void CommandInterpreter::parseCommand(const std::string& command, std::string* h
     else if (cmd == "netscan"){
         //DRAIN
         if (args.size() == 3 && args[0] == "drain") {
-            if(args[1] == gameplayManager->enemyHostname){
-                if(args[2] == "-s"){
-                    if(!isCounting){
-                        outputLine("Netscan: Silent Draining started");
-                        gameplayManager->gameplayEvent.triggerEvent("drainSilent");}
-                    else{
-                        outputLine("error: process already running");
+            if(!isEnemyIpKnown){
+                if(args[1] == gameplayManager->enemyHostname){
+                    if(args[2] == "-s"){
+                        if(!isCounting){
+                            outputLine("Netscan: Silent Draining started");
+                            gameplayManager->gameplayEvent.triggerEvent("drainSilent");}
+                        else{
+                            outputLine("error: process already running");
+                        }
                     }
-                }
-                else if(args[2] == "-b"){
-                    if(!isCounting){
-                        outputLine("Netscan: Bruteforce Draining started");
-                        gameplayManager->gameplayEvent.triggerEvent("drainBruteforce");}
+                    else if(args[2] == "-b"){
+                        if(!isCounting){
+                            outputLine("Netscan: Bruteforce Draining started");
+                            gameplayManager->gameplayEvent.triggerEvent("drainBruteforce");}
+                        else{
+                            outputLine("error: process already running");
+                        }
+                    }
                     else{
-                        outputLine("error: process already running");
+                        outputLine("Error: Third argument '-s' or '-b' is needed.");
                     }
                 }
                 else{
-                    outputLine("Error: Third argument '-s' or '-b' is needed.");
+                    outputLine("Netscan: Unknown hostname.");
+                    printf("Expected: %s\n", gameplayManager->enemyHostname.c_str());
                 }
             }
             else{
-                outputLine("Netscan: Unknown hostname.");
-                printf("Expected: %s\n", gameplayManager->enemyHostname.c_str());
+                outputLine("Netscan: Enemy IP already known.");
             }
         }
         else if (args.size() == 2 && args[0] == "drain") {

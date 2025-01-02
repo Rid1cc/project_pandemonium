@@ -38,6 +38,7 @@ void UpdateGameplay(GameScreen& currentScreen, Rectangle& textBox, char* command
 
     // Initialize Command Interpreter with GameplayManager pointer
     static CommandInterpreter cmdInterpreter(&gameplayManager);
+    cmdInterpreter.timer.updateCountdown();
 
     // Handle command execution on Enter key press
     if (IsKeyPressed(KEY_ENTER)) {

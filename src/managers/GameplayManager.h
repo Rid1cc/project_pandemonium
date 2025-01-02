@@ -9,10 +9,11 @@
 class TimeManager {
 public:
     TimeManager();
-    void setCountdown(int seconds);
+    void setCountdown(float seconds);
     bool updateCountdown();
     bool isCounting();
     int countdownFrames;
+    void waitThen(float seconds, void (*func)());
 private:
 
 };

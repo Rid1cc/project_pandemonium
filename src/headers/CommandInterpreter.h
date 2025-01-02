@@ -16,7 +16,10 @@ public:
     const std::string& getCurrentCommand() const;
     const std::vector<std::string>& getHistory() const;
 
+    TimeManager timer; // TimeManager instance
+
 private:
+    
     std::string currentCommand;
     std::vector<std::string> history;
     const int maxHistorySize = 30; // not yet used, in future - replace for history[]
