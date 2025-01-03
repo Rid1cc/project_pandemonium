@@ -90,7 +90,7 @@ Color primaryColor;
 
 
 // Music
-Music main_theme = LoadMusicStream("country.mp3");
+Music main_theme = LoadMusicStream("assets/audio/minigame_music.wav");
 bool mute_audio = false;
 
 

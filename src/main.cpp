@@ -43,16 +43,12 @@ int main(void) {
     Texture2D botnetTexture = LoadTexture("../assets/images/botnet.png");
     Texture2D ddosTexture = LoadTexture("../assets/images/ddos.png");
     Texture2D mailbombTexture = LoadTexture("../assets/images/mailbomb.png");
-    /*
+    
     // music initialization functions
     InitAudioDevice();
-    if (IsAudioDeviceReady()) 
-    {
-    main_theme = LoadMusicStream("country.mp3");
-    SetMasterVolume(general_volume);
-    PlayMusicStream(main_theme);
-    }
-    */
+    Music main_theme = LoadMusicStream("assets/audio/minigame_music.wav");
+    PlayMusicStream(main_theme);    
+    
 
     // Init Logo Screen
     InitLogoScreen();
@@ -172,13 +168,13 @@ int main(void) {
     UnloadRenderTexture(target);
     UnloadRenderTexture(space3d);
     
-    /*
+    
     // Music De-Initialization
     UnloadMusicStream(main_theme);
     CloseAudioDevice();
     CloseWindow();
     return 0;
-    */
+    
 
     CloseWindow();
     return 0;
