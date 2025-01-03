@@ -16,6 +16,32 @@ Rectangle terminalWindow = {screen.x + 312, screen.y + 97, 556, 540};
 Rectangle textBox = terminalWindow;
 
 Vector2 iconDescriptionCoorinates = {infoPanel.x + 10, infoPanel.y + 120};
-std::string botnetDescription = "BotNet:\nTurn computer \ninto zombie bots\n(40% chance)\nBigger botnet,\nbigger damage.";
-std::string ddosDescription = "DDOS:\nFind open ports\n(50% chance).\nAttack through port\nfor 10s, dealing\n30% HP damage.";
-std::string mailBombDescription = "Mail Bomb:\nFind enemy email\n(100% chance).\nSend email \n(20% chance).\nSuccess reduces \nfirewall\nby 30%.";
+std::vector<std::string> botnetDescription = {
+    "BotNet:",
+    "Turn computer",
+    "into zombie bots",
+    "(40% chance)",
+    "Bigger botnet",
+    "bigger damage."
+};
+
+std::vector<std::string> ddosDescription = {
+    "DDOS:",
+    "Find open ports",
+    "(50% chance).",
+    "Attack through port",
+    "for 10s, dealing",
+    "30% HP damage."
+};
+
+std::vector<std::string> mailBombDescription = {
+    "Mail Bomb:",
+    "Find enemy email",
+    "(100% chance).",
+    "Send email",
+    "(20% chance).",
+    "Success reduces",
+    "firewall",
+    "by 30%."
+};
+

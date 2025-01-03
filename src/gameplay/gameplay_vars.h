@@ -2,6 +2,8 @@
 #define GAMEPLAY_VARS_H
 
 #include "raylib.h"
+#include <vector>
+#include <string>
 
 typedef enum ProcessStateName {
     NONE_P = 0,
@@ -27,8 +29,8 @@ extern Rectangle ddosIcon;
 extern Rectangle mailbombIcon;
 
 extern Vector2 iconDescriptionCoorinates;
-extern std::string botnetDescription;
-extern std::string ddosDescription;
-extern std::string mailBombDescription;
+extern std::vector<std::string> botnetDescription;
+extern std::vector<std::string> ddosDescription;
+extern std::vector<std::string> mailBombDescription;
 
 #endif // GAMEPLAY_VARS_H
