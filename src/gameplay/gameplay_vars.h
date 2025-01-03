@@ -26,5 +26,9 @@ extern Rectangle botnetIcon;
 extern Rectangle ddosIcon;
 extern Rectangle mailbombIcon;
 
+extern Vector2 iconDescriptionCoorinates;
+extern std::string botnetDescription;
+extern std::string ddosDescription;
+extern std::string mailBombDescription;
 
 #endif // GAMEPLAY_VARS_H
