@@ -1,6 +1,7 @@
 #include "raylib.h"
 #include "headers/gameplay_update.h"
 #include "headers/gameplay_draw.h"
+#include "gameplay/gameplay_vars.h"
 #include "headers/settings_draw.h"
 #include "headers/settings_update.h"
 #include "headers/globals.h"
@@ -158,9 +159,9 @@ int main(void) {
         //Main Shader drawing, texture linking
         BeginDrawing();
         ClearBackground(BLACK);
-        //BeginShaderMode(shader);  
+        BeginShaderMode(shader);  
             DrawTextureRec(target.texture, ShakeRectangleOnClick(TextureKernel, 5), (Vector2){ 0, 0 }, WHITE);
-        //EndShaderMode(); 
+        EndShaderMode(); 
         EndDrawing();
     }
 
