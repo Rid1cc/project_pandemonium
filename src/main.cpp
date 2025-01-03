@@ -1,6 +1,7 @@
 #include "raylib.h"
 #include "headers/gameplay_update.h"
 #include "headers/gameplay_draw.h"
+#include "gameplay/gameplay_vars.h"
 #include "headers/settings_draw.h"
 #include "headers/settings_update.h"
 #include "headers/globals.h"

@@ -230,6 +230,7 @@ void MiniGameManager::Close(std::shared_ptr<MiniGame>& game) {
     games.erase(it); // Remove the game from the list
     currentlyDragged.reset();
     activeGame.reset();
+    isMouseOnMiniGameWindow = false;
 
     // If all games are closed and timer is active, show win message
     if (games.empty() && timerActive) {

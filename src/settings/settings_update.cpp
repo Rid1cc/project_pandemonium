@@ -60,7 +60,7 @@ void SettingsUpdate(float& general_volume, float& effects_volume, bool& mute_aud
     } else return_highl = false;
 
     //apply
-    if(CheckCollisionPointRec(mousePos, button_apply)==true){
+    if(CheckCollisionPointRec(mousePos, button_apply)==true && (glowIntensity > 0.05f || brightness > 0.05f)){
         apply_highl = true;
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
             switch (shaderQuality) {

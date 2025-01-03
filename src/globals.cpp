@@ -39,17 +39,11 @@ extern float brightness;
 extern Vector2 sh_resolution;
 
 // Gameplay
-GameScreen currentScreen = TITLE;
-Rectangle healthBar = {screen.x + 30, screen.y + 30, 1117, 40};
-Rectangle attackMenu = {screen.x + 30, screen.y + 97, 249, 106};
-Rectangle botnetIcon = {attackMenu.x + 20, attackMenu.y + 25, 56, 56};
+GameScreen currentScreen = GAMEPLAY;
 Texture2D botnetTexture;
-Rectangle ddosIcon = {attackMenu.x + 96, attackMenu.y + 25, 56, 56};
 Texture2D ddosTexture;
-Rectangle mailbombIcon = {attackMenu.x + 172, attackMenu.y + 25, 56, 56};
 Texture2D mailbombTexture;
-Rectangle terminalWindow = {screen.x + 312, screen.y + 97, 556, 540};
-Rectangle textBox = terminalWindow;
+
 // Rectangle textBox = {terminalWindow.x + 5, terminalWindow.y + terminalWindow.height, terminalWindow.width, terminalWindow.height};
 char command[100] = "\0";
 int letterCount = 0;

@@ -8,7 +8,7 @@ public:
     InfoPanel();
     void Render();
 private:
-    Rectangle infoPanel;
+
 };
 
 #endif // PID_H
