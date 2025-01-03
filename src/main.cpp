@@ -6,6 +6,7 @@
 #include "headers/globals.h"
 #include "headers/title_draw.h"
 #include "headers/title_update.h"
+#include "headers/DifficultySelector.h"
 #include "minigames/RotatingRectangleGame.h"
 #include "minigames/ConnectWiresGame.h"
 #include "minigames/FinderGame.h"
@@ -59,14 +60,14 @@ int main(void) {
     // Minigames decs
     auto connectingGame = std::make_shared<ConnectWiresGame>(700, 250, 400, 300, "window 1");
     auto type = std::make_shared<TypeGame>(150, 120, 1000, 400, "TypeGame");
-    gameManager.AddGame(type);
+    //gameManager.AddGame(type);
     //auto finder = std::make_shared<FinderGame>(200, 150, 400, 300, "FinderGame");
     auto bouncingballGame = std::make_shared<BallGame>(300,200,600,500, "Ball Game");
-    gameManager.AddGame(bouncingballGame);
+    //gameManager.AddGame(bouncingballGame);
     // Add games to the game manager
     //gameManager.AddGame(finder);
     gameManager.SetTotalTime(900.0f);
-    gameManager.AddGame(connectingGame);
+    //gameManager.AddGame(connectingGame);
 
     //define camera state (for 3d models)
     camera.position = (Vector3){ 10.0f, 5.0f, 10.0f }; // Camera position
@@ -102,6 +103,9 @@ int main(void) {
             case SETTINGS: {
                 SettingsUpdate(general_volume, effects_volume, mute_audio);
             } break;
+            case DIFFICULTY_SELECTION: {
+                UpdateDifficultySelection();
+            } break;
             case GAMEPLAY: {
                 UpdateGameplay(currentScreen, textBox, command, letterCount, mouseOnText, framesCounter, backTimer, history, upTimes);
             } break;
@@ -120,6 +124,9 @@ int main(void) {
             } break;
             case SETTINGS: {
                 DrawSettings(general_volume, effects_volume);
+            } break;
+            case DIFFICULTY_SELECTION: {
+                DrawDifficultySelection();
             } break;
             case GAMEPLAY: {
                 DrawGameplay(textBox, command, letterCount, mouseOnText, framesCounter, historyDrawn);

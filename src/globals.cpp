@@ -39,7 +39,7 @@ extern float brightness;
 extern Vector2 sh_resolution;
 
 // Gameplay
-GameScreen currentScreen = GAMEPLAY;
+GameScreen currentScreen = TITLE;
 Rectangle healthBar = {screen.x + 30, screen.y + 30, 1117, 40};
 Rectangle attackMenu = {screen.x + 30, screen.y + 97, 249, 106};
 Rectangle infoPanel = {screen.x + 30, screen.y + 250, 249, 383};
@@ -75,6 +75,8 @@ const int screenWidth = 1280;
 const int screenHeight = 720;
 Rectangle screen = {50, 25, screenWidth-100, screenHeight-50};
 
+// Difficulty
+int SelectedDifficulty = 0;
 
 //Settings
 SettingsScreen currentSettings = GRAPHICS;
