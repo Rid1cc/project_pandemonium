@@ -17,5 +17,5 @@ void InfoPanel::Render() {
     if(isEnemyIpKnown)DrawTextC(gameplayManager.enemyIp.c_str(), infoPanel.x + 10, infoPanel.y + 90, 20, primaryColor);
     else DrawTextC("Unknown", infoPanel.x + 10, infoPanel.y + 90, 20, primaryColor);
     if (!gameManager.CheckMouseState() && CheckCollisionPointRec(mousePos, botnetIcon))
-        DrawTextC("botnetIcon description", infoPanel.x + 10, infoPanel.y + 110, 20, primaryColor);
+        DrawTextC("botnetIcon \ndescription", infoPanel.x + 10, infoPanel.y + 110, 20, primaryColor);
 }
