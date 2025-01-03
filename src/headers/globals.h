@@ -10,6 +10,7 @@
 #include "../managers/FileSystemManager.h"
 #include "../managers/EventManager.h"
 #include "../managers/GameplayManager.h"
+#include "DifficultySelector.h"
 
 #if defined(_WIN32)
 #include <windows.h>
@@ -19,7 +20,7 @@
 #include <dlfcn.h>
 #endif
 
-typedef enum GameScreen { LOGO = 0, TITLE, SETTINGS, GAMEPLAY, ENDING } GameScreen;
+typedef enum GameScreen { LOGO = 0, TITLE, SETTINGS, DIFFICULTY_SELECTION, GAMEPLAY, ENDING } GameScreen;
 typedef enum SettingsScreen { GRAPHICS = 0, AUDIO, DISPLAY, CUSTOM } SettingsScreen;
 typedef enum SettingState { LOW = 0, MID, HI} SettingState;
 
@@ -82,6 +83,8 @@ extern RenderTexture2D space3d;
 extern float general_volume;
 extern float effects_volume;
 
+// Difficulty
+extern int SelectedDifficulty;
 
 // Music
 extern Music main_theme;

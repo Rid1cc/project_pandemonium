@@ -6,6 +6,7 @@
 #include "headers/globals.h"
 #include "headers/title_draw.h"
 #include "headers/title_update.h"
+#include "headers/DifficultySelector.h"
 #include "minigames/RotatingRectangleGame.h"
 #include "minigames/ConnectWiresGame.h"
 #include "minigames/FinderGame.h"
@@ -105,6 +106,9 @@ int main(void) {
             case SETTINGS: {
                 SettingsUpdate(general_volume, effects_volume, mute_audio);
             } break;
+            case DIFFICULTY_SELECTION: {
+                UpdateDifficultySelection();
+            } break;
             case GAMEPLAY: {
                 DrawTextureEx(botnetTexture, {botnetIcon.x, botnetIcon.y}, 0.0f, 1.75f, WHITE);
                 DrawTextureEx(ddosTexture, {ddosIcon.x, ddosIcon.y}, 0.0f, 1.75f, WHITE);
@@ -126,6 +130,9 @@ int main(void) {
             } break;
             case SETTINGS: {
                 DrawSettings(general_volume, effects_volume);
+            } break;
+            case DIFFICULTY_SELECTION: {
+                DrawDifficultySelection();
             } break;
             case GAMEPLAY: {
                 
