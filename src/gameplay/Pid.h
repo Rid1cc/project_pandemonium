@@ -11,6 +11,8 @@ public:
 private:
     Rectangle pidMenu;
     bool idle;
+    int displayEnemyIpFrames ;
+    void b_DrainRender();
 };
 
 #endif // PID_H

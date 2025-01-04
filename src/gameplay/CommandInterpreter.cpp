@@ -115,6 +115,13 @@ void CommandInterpreter::netscan(std::istringstream &iss, std::vector<std::strin
                             outputLine("error: process already running");
                         }
                     }
+                    else if (args[2] == "-pb") {
+                        // Display remaining IPs from selectedIpPool
+                        outputLine("Remaining IPs:");
+                        for(const auto& ip : gameplayManager->selectedIpPool) {
+                            outputLine(ip.c_str());
+                        }
+                    }
                     else{
                         outputLine("Error: Third argument '-s' or '-b' is needed.");
                     }
@@ -131,6 +138,7 @@ void CommandInterpreter::netscan(std::istringstream &iss, std::vector<std::strin
         else if (args.size() == 2 && args[0] == "drain") {
             outputLine("Error: Third argument '-s' or '-b' is needed.");
         }
+        // Add handling for "remain" parameter
         else if (args.size() == 2 && args[0] == "list"){
             // Check if args[1] is a number
             bool isNumber = true;

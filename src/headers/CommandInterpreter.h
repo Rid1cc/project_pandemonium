@@ -17,6 +17,7 @@ public:
     const std::vector<std::string>& getHistory() const;
 
     TimeManager timer; // TimeManager instance
+    void outputLine(std::string output);
 
 private:
     
