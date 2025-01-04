@@ -160,8 +160,10 @@ elseif(APPLE)
     add_custom_command(TARGET pandemonium POST_BUILD
         COMMAND chmod -R 755 $<TARGET_FILE_DIR:pandemonium>/assets
     )
-
     target_link_libraries(pandemonium_bundle PRIVATE raylib)
+    find_package(raylib CONFIG REQUIRED)
+    target_include_directories(pandemonium PRIVATE ${raylib_INCLUDE_DIRS})
+    target_link_libraries(pandemonium PRIVATE raylib)
 
 elseif(UNIX)
     add_executable(pandemonium ${SOURCES})
