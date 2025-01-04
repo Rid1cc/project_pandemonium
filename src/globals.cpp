@@ -1,17 +1,26 @@
 #include "headers/globals.h"
 #include <string>
-#include <raylib.h>
 #include "headers/MiniGameManager.h"
 #include <random>
 #include <chrono>
 
 #if defined(_WIN32)
-#include <windows.h>
+    // #include <windows.h> // Removed to prevent conflicts
+    #include <raylib.h>
+    
+    // Define necessary Windows types manually
+    typedef void* HMODULE;
+    typedef char* LPSTR;
+    typedef unsigned long DWORD; // Added definition for DWORD
+    #define WINAPI __stdcall     // Added definition for WINAPI
+    
+    // Declare only GetModuleFileNameA
+    extern "C" __declspec(dllimport) DWORD WINAPI GetModuleFileNameA(HMODULE hModule, LPSTR lpFilename, DWORD nSize);
 #elif defined(__APPLE__)
-#include <mach-o/dyld.h>
+    #include <mach-o/dyld.h>
 #else
-#include <dlfcn.h>
-#include <unistd.h>
+    #include <dlfcn.h>
+    #include <unistd.h>
 #endif
 
 //Random init
@@ -40,16 +49,10 @@ extern Vector2 sh_resolution;
 
 // Gameplay
 GameScreen currentScreen = GAMEPLAY;
-Rectangle healthBar = {screen.x + 30, screen.y + 30, 1117, 40};
-Rectangle attackMenu = {screen.x + 30, screen.y + 97, 249, 106};
-Rectangle botnetIcon = {attackMenu.x + 20, attackMenu.y + 25, 56, 56};
 Texture2D botnetTexture;
-Rectangle ddosIcon = {attackMenu.x + 96, attackMenu.y + 25, 56, 56};
 Texture2D ddosTexture;
-Rectangle mailbombIcon = {attackMenu.x + 172, attackMenu.y + 25, 56, 56};
 Texture2D mailbombTexture;
-Rectangle terminalWindow = {screen.x + 312, screen.y + 97, 556, 540};
-Rectangle textBox = terminalWindow;
+
 // Rectangle textBox = {terminalWindow.x + 5, terminalWindow.y + terminalWindow.height, terminalWindow.width, terminalWindow.height};
 char command[100] = "\0";
 int letterCount = 0;
@@ -79,6 +82,8 @@ const int screenWidth = 1280;
 const int screenHeight = 720;
 Rectangle screen = {50, 25, screenWidth-100, screenHeight-50};
 
+// Difficulty
+int SelectedDifficulty = 0;
 
 //Settings
 SettingsScreen currentSettings = GRAPHICS;

@@ -21,7 +21,7 @@ void TitleUpdate() {
     if(CheckCollisionPointRec(mousePos, button_play)==true){
         play_highl = true;
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-            currentScreen = GAMEPLAY;
+            currentScreen = DIFFICULTY_SELECTION;
             play_highl = false;
             }
     } else play_highl = false;

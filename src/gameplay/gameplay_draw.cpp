@@ -2,6 +2,7 @@
 #include "../headers/globals.h"  // Wczytanie zmiennych globalnych, jeśli są potrzebne
 #include "Pid.h"     // Include Pid header
 #include "InfoPanel.h" // Include InfoPanel header
+#include "gameplay_vars.h"
 #include <string>
 
 // Forward declarations of helper functions
