@@ -5,6 +5,7 @@
 #include "./headers/globals.h"
 #include "./headers/settings_vars.h"
 #include <filesystem>
+#include "./managers/FileSystemManager.h"
 
 
 //Locations
@@ -79,32 +80,9 @@ void InitializeShader() { //and load + initialize settings, extremely important,
     brightnessLoc = GetShaderLocation(shader, "brightness");
     sh_resolutionLoc = GetShaderLocation(shader, "resolution");
 
-    // Check if configPath directory exists, if not, create it
-    if (!std::filesystem::exists(configPath)) {
-        std::filesystem::create_directory(configPath);
-    }
-
-    // Load default settings first
-    LoadSettingsDefault();
-
-    // Check if settings file exists and is readable
-    std::ifstream settingsFile((configPath + "settings.json").c_str());
-    if (!settingsFile.good()) {
-        // Create settings.json with default settings
-        FileSystemManager fsm;
-        fsm.saveSettings((configPath + "settings.json").c_str());
-    } else {
-        try {
-            // Load settings from file
-            FileSystemManager fsm;
-            fsm.loadSettings((configPath + "settings.json").c_str());
-        } catch (const nlohmann::json::parse_error& e) {
-            std::cerr << "Failed to parse settings.json: " << e.what() << std::endl;
-            // Create settings.json with default settings
-            FileSystemManager fsm;
-            fsm.saveSettings((configPath + "settings.json").c_str());
-        }
-    }
+    // Initialize FileSystemManager
+    FileSystemManager fsm;
+    fsm.initialize();
 
     ReloadShader();
 }

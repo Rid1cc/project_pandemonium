@@ -1,6 +1,7 @@
 #include "../headers/CommandInterpreter.h"
 #include <iostream>
 #include <sstream>
+#include <algorithm>
 #include "../headers/globals.h"
 #include "../managers/GameplayManager.h"
 #include "gameplay_vars.h"
@@ -86,6 +87,10 @@ void CommandInterpreter::parseCommand(const std::string& command, std::string* h
     //Portscan command
     else if (cmd == "portscan") {
         portscan(iss, args);
+    }
+
+    else if (cmd == "flood") {
+        flood(iss, args);
     }
 
     else if (cmd == "help") {
@@ -190,5 +195,33 @@ void CommandInterpreter::portscan(std::istringstream &iss, std::vector<std::stri
     }
     else {
         outputLine("Usage: portscan <ip_address>");
+    }
+}
+
+void CommandInterpreter::flood(std::istringstream &iss, std::vector<std::string> &args) {
+    // Convert args[0] to integer
+    int portNumber = std::stoi(args[1]);
+    // Check if portNumber exists in gameplayManager's port array
+    if(args.size() == 2 
+        && std::find(gameplayManager->port,
+                     gameplayManager->port + sizeof(gameplayManager->port)/sizeof(gameplayManager->port[0]),
+                     portNumber
+                    ) != gameplayManager->port + sizeof(gameplayManager->port)/sizeof(gameplayManager->port[0]) 
+        && args[0] == gameplayManager->enemyIp) {
+        outputLine("Flood: Started flooding:");
+        outputLine("Flood: Target IP: " + args[0]);
+        outputLine("Flood: Target Port: " + args[1]);
+        gameplayManager->gameplayEvent.triggerEvent("ddos");
+    }
+    else if(args.size() == 2 && args[0] != gameplayManager->enemyIp) {
+        outputLine("Flood: Started flooding:");
+        outputLine("Error: flooding failed");
+    }
+    else if(args.size() == 0) {
+        outputLine("Error: Syntax error");
+        outputLine("Usage: flood <target_ip> <port_number>");
+    }
+    else {
+        outputLine("Usage: flood <target_ip> <port_number>");
     }
 }

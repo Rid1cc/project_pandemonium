@@ -1,4 +1,5 @@
 #include "../headers/DifficultySelector.h"
+#include "../managers/FileSystemManager.h"
 
 /*
 !!!!!!!!!!!!!!!!!!!!!
@@ -10,8 +11,9 @@ Max unlocked difficulty is saved as a number in the file difficulty.json !
 */
 
 // declarations (max unlocked difficulty)
-void SaveMaxDifficulty(int maxDifficulty); // save new max difficulty
-int LoadMaxDifficulty(); // return max unlocked difficulty 
+// Remove the following functions:
+// void SaveMaxDifficulty(int maxDifficulty);
+// int LoadMaxDifficulty();
 void DifficultyCompleted(int difficulty); // saving new max difficulty if it is greater than written
 bool isDifficultyCompleted(int difficulty); // return true if it is 
 
@@ -25,52 +27,20 @@ void DrawBlockedButton(Rectangle rect, const char* text, Color color, int FontSi
 
 using json = nlohmann::json;
 
-void SaveMaxDifficulty(int maxDifficulty){
-    json data;
-    data["maxDifficultyUnlocked"] = maxDifficulty;
-
-    std::ofstream file("../config/difficulty.json");
-    if (file.is_open()){
-        file << data.dump(4);
-        file.close();
-        std::cout << "Max Difficulty saved correctly!" << std::endl;
-    } else {
-        std::cerr << "Failed to open difficulty.json for writing!" << std::endl;
-    }
-}
-
-int LoadMaxDifficulty(){
-    json data;
-    int MaxDifficulty = 1;
-
-    std::ifstream file("../config/difficulty.json");
-    if (file.is_open()){
-         try {
-            file >> data;
-            if (data.contains("maxDifficultyUnlocked")) {
-                MaxDifficulty = data["maxDifficultyUnlocked"];
-            }
-        } catch (std::exception& e) {
-            std::cerr << "Error reading JSON: " << e.what() << std::endl;
-        }
-        file.close();
-    } else {
-        std::cerr << "Failed to open difficulty.json for writing!" << std::endl;
-    }
-
-    return MaxDifficulty;
-}
+// Remove the following functions:
+// void SaveMaxDifficulty(int maxDifficulty);
+// int LoadMaxDifficulty();
 
 void DifficultyCompleted(int difficulty){
-    int MaxDifficulty = LoadMaxDifficulty();
-    if (difficulty > MaxDifficulty){
-        MaxDifficulty = difficulty;
-        SaveMaxDifficulty(difficulty); // save new 
-    }
+    // Use FileSystemManager to handle difficulty completion
+    FileSystemManager fsm;
+    fsm.difficultyCompleted(difficulty);
 }
 
 bool isDifficultyCompleted(int difficulty){
-    return difficulty <= LoadMaxDifficulty();
+    // Use FileSystemManager to check difficulty status
+    FileSystemManager fsm;
+    return fsm.isDifficultyCompleted(difficulty);
 }
 
 
