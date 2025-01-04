@@ -14,6 +14,8 @@ private:
     int displayEnemyIpFrames ;
     void b_DrainRender();
     void s_DrainRender();
+    void PortscanRender();
+    int animationTimer;
 };
 
 #endif // PID_H

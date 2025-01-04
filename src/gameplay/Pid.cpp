@@ -7,6 +7,7 @@ Pid::Pid() {
     pidMenu = {screen.x + 900, screen.y + 97, 249, 540};
     idle = true;
     displayEnemyIpFrames = 0;
+    animationTimer = 0;
 }
 
 // Render the PID menu
@@ -15,6 +16,35 @@ void Pid::RenderIdle() {
     DrawTextC("NO", pidMenu.x + 20, pidMenu.y + (pidMenu.height/2) - 50, 40, primaryColor);
     DrawTextC("PROCESS", pidMenu.x + 20, pidMenu.y + (pidMenu.height/2), 40, primaryColor);
     DrawTextC("ACTIVE", pidMenu.x + 20, pidMenu.y + (pidMenu.height/2) + 50, 40, primaryColor);
+}
+
+// Added animatePortscanResult function
+void Pid::PortscanRender() {
+    const int animationDuration = 300; // Frames for the animation
+
+    if(animationTimer < animationDuration){
+        animationTimer++;
+        // Animate random number generation
+        int randomNumber = rand() % 65535;
+        DrawTextC(std::to_string(randomNumber).c_str(), pidMenu.x + 50, pidMenu.y + (pidMenu.height/2) - 10, 40, primaryColor);
+    }
+
+    if(gameplayManager.timer.countdownFrames < 300){
+        // Draw black rectangle to cover the random number
+        DrawRectangle(pidMenu.x + 50, pidMenu.y + (pidMenu.height/2) - 10, 200, 100, BLACK);
+        
+        if(gameplayManager.portscanResult == 0){
+            DrawTextC("Failure", pidMenu.x + 50, pidMenu.y + (pidMenu.height/2) - 10, 40, RED);
+        }
+        else{
+            DrawTextC(std::to_string(gameplayManager.portscanResult).c_str(), pidMenu.x + 50, pidMenu.y + (pidMenu.height/2) - 10, 40, GREEN);
+        }
+    }
+
+    DrawTextC("PROCESS: PORT", pidMenu.x + 10, pidMenu.y + 10, 20, primaryColor);
+    DrawTextC("SCAN //", pidMenu.x + 10, pidMenu.y + 30, 20, primaryColor);
+    std::string timeLeft = "EST. T.LEFT: " + std::to_string(gameplayManager.timer.countdownFrames / 60);
+    DrawTextC(timeLeft.c_str(), pidMenu.x + 10, pidMenu.y + 50, 20, primaryColor);
 }
 
 void Pid::Render() {
@@ -51,6 +81,10 @@ void Pid::Render() {
                 break;
             case ATK_BOTNET:
                 DrawTextC("ATTACK BOTNET", pidMenu.x + 20, pidMenu.y + (pidMenu.height/2), 40, primaryColor);
+                break;
+            case PORTSCAN:
+                animationTimer = 0; // Reset the timer
+                PortscanRender();
                 break;
             default:
                 break;

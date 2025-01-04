@@ -8,6 +8,7 @@ typedef enum ProcessStateName {
     NONE_P = 0,
     B_DRAIN,
     S_DRAIN,
+    PORTSCAN,
     MAIL,
     DDOS,
     ADD_BOTNET,

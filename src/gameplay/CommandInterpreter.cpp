@@ -83,6 +83,10 @@ void CommandInterpreter::parseCommand(const std::string& command, std::string* h
     else if (cmd == "netscan"){
        netscan(iss, args);
     } 
+    //Portscan command
+    else if (cmd == "portscan") {
+        portscan(iss, args);
+    }
 
     else if (cmd == "help") {
         historyDrawnUp();
@@ -172,4 +176,19 @@ void CommandInterpreter::netscan(std::istringstream &iss, std::vector<std::strin
         }  
 }
 
-
+void CommandInterpreter::portscan(std::istringstream &iss, std::vector<std::string> &args) {
+    if(args.size() == 1 && args[0] == gameplayManager->enemyIp) {
+            outputLine("Portscan: Scanning ports on " + gameplayManager->enemyIp);
+            gameplayManager->gameplayEvent.triggerEvent("portscan");
+    }
+    else if(args.size() == 1 && args[0] != gameplayManager->enemyIp) {
+        outputLine("Portscan: Scanning ports on " + args[1]);
+        outputLine("Error: Scanning failed");
+    }
+    else if(args.size() == 0) {
+        outputLine("Error: IP address required.");
+    }
+    else {
+        outputLine("Usage: portscan <ip_address>");
+    }
+}

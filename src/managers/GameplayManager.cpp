@@ -108,6 +108,7 @@ void GameplayManager::gameplayInit() {
     gameplayEvent.subscribe("stopGame", [this]() { this->onStopCommand(); });
     gameplayEvent.subscribe("drainSilent", [this]() { this->onDrainSilent(); });
     gameplayEvent.subscribe("drainBruteforce", [this]() { this->onDrainBruteforce(); });
+    gameplayEvent.subscribe("portscan", [this]() { this->onPortscan(); });
 
 }
 
@@ -195,4 +196,18 @@ void GameplayManager::onDrainSilent() {
     silentdraintimes++;
 }
 
+int GameplayManager::onPortscan() {
+    pidState = PORTSCAN;
+    timer.setCountdown(10); //10 seconds
+    std::uniform_int_distribution<int> dist(0, 1);
+    if(dist(rng2) == 1){
+        std::uniform_int_distribution<int> rngport(0, 4);
+        portscanResult = port[rngport(rng2)];
+        std::cout << "Portscan: Open port found: " << portscanResult << std::endl;
+        return portscanResult; // Replace 'portNumber' with the actual port retrieval logic
+    } else {
+        portscanResult = 0;
+        return 0;
+    }
+}
 

@@ -29,6 +29,7 @@ private:
     void parseCommand(const std::string& command, std::string* historyDrawn);
     void historyDrawnUp();
     void netscan(std::istringstream &iss, std::vector<std::string> &args);
+    void portscan(std::istringstream &iss, std::vector<std::string> &args);
 };
 
 #endif

@@ -39,17 +39,24 @@ public:
     int enemyMail;              // Variable to store enemy mail
     std::unordered_set<std::string> selectedIpPool; // Updated from previous type
     std::vector<std::string> old_selectedIpPool;
+    int portscanResult;         // Variable to store portscan result
 
 private:
     // Add TimeManager instance
     int silentdraintimes = 0;
     
     std::mt19937 rng2;          // Random number generator
+
+    // Add persistent distributions
+    std::uniform_int_distribution<int> distPortscan; // Added for portscan distribution
+    std::uniform_int_distribution<int> distRngPort;  // Added for port selection distribution
+
     // Event handler functions
     void onStartCommand();
     void onStopCommand();
     void onDrainSilent();
     void onDrainBruteforce();
+    int onPortscan();
 };
 
 #endif
