@@ -1,17 +1,26 @@
 #include "headers/globals.h"
 #include <string>
-#include <raylib.h>
 #include "headers/MiniGameManager.h"
 #include <random>
 #include <chrono>
 
 #if defined(_WIN32)
-#include <windows.h>
+    // #include <windows.h> // Removed to prevent conflicts
+    #include <raylib.h>
+    
+    // Define necessary Windows types manually
+    typedef void* HMODULE;
+    typedef char* LPSTR;
+    typedef unsigned long DWORD; // Added definition for DWORD
+    #define WINAPI __stdcall     // Added definition for WINAPI
+    
+    // Declare only GetModuleFileNameA
+    extern "C" __declspec(dllimport) DWORD WINAPI GetModuleFileNameA(HMODULE hModule, LPSTR lpFilename, DWORD nSize);
 #elif defined(__APPLE__)
-#include <mach-o/dyld.h>
+    #include <mach-o/dyld.h>
 #else
-#include <dlfcn.h>
-#include <unistd.h>
+    #include <dlfcn.h>
+    #include <unistd.h>
 #endif
 
 //Random init
