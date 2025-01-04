@@ -73,11 +73,12 @@ void CommandInterpreter::parseCommand(const std::string& command, std::string* h
     } 
     // Subscribe to events based on commands
     else if (cmd == "start") {
-        gameplayManager->gameplayEvent.triggerEvent("startGame");
+        gameplayManager->gameplayEvent.triggerEvent("ddos");
         outputLine("Game started.");
     }
     else if (cmd == "stop") {
         gameplayManager->gameplayEvent.triggerEvent("stopGame");
+        SelectedDifficulty = 0;
         outputLine("Game stopped.");
     }
     //Netscan command
@@ -199,8 +200,22 @@ void CommandInterpreter::portscan(std::istringstream &iss, std::vector<std::stri
 }
 
 void CommandInterpreter::flood(std::istringstream &iss, std::vector<std::string> &args) {
-    // Convert args[0] to integer
-    int portNumber = std::stoi(args[1]);
+    // Check if there are at least two arguments
+    if(args.size() < 2) {
+        outputLine("Error: Syntax error");
+        outputLine("Usage: flood <target_ip> <port_number>");
+        return;
+    }
+
+    // Convert args[1] to integer safely
+    int portNumber;
+    try {
+        portNumber = std::stoi(args[1]);
+    } catch(const std::invalid_argument& e) {
+        outputLine("Error: Invalid port number.");
+        return;
+    }
+
     // Check if portNumber exists in gameplayManager's port array
     if(args.size() == 2 
         && std::find(gameplayManager->port,
@@ -214,12 +229,18 @@ void CommandInterpreter::flood(std::istringstream &iss, std::vector<std::string>
         gameplayManager->gameplayEvent.triggerEvent("ddos");
     }
     else if(args.size() == 2 && args[0] != gameplayManager->enemyIp) {
+        outputLine("Error: flooding failed");
+        outputLine("Error: target invalid");
+    }
+    else if(args.size() == 2 
+        && std::find(gameplayManager->port,
+                     gameplayManager->port + sizeof(gameplayManager->port)/sizeof(gameplayManager->port[0]),
+                     portNumber
+                    ) == gameplayManager->port + sizeof(gameplayManager->port)/sizeof(gameplayManager->port[0]) 
+        && args[0] == gameplayManager->enemyIp) {
         outputLine("Flood: Started flooding:");
         outputLine("Error: flooding failed");
-    }
-    else if(args.size() == 0) {
-        outputLine("Error: Syntax error");
-        outputLine("Usage: flood <target_ip> <port_number>");
+        outputLine("Error: port invalid");
     }
     else {
         outputLine("Usage: flood <target_ip> <port_number>");

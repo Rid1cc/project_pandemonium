@@ -74,7 +74,7 @@ void Pid::Render() {
                 DrawTextC("MAIL", pidMenu.x + 20, pidMenu.y + (pidMenu.height/2), 40, primaryColor);
                 break;
             case DDOS:
-                DrawTextC("DDOS", pidMenu.x + 20, pidMenu.y + (pidMenu.height/2), 40, primaryColor);
+                DdosRender();
                 break;
             case ADD_BOTNET:
                 DrawTextC("ADD BOTNET", pidMenu.x + 20, pidMenu.y + (pidMenu.height/2), 40, primaryColor);
@@ -223,4 +223,143 @@ void Pid::s_DrainRender() {
     // Fix the warning by correctly converting to char*
     std::string timeLeft = "EST. T.LEFT: " + std::to_string(gameplayManager.timer.countdownFrames / 60);
     DrawTextC(timeLeft.c_str(), pidMenu.x + 10, pidMenu.y + 50, 20, primaryColor);
+}
+
+struct FallingRect {
+    float x;
+    float y;
+    float width;
+    float height;
+    float speed;
+    float alpha; // Added alpha for transparency
+};
+
+// Define a struct for loading stripes
+struct LoadingStripe {
+    float x;
+    float y;
+    float width;
+    float height;
+    float progress; // Current progress (0.0 to 1.0)
+    float speed;    // Speed of progress per frame
+    bool linkedToTimer; // If true, progress is tied to countdownFrames
+};
+
+void Pid::DdosRender() {
+    static std::vector<FallingRect> fallingRects;
+    static std::vector<LoadingStripe> loadingStripes;
+    static bool stripesInitialized = false;
+    static float frames;
+
+    // Initialize loading stripes once
+    if (!stripesInitialized) {
+        int numberOfStripes = 4;
+        float stripeHeight = 20.0f;
+        float spacing = 10.0f;
+        float startY = pidMenu.y + 90.0f; // Starting Y position for the first stripe
+        frames = gameplayManager.timer.countdownFrames;
+        
+        for(int i = 0; i < numberOfStripes; ++i){
+            LoadingStripe stripe;
+            stripe.x = pidMenu.x + 20.0f; // Starting X position
+            stripe.y = startY + i * (stripeHeight + spacing); // Stacked vertically
+            stripe.width = pidMenu.width - 40.0f; // Width minus padding
+            stripe.height = stripeHeight;
+            stripe.progress = 0.0f;
+            stripe.speed = 0.5f + static_cast<float>(i) * 0.2f; // Different speeds
+            stripe.linkedToTimer = (i == 0); // First stripe linked to timer
+            loadingStripes.push_back(stripe);
+        }
+        stripesInitialized = true;
+    }
+
+    // Update loading stripes
+    for(auto &stripe : loadingStripes){
+        if(stripe.linkedToTimer){
+            if(gameplayManager.timer.countdownFrames >= 0){
+                // Calculate progress based on countdownFrames
+                stripe.progress = 1.0f - static_cast<float>(gameplayManager.timer.countdownFrames) / frames; // Assuming 20000 frames
+                if(stripe.progress > 1.0f){
+                    stripe.progress = 1.0f;
+                }
+                else if(stripe.progress < 0.0f){
+                    stripe.progress = 0.0f;
+                }
+            }
+            else{
+                stripe.progress = 1.0f; // Complete loading
+            }
+        }
+        else{
+            // Update progress based on speed
+            stripe.progress += stripe.speed / static_cast<float>(60); // Assuming 60 FPS
+            if(stripe.progress > 1.0f){
+                stripe.progress = 0.0f; // Reset to loop the loading
+            }
+        }
+    }
+
+    // Draw loading stripes
+    for(const auto &stripe : loadingStripes){
+        // Draw the background of the stripe
+        DrawRectangle(stripe.x, stripe.y, stripe.width, stripe.height, BLACK);
+        // Draw the filled part of the stripe
+        DrawRectangle(stripe.x, stripe.y, stripe.width * stripe.progress, stripe.height, primaryColor);
+    }
+
+    // Update and draw falling rectangles
+    for(auto it = fallingRects.begin(); it != fallingRects.end(); ){
+        it->y += it->speed;
+        // Apply alpha to primaryColor
+        Color rectColor = primaryColor;
+        rectColor.a = static_cast<unsigned char>(std::clamp(it->alpha, 0.0f, 255.0f));
+        DrawRectangle(it->x, it->y, it->width, it->height, rectColor);
+        
+        // Optionally decrease alpha as the rectangle falls
+        it->alpha -= 1.0f; // Decrease alpha for fading effect
+
+        // Check if rectangle has reached the bottom
+        if(it->y + it->height >= pidMenu.y + pidMenu.height){
+            it->y = pidMenu.y + pidMenu.height - it->height; // Clamp to bottom
+            it = fallingRects.erase(it); // Remove the rectangle
+        }
+        else if(it->alpha <= 0){
+            it = fallingRects.erase(it);
+        }
+        else{
+            ++it;
+        }
+    }
+
+    // Generate new falling rectangles
+    if(rand() % 5 < 2){ // Approximately every second
+        FallingRect rect;
+        rect.width = 10;
+        rect.height = 20;
+        rect.x = pidMenu.x + rand() % (int)(pidMenu.width - (int)rect.width);
+        rect.y = pidMenu.y;
+        rect.speed = 3.0f + static_cast<float>(rand() % 3);
+        rect.alpha = 128.0f + static_cast<float>(rand() % 128); // Set random alpha between 128 and 255
+        fallingRects.push_back(rect);
+    }
+
+    if(gameplayManager.timer.countdownFrames == (int)(3*(frames/4))){
+        cmdInterpreter.outputLine("Flood: 25% complete.");
+    }
+    if(gameplayManager.timer.countdownFrames == (int)(frames/2)){
+        cmdInterpreter.outputLine("Flood: 50% complete.");
+    }
+    if(gameplayManager.timer.countdownFrames == (int)((frames/4))){
+        cmdInterpreter.outputLine("Flood: 75% complete.");
+    }
+    if(gameplayManager.timer.countdownFrames == 0){
+        cmdInterpreter.outputLine("Flood: 100% complete.");
+        cmdInterpreter.outputLine("Flood: Target firewall damaged.");
+        gameplayManager.enemyHp -= 30;
+    }
+
+    DrawTextC("PROCESS: FLOOD //", pidMenu.x + 10, pidMenu.y + 10, 20, primaryColor);
+    // Fix the warning by correctly converting to char*
+    std::string timeLeft = "EST. T.LEFT: " + std::to_string(gameplayManager.timer.countdownFrames / 60);
+    DrawTextC(timeLeft.c_str(), pidMenu.x + 10, pidMenu.y + 30, 20, primaryColor);
 }

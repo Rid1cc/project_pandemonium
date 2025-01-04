@@ -15,6 +15,7 @@ private:
     void b_DrainRender();
     void s_DrainRender();
     void PortscanRender();
+    void DdosRender();
     int animationTimer;
 };
 

@@ -57,6 +57,7 @@ private:
     void onDrainSilent();
     void onDrainBruteforce();
     int onPortscan();
+    void onDdos();
 };
 
 #endif

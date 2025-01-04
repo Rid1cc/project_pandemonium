@@ -109,6 +109,7 @@ void GameplayManager::gameplayInit() {
     gameplayEvent.subscribe("drainSilent", [this]() { this->onDrainSilent(); });
     gameplayEvent.subscribe("drainBruteforce", [this]() { this->onDrainBruteforce(); });
     gameplayEvent.subscribe("portscan", [this]() { this->onPortscan(); });
+    gameplayEvent.subscribe("ddos", [this]() { this->onDdos(); });
 
 }
 
@@ -209,5 +210,10 @@ int GameplayManager::onPortscan() {
         portscanResult = 0;
         return 0;
     }
+}
+
+void GameplayManager::onDdos() {
+    pidState = DDOS;
+    timer.setCountdown(50); //10 seconds
 }
 

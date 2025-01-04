@@ -25,6 +25,9 @@ void UpdateDifficultySelection();
 void DrawDescription(Rectangle rect, int FontSize, std::string text, Color color);
 void DrawBlockedButton(Rectangle rect, const char* text, Color color, int FontSize, bool isMouseOnButton);
 
+// Add a flag to track if the screen was just entered
+bool screenJustEntered = true;
+
 using json = nlohmann::json;
 
 // Remove the following functions:
@@ -45,6 +48,16 @@ bool isDifficultyCompleted(int difficulty){
 
 
 void DrawDifficultySelection(){
+    if (screenJustEntered){
+        // Ignore the initial mouse click
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+            // Consume the click
+            screenJustEntered = false;
+            return;
+        }
+        screenJustEntered = false;
+    }
+
     ClearBackground(BLACK);
     //DrawText("Select Difficulty", 20, 20, 40, ORANGE);
 
@@ -87,6 +100,7 @@ void DrawDifficultySelection(){
     } 
     if (isMouseOnButton(easyRect) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
         SelectedDifficulty = 1;
+        screenJustEntered = true;
     }
 
 
@@ -106,6 +120,7 @@ void DrawDifficultySelection(){
         }
         if (isMouseOnButton(normalRect) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
             SelectedDifficulty = 2;
+            screenJustEntered = true;
         }
     } else {
         DrawBlockedButton(normalRect, normal, primaryColor, buttonFontSize, isMouseOnButton(normalRect));
@@ -135,6 +150,7 @@ void DrawDifficultySelection(){
         }
         if (isMouseOnButton(hardRect) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
             SelectedDifficulty = 3;
+            screenJustEntered = true;
         }
     } else {
         DrawBlockedButton(hardRect, hard, primaryColor, buttonFontSize, isMouseOnButton(hardRect));
@@ -192,6 +208,12 @@ void UpdateDifficultySelection(){
         std::cout << "SelectedDifficulty: " << SelectedDifficulty << std::endl;
         currentScreen = GAMEPLAY;
     }
+}
+
+// When switching to this screen, set the flag
+void SwitchToDifficultySelection(){
+    // ...existing code...
+    screenJustEntered = true;
 }
 
 
