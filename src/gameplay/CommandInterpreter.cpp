@@ -81,7 +81,21 @@ void CommandInterpreter::parseCommand(const std::string& command, std::string* h
     }
     //Netscan command
     else if (cmd == "netscan"){
-        //DRAIN
+       netscan(iss, args);
+    } 
+
+    else if (cmd == "help") {
+        historyDrawnUp();
+        historyDrawn[0] = "Available commands: echo, ipconfig, start, stop, netscan, help";
+    }
+    else {
+        historyDrawnUp();      
+        historyDrawn[0] = "Unknown command: " + command;
+    }
+}
+
+void CommandInterpreter::netscan(std::istringstream &iss, std::vector<std::string> &args) {
+     //DRAIN
         if (args.size() == 3 && args[0] == "drain") {
             if(!isEnemyIpKnown){
                 if(args[1] == gameplayManager->enemyHostname){
@@ -148,15 +162,6 @@ void CommandInterpreter::parseCommand(const std::string& command, std::string* h
             outputLine("netscan list <page_number>");
             outputLine("netscan drain <hostname> (-s) (-b)");
         }  
-    } 
-
-    else if (cmd == "help") {
-        historyDrawnUp();
-        historyDrawn[0] = "Available commands: echo, ipconfig, start, stop, netscan, help";
-    }
-    else {
-        historyDrawnUp();      
-        historyDrawn[0] = "Unknown command: " + command;
-    }
 }
+
 
