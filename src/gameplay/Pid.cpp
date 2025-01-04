@@ -34,7 +34,7 @@ void Pid::Render() {
                 break;
             }
             case S_DRAIN:
-                DrawTextC("SILENT DRAIN", pidMenu.x + 20, pidMenu.y + (pidMenu.height/2), 40, primaryColor);
+                s_DrainRender();
                 if(gameplayManager.timer.countdownFrames == 1){
                     cmdInterpreter.outputLine("Netscan: Silent Drain complete.");
                     cmdInterpreter.outputLine("Netscan: Remaining IP's: " + std::to_string(gameplayManager.selectedIpPool.size()));
@@ -129,6 +129,62 @@ void Pid::b_DrainRender() {
     // Draw additional texts
     DrawTextC("PROCESS: DRAIN //", pidMenu.x + 10, pidMenu.y + 10, 20, primaryColor);
     DrawTextC("--BRUTEFORCE", pidMenu.x + 10, pidMenu.y + 30, 20, primaryColor);
+
+    // Fix the warning by correctly converting to char*
+    std::string timeLeft = "EST. T.LEFT: " + std::to_string(gameplayManager.timer.countdownFrames / 60);
+    DrawTextC(timeLeft.c_str(), pidMenu.x + 10, pidMenu.y + 50, 20, primaryColor);
+}
+
+void Pid::s_DrainRender() {
+    // Initialize animation variables
+    static std::vector<AnimatedIP> animatedIPs;
+    static bool animationStarted = false;
+    static int framesPerIp = 0;
+
+    if (!animationStarted) {
+        // Populate animatedIPs with IPs from the old_selectedIpPool
+        for(const auto& ip : gameplayManager.old_selectedIpPool) {
+            AnimatedIP newIP;
+            newIP.ip = ip;
+
+            // Random x and y within pidMenu boundaries
+            newIP.x = pidMenu.x + 2 + rand() % (int)(pidMenu.width - (MeasureTextEx(pixeled, newIP.ip.c_str(), 20, 1).x) - 15);
+            newIP.y = pidMenu.y + 80 + rand() % (int)(pidMenu.height - 100);
+
+            newIP.alpha = 255.0f; // Fully opaque
+            newIP.fadeSpeed = 255.0f / (5.0f * 60.0f); // Fade over 5 seconds (assuming 60 FPS)
+            animatedIPs.push_back(newIP);
+        }
+        framesPerIp = 5 * 60 / animatedIPs.size(); // Calculate frames per IP for 5 seconds
+        animationStarted = true;
+    }
+
+    // Update and render animated IPs
+    int currentFrame = gameplayManager.timer.countdownFrames;
+    int ipIndex = (5 * 60 - currentFrame) / framesPerIp;
+
+    for(int i = 0; i < animatedIPs.size(); ++i) {
+        if (gameplayManager.selectedIpPool.find(animatedIPs[i].ip) == gameplayManager.selectedIpPool.end()) {
+            // Fade out IPs not in selectedIpPool
+            animatedIPs[i].alpha -= animatedIPs[i].fadeSpeed;
+            if(animatedIPs[i].alpha < 0){
+                animatedIPs[i].alpha = 0;
+            }
+        } else {
+            animatedIPs[i].alpha = 255.0f; // Ensure selected IPs remain fully opaque
+        }
+
+        // Draw IP text within pidMenu
+        DrawTextC(animatedIPs[i].ip.c_str(), 
+                  ShakeXY(static_cast<int>(animatedIPs[i].x), 2), 
+                  ShakeXY(static_cast<int>(animatedIPs[i].y), 2), 
+                  20, 
+                  (Color){primaryColor.r, primaryColor.g, primaryColor.b, static_cast<unsigned char>(std::max(0.0f, animatedIPs[i].alpha))});
+    }
+
+    // Draw additional texts
+    DrawTextC("PROCESS: DRAIN //", pidMenu.x + 10, pidMenu.y + 10, 20, primaryColor);
+    DrawTextC("--SILENT", pidMenu.x + 10, pidMenu.y + 30, 20, primaryColor);
 
     // Fix the warning by correctly converting to char*
     std::string timeLeft = "EST. T.LEFT: " + std::to_string(gameplayManager.timer.countdownFrames / 60);

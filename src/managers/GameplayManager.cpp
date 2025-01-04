@@ -4,6 +4,7 @@
 #include <unordered_set>
 #include <vector> // Added to use std::vector
 #include <functional> // Added to use std::function
+#include <algorithm> // Added to use std::shuffle
 
 // TimeManager implementation
 // Its a simple class that counts down from a given number of seconds
@@ -143,30 +144,50 @@ void GameplayManager::onDrainSilent() {
     timer.setCountdown(5);
 
     if(silentdraintimes == 0){
-        // Initial drain: Select half of ipPool
-        int halfSize = sizeof(ipPool) / sizeof(ipPool[0]) / 2;
-        selectedIpPool.assign(ipPool, ipPool + halfSize);
-        
-        // Ensure enemyIp is included
-        if (std::find(selectedIpPool.begin(), selectedIpPool.end(), enemyIp) == std::end(selectedIpPool)) {
-            selectedIpPool[0] = enemyIp;
-        }
-    }
-    else {
-        // Subsequent drains: Halve the selectedIpPool
-        int currentSize = selectedIpPool.size();
-        int halfSize = currentSize / 2 + currentSize % 2; // Take one more if odd
-        selectedIpPool.assign(selectedIpPool.begin(), selectedIpPool.begin() + halfSize);
-        
-        // Ensure enemyIp is included
-        if (std::find(selectedIpPool.begin(), selectedIpPool.end(), enemyIp) == std::end(selectedIpPool)) {
-            selectedIpPool[0] = enemyIp;
+        // Initial drain: Select first 50 IPs
+        old_selectedIpPool.assign(std::begin(ipPool), std::end(ipPool));
+        int desiredSize = 50; // Initial desired pool size
+
+        // Clear existing selectedIpPool and insert new elements
+        selectedIpPool.clear();
+        for(int i = 0; i < desiredSize && i < sizeof(ipPool)/sizeof(ipPool[0]); ++i){
+            selectedIpPool.insert(ipPool[i]);
         }
 
-        // If only one address remains, print it
-        if(selectedIpPool.size() == 1){
-            timer.setCountdown(0);
-            printf("Final Address: %s\n", selectedIpPool[0].c_str());
+        // Ensure enemyIp is included
+        selectedIpPool.insert(enemyIp);
+    }
+    else {
+        // Define the reduction sequence
+        static const std::vector<int> drainStages = {50, 24, 14, 8, 4, 2, 1};
+        int desiredSize = 1; // Default to 1 if all stages are completed
+
+        // Determine the desired pool size for the current drain
+        if(silentdraintimes < drainStages.size()){
+            desiredSize = drainStages[silentdraintimes];
+        }
+
+        // Save current selectedIpPool to old_selectedIpPool
+        old_selectedIpPool.assign(selectedIpPool.begin(), selectedIpPool.end());
+
+        // Convert selectedIpPool to a vector for ordered access
+        std::vector<std::string> tempSelected(selectedIpPool.begin(), selectedIpPool.end());
+
+        // Shuffle the vector to randomize selection
+        std::shuffle(tempSelected.begin(), tempSelected.end(), rng2);
+
+        // Clear current selectedIpPool and insert the desired number of shuffled IPs
+        selectedIpPool.clear();
+        for(int i = 0; i < desiredSize && i < tempSelected.size(); ++i){
+            selectedIpPool.insert(tempSelected[i]);
+        }
+
+        // Ensure enemyIp is included
+        selectedIpPool.insert(enemyIp);
+
+        // If only one address remains and countdown is not active, print it
+        if(selectedIpPool.size() == 1 && !isCounting){
+            printf("Final Address: %s\n", selectedIpPool.begin()->c_str()); // Fixed by adding .c_str()
             isEnemyIpKnown = true;
         }
     }

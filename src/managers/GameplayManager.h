@@ -4,6 +4,7 @@
 #include "EventManager.h"
 #include <random>
 #include <string> // Added to include std::string
+#include <unordered_set> // Added to include std::unordered_set
 
 // Forward declaration of TimeManager
 class TimeManager {
@@ -36,7 +37,8 @@ public:
     int enemyHp;                // Variable to store enemy health points
     std::string enemyHostname;  // Changed from int to std::string
     int enemyMail;              // Variable to store enemy mail
-    std::vector<std::string> selectedIpPool; // Variable to store selected IP pool
+    std::unordered_set<std::string> selectedIpPool; // Updated from previous type
+    std::vector<std::string> old_selectedIpPool;
 
 private:
     // Add TimeManager instance
