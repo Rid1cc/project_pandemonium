@@ -19,7 +19,7 @@ void InfoPanel::Render() {
     else 
         DrawTextC("Unknown", infoPanel.x + 10, infoPanel.y + 90, 20, primaryColor);
     
-    if (!gameManager.CheckMouseState()) {
+    if (!miniGamesManager.CheckMouseState()) {
         if (CheckCollisionPointRec(mousePos, botnetIcon))
             DrawTextC(botnetDescription.c_str(), iconDescriptionCoorinates.x, iconDescriptionCoorinates.y, 20, primaryColor);
         else if (CheckCollisionPointRec(mousePos, ddosIcon))

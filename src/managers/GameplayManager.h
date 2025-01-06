@@ -29,6 +29,8 @@ public:
     
     EventManager gameplayEvent; // EventManager instance
     TimeManager timer;          // TimeManager instance
+    TimeManager safeMarginTimer;
+
     int difficulty;             // Variable to store difficulty level
     int port[5];                // Variable to store open port numbers
     std::string ipPool[100];    // Variable to store IP pool
@@ -40,6 +42,7 @@ public:
     std::unordered_set<std::string> selectedIpPool; // Updated from previous type
     std::vector<std::string> old_selectedIpPool;
     int portscanResult;         // Variable to store portscan result
+    
 
 private:
     // Add TimeManager instance
@@ -52,6 +55,7 @@ private:
     std::uniform_int_distribution<int> distRngPort;  // Added for port selection distribution
 
     // Event handler functions
+    void onSafeMarginTimerEnd();
     void onStartCommand();
     void onStopCommand();
     void onDrainSilent();

@@ -206,6 +206,23 @@ void DrawDescription(Rectangle rect, int FontSize, std::string text, Color color
 void UpdateDifficultySelection(){
     if (SelectedDifficulty == 1 || SelectedDifficulty == 2 || SelectedDifficulty == 3){
         std::cout << "SelectedDifficulty: " << SelectedDifficulty << std::endl;
+        switch (SelectedDifficulty)
+        {
+        case 1:
+            gameplayManager.safeMarginTimer.setCountdown(10);
+            printf("safeMarginTimer set to 60 seconds\n");
+            break;
+        case 2:
+            gameplayManager.safeMarginTimer.setCountdown(30);
+            printf("safeMarginTimer set to 30 seconds\n");
+            break;
+        case 3:
+            gameplayManager.safeMarginTimer.setCountdown(2);
+            printf("safeMarginTimer set to 2 seconds\n");
+            break;
+        default:
+            break;
+        }
         currentScreen = GAMEPLAY;
     }
 }

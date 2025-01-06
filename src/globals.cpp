@@ -48,7 +48,7 @@ extern float brightness;
 extern Vector2 sh_resolution;
 
 // Gameplay
-GameScreen currentScreen = GAMEPLAY;
+GameScreen currentScreen = TITLE;
 Texture2D botnetTexture;
 Texture2D ddosTexture;
 Texture2D mailbombTexture;
@@ -63,7 +63,7 @@ int upTimes = 0;
 std::string history[50] = {" "};
 std::string historyDrawn[50] = {" "};
 std::string input = "";
-MiniGameManager gameManager;
+MiniGameManager miniGamesManager;
 GameplayManager gameplayManager;
 Vector2 mousePos = { 0.0f, 0.0f};
 

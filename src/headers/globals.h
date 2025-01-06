@@ -39,7 +39,7 @@ typedef enum SettingState { LOW = 0, MID, HI} SettingState;
 extern GameScreen currentScreen;
 extern SettingState debugMode;
 extern SettingsScreen currentSettings;
-extern MiniGameManager gameManager;
+extern MiniGameManager miniGamesManager;
 extern Texture2D botnetTexture;
 extern Texture2D ddosTexture;
 extern Texture2D mailbombTexture;

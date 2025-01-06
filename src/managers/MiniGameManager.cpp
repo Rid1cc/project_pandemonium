@@ -1,6 +1,12 @@
 #include "../headers/MiniGameManager.h"
 #include "../headers/globals.h"
 #include "../minigames/TypeGame.h" // Ensure this include is present
+#include "../minigames/ConnectWiresGame.h"
+#include "../minigames/BallGame.h"
+#include "../minigames/FinderGame.h"
+#include "../gameplay/gameplay_vars.h"
+#include "GameplayManager.h"
+#include "EventManager.h"
 
 // Constructor initializes timer and state variables
 MiniGameManager::MiniGameManager()
@@ -10,7 +16,8 @@ MiniGameManager::MiniGameManager()
       showEndMessage(false),
       messageTimer(0.0f),
       endMessage(""),
-      win(false) {}
+      win(false),
+      gameType(0) {}
 
 // Update method called every frame to manage games and timer
 void MiniGameManager::Update() {
@@ -43,6 +50,16 @@ void MiniGameManager::Update() {
             showEndMessage = false; // Hide the message after 1 second
         }
     }
+
+    isSafeMarginTimerOn = gameplayManager.safeMarginTimer.isCounting();
+    gameplayManager.safeMarginTimer.updateCountdown();
+    if(!isSafeMarginTimerOn && !isMiniGameSequenceStarted) {
+        isMiniGameSequenceStarted = true;
+        printf("test\n");
+        gameplayManager.gameplayEvent.triggerEvent("startMiniGames");
+    }
+
+
 }
 
 void MiniGameManager::SetMouseState(Vector2 mousePosition, std::shared_ptr<MiniGame>& game) {
@@ -223,6 +240,10 @@ void MiniGameManager::UpdateTimer() {
     }
 }
 
+void MiniGameManager::AddTime(float timeAmount) {
+    elapsedTime -= timeAmount;
+}
+
 // Closes and removes a mini-game from the manager
 void MiniGameManager::Close(std::shared_ptr<MiniGame>& game) {
     game->isOpen = false;
@@ -255,4 +276,51 @@ bool MiniGameManager::hasActiveTypeGame() const {
         }
     }
     return false;
+}
+
+void MiniGameManager::StartGameSequences(int difficulty) {
+    srand(time(0));
+    gameType = (rand() % 4) + 1;
+    //gameType = 3;
+
+    switch (gameType)
+    {
+    case (int)GameType::BALLGAME:
+        StartBallGame();
+        break;
+    case (int)GameType::WIREGAME:
+        StartConnectingGame();
+        break;
+    case (int)GameType::TYPINGGAME:
+        StartTypingGame();
+        break;
+    case (int)GameType::FINDERGAME:
+        StartFinderGame();
+        break;
+    default:
+        break;
+    }
+
+}
+
+
+void MiniGameManager::StartConnectingGame() {
+    auto connectWires = std::make_shared<ConnectWiresGame>(screen.x + (screenWidth/2) - 200, screen.y + (screenHeight/2) - 150, 400, 300, "RJ45 CONNECTOR");
+    miniGamesManager.AddGame(connectWires);
+
+}
+
+void MiniGameManager::StartTypingGame() {
+    auto type = std::make_shared<TypeGame>(150, 120, 1000, 400, "TypeGame");
+    miniGamesManager.AddGame(type);
+}
+
+void MiniGameManager::StartFinderGame() {
+    auto finder = std::make_shared<FinderGame>(200, 150, 400, 300, "FinderGame");
+    miniGamesManager.AddGame(finder);
+}
+
+void MiniGameManager::StartBallGame() {
+    auto bouncingballGame = std::make_shared<BallGame>(300,200,600,500, "Ball Game");
+    miniGamesManager.AddGame(bouncingballGame);    
 }

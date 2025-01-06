@@ -7,8 +7,17 @@
 #include <string>
 #include "raylib.h"
 #include "MiniGame.h"
+#include "../gameplay/gameplay_vars.h"
 
 // MiniGameManager handles multiple MiniGames
+enum class GameType {
+    None,
+    BALLGAME,
+    WIREGAME,
+    TYPINGGAME,
+    FINDERGAME
+};
+
 class MiniGameManager {
 private:
     std::vector<std::shared_ptr<MiniGame>> games; // List of mini-games
@@ -32,6 +41,10 @@ private:
     void ResetTimer();               // Resets the global timer
     void UpdateTimer();              // Updates the timer each frame
     bool IsTimeUp() const;           // Checks if the timer has expired
+    void AddTime(float timeAmount);
+
+    int gameType;
+    
 
     // Message display methods
     void SetEndMessage(bool isWin);  // Sets the end message based on win/loss
@@ -67,6 +80,15 @@ public:
     bool allGamesClosed() const; // Add this line
     bool CheckMouseState() const;
     bool hasActiveTypeGame() const; // Ensure this line exists
+
+    void StartGameSequences(int difficulty);
+    void StartConnectingGame();
+    void StartTypingGame();
+    void StartFinderGame();
+    void StartBallGame();
+
+    bool isSafeMarginTimerOn;
+
 };
 
 #endif // MINI_GAME_MANAGER_H

@@ -4,7 +4,10 @@
 #include "../headers/globals.h"
 
 bool isCounting;
+bool isSafeMarginTimerOn;
+bool isMiniGameSequenceStarted = false;
 bool isEnemyIpKnown = true;
+bool startMiniGamesSequence = false;
 ProcessStateName pidState;
 
 CommandInterpreter cmdInterpreter(&gameplayManager);

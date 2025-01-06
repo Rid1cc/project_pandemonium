@@ -180,7 +180,7 @@ void TypeGame::UpdateCursor(float deltaTime){
 
 void TypeGame::UpdateTypedText(){
     std::lock_guard<std::mutex> lock(inputMutex); // Ensure thread safety
-    if (!gameManager.hasActiveTypeGame()) {
+    if (!miniGamesManager.hasActiveTypeGame()) {
         return; // Exit if TypeGame is no longer active
     }
 
