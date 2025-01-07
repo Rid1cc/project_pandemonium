@@ -26,24 +26,26 @@ private:
     bool isMouseOnMiniGameWindow;
 
     // Timer variables
-    float totalTime;       // Total time allotted in seconds
-    float elapsedTime;     // Time elapsed since the timer started
-    bool timerActive;      // Flag to indicate if the timer is running
+    //float totalTime;       // Total time allotted in seconds
+    //float elapsedTime;     // Time elapsed since the timer started
+    //bool timerActive;      // Flag to indicate if the timer is running
 
     // End message variables
     bool showEndMessage;          // Flag to indicate if the end message should be shown
     float messageTimer;           // Timer to track how long the message has been displayed
     std::string endMessage;       // The message to display ("Level Completed!" or "Time's up! Level Failed!")
     bool win;                      // Flag to indicate if the level was completed successfully
+    bool arePlayersAlive;
 
     // Timer methods
-    void StartTimer(float duration); // Initializes and starts the global timer
-    void ResetTimer();               // Resets the global timer
-    void UpdateTimer();              // Updates the timer each frame
-    bool IsTimeUp() const;           // Checks if the timer has expired
-    void AddTime(float timeAmount);
+    //void StartTimer(float duration); // Initializes and starts the global timer
+    //void ResetTimer();               // Resets the global timer
+    //void UpdateTimer();              // Updates the timer each frame
+    // bool IsTimeUp() const;           // Checks if the timer has expired
+    //void AddTime(float timeAmount);
 
     int gameType;
+    float miniGamesIntervalTime;
     
 
     // Message display methods
@@ -61,6 +63,9 @@ private:
     bool IsWindowFirst(std::shared_ptr<MiniGame>& game); // Determines if a window is the topmost
     void UpdateDotTimer(std::shared_ptr<MiniGame>& game); // Updates the dot timer for visual indicators
 
+    bool ArePlayersAlive();
+
+
     void Close(std::shared_ptr<MiniGame>& game); // Closes and removes a game from the manager
 
 public:
@@ -75,7 +80,7 @@ public:
     void Draw();   // Draws all managed games and UI elements
 
     // Timer configuration
-    void SetTotalTime(float duration); // Sets the total duration for the timer
+    //void SetTotalTime(float duration); // Sets the total duration for the timer
 
     bool allGamesClosed() const; // Add this line
     bool CheckMouseState() const;

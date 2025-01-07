@@ -11,6 +11,7 @@
 #include "../managers/EventManager.h"
 #include "../managers/GameplayManager.h"
 #include "DifficultySelector.h"
+#include "player.h"
 
 #if defined(_WIN32)
     // #include <windows.h> // Removed to prevent conflicts
@@ -40,6 +41,8 @@ extern GameScreen currentScreen;
 extern SettingState debugMode;
 extern SettingsScreen currentSettings;
 extern MiniGameManager miniGamesManager;
+extern Player local_player;
+extern Player local_enemy;
 extern Texture2D botnetTexture;
 extern Texture2D ddosTexture;
 extern Texture2D mailbombTexture;

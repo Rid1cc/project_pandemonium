@@ -1,4 +1,5 @@
 #include "./headers/MiniGame.h"
+#include "./headers/player.h"
 
 // MiniGame Constructor
 MiniGame::MiniGame(float x, float y, float width, float height, const std::string& title)
@@ -7,9 +8,12 @@ MiniGame::MiniGame(float x, float y, float width, float height, const std::strin
     gameComplete(false), 
     isOpen(true), 
     dotTimer(0.0f),
-    totalTimer(30.0f),
+    totalTimer(15.0f),
     elapsedTime(0.0f),
-    isTimerActive(false) {}
+    isTimerActive(false) {
+        //SetMiniGameTimer(duration);
+        StartTimer();
+    }
 
 // MiniGame Destructor
 MiniGame::~MiniGame() {
@@ -18,6 +22,7 @@ MiniGame::~MiniGame() {
 
 // Base Update method (can be overridden)
 void MiniGame::Update() {
+
 }
 
 // Base Draw method (can be overridden)
@@ -28,8 +33,12 @@ void MiniGame::Close() {
     isOpen = false;
 }
 
-void MiniGame::UpdateTimer() {
-
+void MiniGame::UpdateMiniGameTimer() {
+    if (IsTimeUp()) {OnTimerEnd();}
+    else if (isTimerActive) {
+        elapsedTime += GetFrameTime();
+        if (elapsedTime > totalTimer) elapsedTime = totalTimer;
+    }
 }
 
 void MiniGame::StartTimer() {
@@ -45,11 +54,19 @@ void MiniGame::ResetTimer() {
     isTimerActive = false;
 }
 
-void MiniGame::AdjustTimer(float newDuration) {
+void MiniGame::SetMiniGameTimer(float newDuration) {
     totalTimer = newDuration;
 }
 
 bool MiniGame::IsTimeUp() const {
-    return (isTimerActive);
+    return (elapsedTime >= totalTimer);
 }
 
+void MiniGame::OnTimerEnd() {
+    StopTimer();
+    isOpen = false;
+}
+
+float MiniGame::RemainingTime() const{
+    return (totalTimer - elapsedTime);
+}

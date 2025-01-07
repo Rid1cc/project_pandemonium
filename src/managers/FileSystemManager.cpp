@@ -111,6 +111,7 @@ void FileSystemManager::initialize() {
     std::string settingsPath = configPath + "settings.json";
     std::ifstream settingsFile(settingsPath);
     if (!settingsFile.good()) {
+        LoadSettingsDefault();
         saveSettings(settingsPath);
         LoadSettingsDefault(); // Call to load default settings
     } else {
