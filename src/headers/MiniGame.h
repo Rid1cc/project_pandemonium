@@ -30,14 +30,15 @@ public:
     virtual void Draw();   // To be overridden for specific logic
 
     //Timer methods
-    void UpdateTimer();
+    void UpdateMiniGameTimer();
     void StartTimer();
     void StopTimer();
     void ResetTimer();
-    void AdjustTimer(float newDuration);
+    void SetMiniGameTimer(float newDuration);
     bool IsTimeUp() const;
+    float RemainingTime() const;
 
-    //virtual void OnTimerEnd();
+    virtual void OnTimerEnd();
 
 
     // Window management

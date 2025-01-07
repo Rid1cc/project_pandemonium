@@ -62,16 +62,16 @@ int main(void) {
     //gameplayManager.gameplayInit();
 
     // // Minigames decs
-    //auto connectingGame = std::make_shared<ConnectWiresGame>(700, 250, 400, 300, "window 1");
+    auto connectingGame = std::make_shared<ConnectWiresGame>(700, 250, 400, 300,"window 1");
    // auto type = std::make_shared<TypeGame>(150, 120, 1000, 400, "TypeGame");
    // miniGamesManager.AddGame(type);
     // //auto finder = std::make_shared<FinderGame>(200, 150, 400, 300, "FinderGame");
-    auto bouncingballGame = std::make_shared<BallGame>(300,200,600,500, "Ball Game");
-    miniGamesManager.AddGame(bouncingballGame);
+    //auto bouncingballGame = std::make_shared<BallGame>(300,200,600,500, "Ball Game");
+    //miniGamesManager.AddGame(bouncingballGame);
     // // Add games to the game manager
     // //miniGamesManager.AddGame(finder);
     // miniGamesManager.SetTotalTime(900.0f);
-    //miniGamesManager.AddGame(connectingGame);
+    miniGamesManager.AddGame(connectingGame);
 
     //define camera state (for 3d models)
     camera.position = (Vector3){ 10.0f, 5.0f, 10.0f }; // Camera position

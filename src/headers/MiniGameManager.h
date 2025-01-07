@@ -26,9 +26,9 @@ private:
     bool isMouseOnMiniGameWindow;
 
     // Timer variables
-    float totalTime;       // Total time allotted in seconds
-    float elapsedTime;     // Time elapsed since the timer started
-    bool timerActive;      // Flag to indicate if the timer is running
+    //float totalTime;       // Total time allotted in seconds
+    //float elapsedTime;     // Time elapsed since the timer started
+    //bool timerActive;      // Flag to indicate if the timer is running
 
     // End message variables
     bool showEndMessage;          // Flag to indicate if the end message should be shown
@@ -37,11 +37,11 @@ private:
     bool win;                      // Flag to indicate if the level was completed successfully
 
     // Timer methods
-    void StartTimer(float duration); // Initializes and starts the global timer
-    void ResetTimer();               // Resets the global timer
-    void UpdateTimer();              // Updates the timer each frame
-    bool IsTimeUp() const;           // Checks if the timer has expired
-    void AddTime(float timeAmount);
+    //void StartTimer(float duration); // Initializes and starts the global timer
+    //void ResetTimer();               // Resets the global timer
+    //void UpdateTimer();              // Updates the timer each frame
+    // bool IsTimeUp() const;           // Checks if the timer has expired
+    //void AddTime(float timeAmount);
 
     int gameType;
     
@@ -75,7 +75,7 @@ public:
     void Draw();   // Draws all managed games and UI elements
 
     // Timer configuration
-    void SetTotalTime(float duration); // Sets the total duration for the timer
+    //void SetTotalTime(float duration); // Sets the total duration for the timer
 
     bool allGamesClosed() const; // Add this line
     bool CheckMouseState() const;

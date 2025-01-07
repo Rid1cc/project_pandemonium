@@ -91,6 +91,6 @@ void LoadSettingsDefault(){
     glowIntensity = 1.5f;
     scanlineIntensity = 1.0f;
     brightness = 1.4f;
-    sh_resolution = {1920, 1080}; // Add this line to set default resolution
+    sh_resolution = {800, 600}; // Add this line to set default resolution
     displayColor = ORANGE; // Ensure displayColor is set to a default value
 }
