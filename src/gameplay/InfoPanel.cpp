@@ -8,6 +8,12 @@ InfoPanel::InfoPanel() {
     //infoPanel = {screen.x + 30, screen.y + 250, 249, 383};
 }
 
+void InfoPanel::DrawIconDescription(std::vector<std::string> iconDescription, Vector2 iconDescriptionStartingPoint) {
+    for (size_t descriptionSnippet = 0; descriptionSnippet < iconDescription.size(); ++descriptionSnippet){
+        DrawTextC(iconDescription[descriptionSnippet].c_str(), iconDescriptionStartingPoint.x, iconDescriptionStartingPoint.y + (descriptionSnippet * 20), 20, primaryColor);
+    }
+
+    }
 
 void InfoPanel::Render() {
     DrawRectangleLinesEx(infoPanel, 2, primaryColor);
@@ -21,10 +27,10 @@ void InfoPanel::Render() {
     
     if (!miniGamesManager.CheckMouseState()) {
         if (CheckCollisionPointRec(mousePos, botnetIcon))
-            DrawTextC(botnetDescription.c_str(), iconDescriptionCoorinates.x, iconDescriptionCoorinates.y, 20, primaryColor);
+            DrawIconDescription(botnetDescription, iconDescriptionCoorinates);
         else if (CheckCollisionPointRec(mousePos, ddosIcon))
-            DrawTextC(ddosDescription.c_str(), iconDescriptionCoorinates.x, iconDescriptionCoorinates.y, 20, primaryColor);
+            DrawIconDescription(ddosDescription, iconDescriptionCoorinates);
         else if (CheckCollisionPointRec(mousePos, mailbombIcon))
-            DrawTextC(mailBombDescription.c_str(), iconDescriptionCoorinates.x, iconDescriptionCoorinates.y, 20, primaryColor);
+            DrawIconDescription(mailBombDescription, iconDescriptionCoorinates);
     }
 }
