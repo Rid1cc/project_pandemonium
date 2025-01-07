@@ -21,6 +21,8 @@ void NavigateHistory(char* command, int& letterCount, std::string* history, int&
 void UpdateCursorState(bool mouseOnText, int& framesCounter);
 void HandleEscapeKey(GameScreen& currentScreen);
 
+
+
 // Function Definitions
 void UpdateGameplay(GameScreen& currentScreen, Rectangle& textBox, char* command, int& letterCount, bool& mouseOnText, int& framesCounter, int& backTimer, std::string* history, int& upTimes) {
     // Update mouse state
@@ -169,7 +171,12 @@ void UpdateCursorState(bool mouseOnText, int& framesCounter) {
 }
 
 void HandleEscapeKey(GameScreen& currentScreen) {
-    if (IsKeyPressed(KEY_ESCAPE)) {
-        currentScreen = TITLE;
+    if (IsKeyPressed(KEY_ESCAPE)) 
+        gameplayManager.exitWindowRequested = !gameplayManager.exitWindowRequested;
+    if (gameplayManager.exitWindowRequested) {
+        if (IsKeyPressed(KEY_Y)) gameplayManager.exitWindow = true;
+        else if (IsKeyPressed(KEY_N)) gameplayManager.exitWindowRequested = false;
     }
+    if (gameplayManager.exitWindow) 
+        currentScreen = TITLE;
 }

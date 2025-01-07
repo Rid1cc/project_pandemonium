@@ -59,6 +59,8 @@ GameplayManager::~GameplayManager() {
 void GameplayManager::gameplayInit() {
     // Enemy Initialization
     enemy.setHealth(100); // Set enemy health using setter
+    exitWindowRequested = false;
+    exitWindow = false;
 
     // Open Port Randomizing with uniqueness check
     std::unordered_set<int> usedPorts;

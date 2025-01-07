@@ -31,6 +31,7 @@ extern Rectangle infoPanel;
 extern Rectangle terminalWindow;
 extern Rectangle PIDMenu;
 extern Rectangle textBox;
+extern Rectangle exitWindow;
 extern Rectangle botnetIcon;
 extern Rectangle ddosIcon;
 extern Rectangle mailbombIcon;

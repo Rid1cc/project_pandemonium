@@ -34,6 +34,9 @@ public:
     Player enemy;              // Player instance
     Player player;
 
+    bool exitWindowRequested;
+    bool exitWindow;
+
     int difficulty;             // Variable to store difficulty level
     int port[5];                // Variable to store open port numbers
     std::string ipPool[100];    // Variable to store IP pool

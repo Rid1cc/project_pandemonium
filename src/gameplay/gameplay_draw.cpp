@@ -20,6 +20,8 @@ void DrawTerminalInput(const char* command, int letterCount, int framesCounter, 
 void DrawTerminalOutput(const std::string* historyDrawn, int historySize);
 void DrawVersionInfo();
 void DrawGameManager();
+//===========
+void DrawExit();
 
 // Instantiate Segments
 Pid pidMenuInstance;
@@ -41,6 +43,16 @@ void DrawGameplay(Rectangle textBox, const char* command, int letterCount, bool 
     DrawTerminalInput(command, letterCount, framesCounter, mouseOnText);
     DrawTerminalOutput(historyDrawn, 25);
     DrawGameManager();
+    DrawExit();
+}
+
+void DrawExit() {
+    if (gameplayManager.exitWindowRequested) {
+        DrawRectangle(exitWindow.x, exitWindow.y, exitWindow.width, exitWindow.height, BLACK);
+        DrawRectangleLinesEx(exitWindow, 2, GRAY);
+        DrawText("want to GIVE UP?", exitWindow.x + 60, exitWindow.y + 60, 30, primaryColor);
+        DrawText("Y/N", exitWindow.x + 165, exitWindow.y + 110, 40, primaryColor);
+    }
 }
 
 void DrawMonitor() {
