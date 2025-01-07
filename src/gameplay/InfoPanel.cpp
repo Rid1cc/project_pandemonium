@@ -18,10 +18,10 @@ void InfoPanel::DrawIconDescription(std::vector<std::string> iconDescription, Ve
 void InfoPanel::Render() {
     DrawRectangleLinesEx(infoPanel, 2, primaryColor);
     DrawTextC("Daemon name: ", infoPanel.x + 10, infoPanel.y + 20, 20, primaryColor);
-    DrawTextC(gameplayManager.enemyHostname.c_str(), infoPanel.x + 10, infoPanel.y + 40, 20, primaryColor);
+    DrawTextC(gameplayManager.enemy.getHostname().c_str(), infoPanel.x + 10, infoPanel.y + 40, 20, primaryColor);
     DrawTextC("Daemon IP: ", infoPanel.x + 10, infoPanel.y + 70, 20, primaryColor);
     if(isEnemyIpKnown)
-        DrawTextC(gameplayManager.enemyIp.c_str(), infoPanel.x + 10, infoPanel.y + 90, 20, primaryColor);
+        DrawTextC(gameplayManager.enemy.getIpAddr().c_str(), infoPanel.x + 10, infoPanel.y + 90, 20, primaryColor);
     else 
         DrawTextC("Unknown", infoPanel.x + 10, infoPanel.y + 90, 20, primaryColor);
     

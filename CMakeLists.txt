@@ -97,6 +97,11 @@ project(pandemonium LANGUAGES C CXX)
 set(CMAKE_C_STANDARD 23)
 set(CMAKE_CXX_STANDARD 23)
 
+# Set default build type to Debug if not specified
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build type" FORCE)
+endif()
+
 file(GLOB SOURCES
     src/*.cpp
     src/*.h

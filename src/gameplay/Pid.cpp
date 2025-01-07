@@ -355,7 +355,7 @@ void Pid::DdosRender() {
     if(gameplayManager.timer.countdownFrames == 0){
         cmdInterpreter.outputLine("Flood: 100% complete.");
         cmdInterpreter.outputLine("Flood: Target firewall damaged.");
-        gameplayManager.enemyHp -= 30;
+        gameplayManager.enemy.setHealth(gameplayManager.enemy.getHealth() - 30);
     }
 
     DrawTextC("PROCESS: FLOOD //", pidMenu.x + 10, pidMenu.y + 10, 20, primaryColor);
