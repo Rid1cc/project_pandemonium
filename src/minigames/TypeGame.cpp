@@ -50,9 +50,10 @@ TypeGame::TypeGame(float x, float y, float width, float height, const std::strin
         isTypeWin = false;
         randomText = text[GetRandomValue(0, 7)]; // drawn text to display (for now we have 8 texts (0 - 7))
         //randomText = text[0];
-        typedText = std::string(randomText.length(), '\0');
+        randomTextLength = randomText.length();
+        typedText = std::string(randomTextLength, '\0');
 
-        correctness = std::vector<bool>(randomText.length(), true);
+        correctness = std::vector<bool>(randomTextLength, true);
         isCursorVisible = true;
         currentNumber = 0;
 }
@@ -65,7 +66,7 @@ void TypeGame::Update(){
     UpdateCorrectness(); 
     UpdateTypedText();
     UpdateCursor(GetFrameTime());
-    if (AllCorrect() && currentNumber == randomText.length()){
+    if (AllCorrect() && currentNumber == randomTextLength){
         gameComplete = true;
         isTypeWin = true;
         std::cout << "TypeGame Complete - win." << std::endl;
@@ -79,7 +80,7 @@ void TypeGame::Draw(){
 }
 
 void TypeGame::UpdateCorrectness(){
-    for (size_t i = 0; i < randomText.length(); i++){
+    for (size_t i = 0; i < randomTextLength; i++){
         if (typedText[i] == '\0'){
             continue;
         }
@@ -186,7 +187,7 @@ void TypeGame::UpdateTypedText(){
 
     int typedKey = GetCharPressed();
 
-    if ((typedKey > 0) && (typedKey >= 32) && (typedKey <= 125) && (currentNumber < randomText.length())) {
+    if ((typedKey > 0) && (typedKey >= 32) && (typedKey <= 125) && (currentNumber < randomTextLength)) {
         isTyping = true;
         typedText[currentNumber] = static_cast<char>(typedKey);
         currentNumber++;
