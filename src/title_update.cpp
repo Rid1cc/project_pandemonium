@@ -22,6 +22,7 @@ void TitleUpdate() {
         play_highl = true;
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
             currentScreen = DIFFICULTY_SELECTION;
+            gameplayManager.gameplayInit();
             play_highl = false;
             }
     } else play_highl = false;

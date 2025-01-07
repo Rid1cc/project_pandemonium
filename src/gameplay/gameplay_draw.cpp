@@ -134,6 +134,6 @@ void DrawTerminalOutput(const std::string* historyDrawn, int historySize) {
 }
 
 void DrawGameManager() {
-    // Draw additional game elements managed by gameManager
-    gameManager.Draw();
+    // Draw additional game elements managed by miniGamesManager
+    miniGamesManager.Draw();
 }

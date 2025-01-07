@@ -26,9 +26,10 @@ void UpdateGameplay(GameScreen& currentScreen, Rectangle& textBox, char* command
     // Update mouse state
     mouseOnText = IsMouseOnTextBox(textBox);
 
-    // Update game manager
-    gameManager.Update();
+    // Update  minigame manager
+    miniGamesManager.Update();
     isCounting = gameplayManager.timer.isCounting();
+    
 
     // Update gameplayManager timer
     gameplayManager.timer.updateCountdown();
@@ -68,7 +69,7 @@ bool IsMouseOnTextBox(const Rectangle& textBox) {
 }
 
 void CaptureTextInput(char* command, int& letterCount) {
-    if (!gameManager.hasActiveTypeGame()) { // Use gameManager's method
+    if (!miniGamesManager.hasActiveTypeGame()) { // Use miniGamesManager's method
         int key = GetCharPressed();
         while (key > 0) {
             if ((key >= 32) && (key <= 125) && (letterCount < 99)) {

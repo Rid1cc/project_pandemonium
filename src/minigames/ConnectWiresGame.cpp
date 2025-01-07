@@ -68,14 +68,14 @@ void ConnectWiresGame::UpdatePoints() {
             (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) && 
             !IsAnyMovable()) {
             isPointMovable[i] = true;
-            if(debugMode != LOW)TraceLog(LOG_INFO, "point %i is movable", i);
+            //if(debugMode != LOW)TraceLog(LOG_INFO, "point %i is movable", i);
         }
 
         if (isPointMovable[i]) {
             points[i] = mousePos;
             if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
                 isPointMovable[i] = false;
-                if(debugMode != LOW)TraceLog(LOG_INFO, "point %i is not movable", i);
+                //if(debugMode != LOW)TraceLog(LOG_INFO, "point %i is not movable", i);
             }
         }
 
@@ -93,14 +93,14 @@ void ConnectWiresGame::UpdatePoints() {
             if(!isAtTargetArea[i]) {
                 isAtTargetArea[i] = true;
                 inTargetAreaCounter++;
-                if(debugMode != LOW)TraceLog(LOG_INFO, "Point %i is in right spot!", i);
+                //if(debugMode != LOW)TraceLog(LOG_INFO, "Point %i is in right spot!", i);
             }
         } 
         else {
             if(isAtTargetArea[i]) {
                 isAtTargetArea[i] = false;
                 inTargetAreaCounter--;
-                if(debugMode != LOW)TraceLog(LOG_INFO, "Point %i is not in right spot!", i);
+                //if(debugMode != LOW)TraceLog(LOG_INFO, "Point %i is not in right spot!", i);
             }
         }
         
@@ -108,7 +108,7 @@ void ConnectWiresGame::UpdatePoints() {
             CheckCollisionCircleRec(points[7], 10.0f, targetAreas[11].rect) && 
             CheckCollisionCircleRec(points[11], 10.0f, targetAreas[7].rect)) {
             if(!gameComplete) {
-                if(debugMode != LOW)TraceLog(LOG_INFO, "MiniGame Complete!");
+                //if(debugMode != LOW)TraceLog(LOG_INFO, "MiniGame Complete!");
                 gameComplete = true;
             }
         }
@@ -152,12 +152,12 @@ void ConnectWiresGame::CreateWires() {
         else { // for endArea
             points[i] = { endArea.rect.x + (endArea.rect.width / 2), 
                          endArea.rect.y + endArea.rect.height - ((endArea.rect.height / 8) / 2) - (endArea.rect.height / 8) * (i / 2) };
-            if(debugMode != LOW)TraceLog(LOG_INFO, "successfully created pair %i", ((i + 1)/2));
+            //if(debugMode != LOW)TraceLog(LOG_INFO, "successfully created pair %i", ((i + 1)/2));
             targetAreas[i] = ConnectWiresRectangle(endArea.rect.x, 
                                                   endArea.rect.y + (endArea.rect.height / 8) * (i / 2), 
                                                   endArea.rect.width, 
                                                   endArea.rect.height / 8);
-            if(debugMode != LOW)TraceLog(LOG_INFO, "successfully created target %i", (i + 1)/2);
+            //if(debugMode != LOW)TraceLog(LOG_INFO, "successfully created target %i", (i + 1)/2);
         }
         isPointMovable[i] = false;
         isAtTargetArea[i] = false;

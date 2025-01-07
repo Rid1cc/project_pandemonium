@@ -5,6 +5,7 @@
 #include <vector> // Added to use std::vector
 #include <functional> // Added to use std::function
 #include <algorithm> // Added to use std::shuffle
+#include "../minigames/ConnectWiresGame.h"
 
 // TimeManager implementation
 // Its a simple class that counts down from a given number of seconds
@@ -17,7 +18,7 @@ void TimeManager::setCountdown(float seconds) {
 bool TimeManager::updateCountdown() {
     if (countdownFrames > 0) {
         countdownFrames--;
-        printf("Countdown: %d\n", countdownFrames);
+        //printf("Countdown: %d\n", countdownFrames);
         if (countdownFrames <= 0) {
             countdownFrames = 0;
             return false;
@@ -110,7 +111,15 @@ void GameplayManager::gameplayInit() {
     gameplayEvent.subscribe("drainBruteforce", [this]() { this->onDrainBruteforce(); });
     gameplayEvent.subscribe("portscan", [this]() { this->onPortscan(); });
     gameplayEvent.subscribe("ddos", [this]() { this->onDdos(); });
+    gameplayEvent.subscribe("startMiniGames", [this]() {this->onSafeMarginTimerEnd(); });
 
+}
+
+void GameplayManager::onSafeMarginTimerEnd() {
+    printf("uruchomiono sekwencje minigier!\n");
+    gameplayEvent.unsubscribe("startMiniGames", [this]() {this->onSafeMarginTimerEnd(); });
+    printf("unsub dla \"startMiniGames\"\n");
+    miniGamesManager.StartGameSequences(SelectedDifficulty);
 }
 
 void GameplayManager::gameplayEnd() {
@@ -216,4 +225,6 @@ void GameplayManager::onDdos() {
     pidState = DDOS;
     timer.setCountdown(50); //10 seconds
 }
+
+
 

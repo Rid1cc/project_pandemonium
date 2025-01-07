@@ -4,7 +4,10 @@
 #include "../headers/globals.h"
 
 bool isCounting;
-bool isEnemyIpKnown = false;
+bool isSafeMarginTimerOn;
+bool isMiniGameSequenceStarted = false;
+bool isEnemyIpKnown = true;
+bool startMiniGamesSequence = false;
 ProcessStateName pidState;
 
 CommandInterpreter cmdInterpreter(&gameplayManager);
@@ -43,7 +46,6 @@ std::vector<std::string> mailBombDescription = {
     "Send email",
     "(20% chance).",
     "Success reduces",
-    "firewall",
-    "by 30%."
+    "firewall by 30%.",
 };
 
