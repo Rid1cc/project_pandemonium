@@ -53,6 +53,8 @@ public:
     void addExperience(int amount);
     int getExperience() const;
 
+    void resetPlayer();
+
     std::string GetStatus() const;
 
 

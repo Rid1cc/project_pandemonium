@@ -24,7 +24,7 @@ MiniGameManager::MiniGameManager()
 // Update method called every frame to manage games and timer
 void MiniGameManager::Update() {
     //UpdateTimer(); // Update the global timer
-
+    IsLevelCompleted();
     // Iterate through games in reverse order for proper layering
     for (auto it = games.rbegin(); it != games.rend(); ++it) {
         auto& game = *it;
@@ -378,8 +378,9 @@ bool MiniGameManager::IsLevelCompleted() {
     if (local_player.getHealth() > 0 && local_enemy.getHealth() > 0) {
         return false;
     } else {
-        currentScreen = TITLE;
+        gameplayManager.gameplayEvent.triggerEvent("stopGame");
         if (local_enemy.getHealth() == 0) DifficultyCompleted(SelectedDifficulty);
+        currentScreen = TITLE;
         return true;
     }
 }

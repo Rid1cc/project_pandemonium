@@ -70,3 +70,9 @@ void Player::addExperience(int amount) {
 int Player::getExperience() const {
     return experience_;
 }
+
+void Player::resetPlayer() {
+    health_ = maxHealth_;
+    status_ = Status::None;
+    
+}
