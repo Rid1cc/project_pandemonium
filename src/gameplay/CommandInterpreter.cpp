@@ -5,6 +5,7 @@
 #include "../headers/globals.h"
 #include "../managers/GameplayManager.h"
 #include "gameplay_vars.h"
+#include "../headers/player.h"
 
 CommandInterpreter::CommandInterpreter(GameplayManager* manager) : currentCommand(""), gameplayManager(manager) {
     // Feature NYD
@@ -69,7 +70,7 @@ void CommandInterpreter::parseCommand(const std::string& command, std::string* h
         }
         historyDrawn[0] = output;
     } else if (cmd == "ipconfig") {
-        outputLine("IP Address: " + gameplayManager->ipPool[0]);
+        outputLine("IP Address: " + gameplayManager->enemy.getIpAddr());
     } 
     // Subscribe to events based on commands
     else if (cmd == "start") {
@@ -84,6 +85,10 @@ void CommandInterpreter::parseCommand(const std::string& command, std::string* h
     //Netscan command
     else if (cmd == "netscan"){
        netscan(iss, args);
+    } 
+    //Netscan command
+    else if (cmd == "systemstatus"){
+       systemstatus(iss, args);
     } 
     //Portscan command
     else if (cmd == "portscan") {
@@ -108,7 +113,7 @@ void CommandInterpreter::netscan(std::istringstream &iss, std::vector<std::strin
      //DRAIN
         if (args.size() == 3 && args[0] == "drain") {
             if(!isEnemyIpKnown){
-                if(args[1] == gameplayManager->enemyHostname){
+                if(args[1] == gameplayManager->enemy.getHostname()){
                     if(args[2] == "-s"){
                         if(!isCounting){
                             outputLine("Netscan: Silent Draining started");
@@ -138,7 +143,7 @@ void CommandInterpreter::netscan(std::istringstream &iss, std::vector<std::strin
                 }
                 else{
                     outputLine("Netscan: Unknown hostname.");
-                    printf("Expected: %s\n", gameplayManager->enemyHostname.c_str());
+                    printf("Expected: %s\n", gameplayManager->enemy.getHostname().c_str());
                 }
             }
             else{
@@ -183,12 +188,12 @@ void CommandInterpreter::netscan(std::istringstream &iss, std::vector<std::strin
 }
 
 void CommandInterpreter::portscan(std::istringstream &iss, std::vector<std::string> &args) {
-    if(args.size() == 1 && args[0] == gameplayManager->enemyIp) {
-            outputLine("Portscan: Scanning ports on " + gameplayManager->enemyIp);
+    if(args.size() == 1 && args[0] == gameplayManager->enemy.getIpAddr()) {
+            outputLine("Portscan: Scanning ports on " + gameplayManager->enemy.getIpAddr());
             gameplayManager->gameplayEvent.triggerEvent("portscan");
     }
-    else if(args.size() == 1 && args[0] != gameplayManager->enemyIp) {
-        outputLine("Portscan: Scanning ports on " + args[1]);
+    else if(args.size() == 1 && args[0] != gameplayManager->enemy.getIpAddr()) {
+        outputLine("Portscan: Scanning ports on " + args[0]);
         outputLine("Error: Scanning failed");
     }
     else if(args.size() == 0) {
@@ -196,6 +201,35 @@ void CommandInterpreter::portscan(std::istringstream &iss, std::vector<std::stri
     }
     else {
         outputLine("Usage: portscan <ip_address>");
+    }
+}
+
+void CommandInterpreter::systemstatus(std::istringstream &iss, std::vector<std::string> &args) {
+    if(args.size() != 1) {
+        outputLine("Error: Syntax error");
+        outputLine("Usage: systemstatus <ip_address>");
+        return;
+    }
+
+    std::string ipNumber = args[0];
+
+    if(ipNumber == gameplayManager->enemy.getIpAddr()) {
+        outputLine("Systemstatus: Scanning target:");
+        outputLine("Systemstatus: Target: " + gameplayManager->enemy.getHostname() + "@" + gameplayManager->enemy.getIpAddr());
+        outputLine("Systemstatus: Target IP: " + gameplayManager->enemy.getIpAddr());
+        outputLine("Systemstatus: Target Firewall State: " + std::to_string(gameplayManager->enemy.getHealth()) + "%");
+        outputLine("Systemstatus: Target SMTP Client: " + std::to_string(gameplayManager->enemy.getMail()));
+    }
+    else if(std::find(gameplayManager->ipPool,
+                     gameplayManager->ipPool + sizeof(gameplayManager->ipPool)/sizeof(gameplayManager->ipPool[0]),
+                     ipNumber) != gameplayManager->ipPool + sizeof(gameplayManager->ipPool)/sizeof(gameplayManager->ipPool[0])) {
+        outputLine("Systemstatus: Target: Unknown@" + ipNumber);
+        outputLine("Systemstatus: Target IP: " + ipNumber);
+        outputLine("Systemstatus: Target Firewall State: Unknown");
+        outputLine("Systemstatus: Target SMTP Client: Unknown");
+    }
+    else {
+        outputLine("Error: IP address not in pool.");
     }
 }
 
@@ -222,13 +256,13 @@ void CommandInterpreter::flood(std::istringstream &iss, std::vector<std::string>
                      gameplayManager->port + sizeof(gameplayManager->port)/sizeof(gameplayManager->port[0]),
                      portNumber
                     ) != gameplayManager->port + sizeof(gameplayManager->port)/sizeof(gameplayManager->port[0]) 
-        && args[0] == gameplayManager->enemyIp) {
+        && args[0] == gameplayManager->enemy.getIpAddr()) {
         outputLine("Flood: Started flooding:");
         outputLine("Flood: Target IP: " + args[0]);
         outputLine("Flood: Target Port: " + args[1]);
         gameplayManager->gameplayEvent.triggerEvent("ddos");
     }
-    else if(args.size() == 2 && args[0] != gameplayManager->enemyIp) {
+    else if(args.size() == 2 && args[0] != gameplayManager->enemy.getIpAddr()) {
         outputLine("Error: flooding failed");
         outputLine("Error: target invalid");
     }
@@ -237,7 +271,7 @@ void CommandInterpreter::flood(std::istringstream &iss, std::vector<std::string>
                      gameplayManager->port + sizeof(gameplayManager->port)/sizeof(gameplayManager->port[0]),
                      portNumber
                     ) == gameplayManager->port + sizeof(gameplayManager->port)/sizeof(gameplayManager->port[0]) 
-        && args[0] == gameplayManager->enemyIp) {
+        && args[0] == gameplayManager->enemy.getIpAddr()) {
         outputLine("Flood: Started flooding:");
         outputLine("Error: flooding failed");
         outputLine("Error: port invalid");

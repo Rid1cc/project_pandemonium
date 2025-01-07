@@ -15,8 +15,6 @@ enum class Status {
     DoingDDOS,
     DoingMailBomb,
     DoingBotnet
-
-    // other status??
 };
 
 class Player {
@@ -24,7 +22,12 @@ private:
     std::string name_;
     int level_;
     int experience_;
-    
+
+    std::string ipaddr_;
+    int ports_[5];
+    int mail_;
+    std::string hostname_;
+
     int health_;
     int maxHealth_;
 
@@ -54,6 +57,16 @@ public:
     int getExperience() const;
 
     void resetPlayer();
+
+    std::string getIpAddr() const;
+    void setIpAddr(std::string ipaddr);            // Changed to void
+    int getPort(int index) const;
+    void setPort(int index, int port);              // Changed to void
+    int getMail() const;
+    void setMail(int mail);                          // Changed to void
+    void setHostname(std::string hostname);          // Changed to void
+    std::string getHostname() const;
+
 
     std::string GetStatus() const;
 

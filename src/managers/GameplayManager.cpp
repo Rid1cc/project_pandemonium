@@ -45,7 +45,8 @@ void TimeManager::waitThen(float seconds, void (*func)()) {
 // GameplayManager implementation
 GameplayManager::GameplayManager() : 
     difficulty(1),
-    rng2(std::random_device{}())
+    rng2(std::random_device{}()),
+    enemy("Enemy", 100, 1) // Initialize enemy Player
 {
     
 }
@@ -55,10 +56,10 @@ GameplayManager::~GameplayManager() {
 }
 
 void GameplayManager::gameplayInit() {
-    //Enemy HP
-    enemyHp = 100;
+    // Enemy Initialization
+    enemy.setHealth(100); // Set enemy health using setter
 
-    //Open Port Randomizing with uniqueness check
+    // Open Port Randomizing with uniqueness check
     std::unordered_set<int> usedPorts;
     for(int i = 0; i < (sizeof(port)/sizeof(port[0])); i++) {
         int newPort;
@@ -71,7 +72,7 @@ void GameplayManager::gameplayInit() {
         if(debugMode != LOW)printf("Port %d: %d\n", i, port[i]);
     }
 
-    //IP Pool Randomizing with uniqueness check
+    // IP Pool Randomizing with uniqueness check
     std::unordered_set<std::string> usedIPs;
     for(int i = 0; i < (sizeof(ipPool)/sizeof(ipPool[0])); i++) {
         std::string newIP;
@@ -87,12 +88,13 @@ void GameplayManager::gameplayInit() {
         if(debugMode != LOW)printf("IP %d: %s\n", i, ipPool[i].c_str());
     }
 
-    //Enemy IP
+    // Enemy IP
     std::uniform_int_distribution<int> enemyIPDist(0, 99);
-    enemyIp = ipPool[enemyIPDist(rng2)];
-    if(debugMode != LOW)printf("Enemy IP: %s\n", enemyIp.c_str());
+    std::string generatedIP = ipPool[enemyIPDist(rng2)];
+    enemy.setIpAddr(generatedIP); // Set enemy IP using setter
+    if(debugMode != LOW)printf("Enemy IP: %s\n", generatedIP.c_str());
 
-    // Add randomizer for enemyHostname with biblical demon names
+    // Set enemy Hostname using Player's setter
     const std::vector<std::string> demonNames = {
         "Asmodeus", "Belial", "Beelzebub", "Leviathan", "Mammon",
         "Astaroth", "Baal", "Lilith", "Samael", "Azazel",
@@ -102,9 +104,10 @@ void GameplayManager::gameplayInit() {
         "Andras", "Forneus", "Glasya", "Leraje", "Ronove"
     };
     std::uniform_int_distribution<int> nameDist(0, demonNames.size() - 1);
-    enemyHostname = demonNames[nameDist(rng2)];
-    if(debugMode != LOW)printf("Enemy Hostname: %s\n", enemyHostname.c_str());
-    
+    std::string selectedName = demonNames[nameDist(rng2)];
+    enemy.setHostname(selectedName); // Set hostname using setter
+    if(debugMode != LOW)printf("Enemy Hostname: %s\n", selectedName.c_str());
+
     gameplayEvent.subscribe("startGame", [this]() { this->onStartCommand(); });
     gameplayEvent.subscribe("stopGame", [this]() { this->onStopCommand(); });
     gameplayEvent.subscribe("drainSilent", [this]() { this->onDrainSilent(); });
