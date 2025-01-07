@@ -4,7 +4,7 @@
 #include "../headers/globals.h"
 
 bool isCounting;
-bool isEnemyIpKnown = true;
+bool isEnemyIpKnown = false;
 ProcessStateName pidState;
 
 CommandInterpreter cmdInterpreter(&gameplayManager);
