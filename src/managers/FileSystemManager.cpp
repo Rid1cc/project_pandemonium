@@ -112,6 +112,7 @@ void FileSystemManager::initialize() {
     std::ifstream settingsFile(settingsPath);
     if (!settingsFile.good()) {
         saveSettings(settingsPath);
+        LoadSettingsDefault(); // Call to load default settings
     } else {
         try {
             loadSettings(settingsPath);
@@ -120,7 +121,7 @@ void FileSystemManager::initialize() {
             saveSettings(settingsPath);
         }
     }
-
+    
     // Initialize difficulty.json
     std::string difficultyPath = configPath + "difficulty.json";
     std::ifstream difficultyFile(difficultyPath);
