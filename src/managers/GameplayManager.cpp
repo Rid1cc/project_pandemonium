@@ -109,6 +109,28 @@ void GameplayManager::gameplayInit() {
     enemy.setHostname(selectedName); // Set hostname using setter
     if(debugMode != LOW)printf("Enemy Hostname: %s\n", selectedName.c_str());
 
+    // Randomize enemy's mail
+    const std::vector<std::string> biblicalWords = {
+        "Genesis", "Exodus", "Leviticus", "Numbers", "Deuteronomy",
+        "Joshua", "Judges", "Ruth", "Samuel", "Kings",
+        "Chronicles", "Ezra", "Nehemiah", "Esther", "Job",
+        "Psalms", "Proverbs", "Ecclesiastes", "SongOfSongs", "Isaiah",
+        "Jeremiah", "Lamentations", "Ezekiel", "Daniel", "Hosea",
+        "Joel", "Amos", "Obadiah", "Jonah", "Micah",
+        "Nahum", "Habakkuk", "Zephaniah", "Haggai", "Zechariah", "Malachi"
+    };
+    const std::vector<std::string> biblicalDomains = {
+        "heaven", "eden", "zion", "bethel", "jericho",
+        "canaan", "galilee", "nazareth", "bethlehem", "jerusalem"
+    };
+
+    std::uniform_int_distribution<int> wordDist(0, biblicalWords.size() - 1);
+    std::uniform_int_distribution<int> domainDist(0, biblicalDomains.size() - 1);
+
+    std::string randomMail = biblicalWords[wordDist(rng2)] + "@" + biblicalDomains[domainDist(rng2)] + ".net";
+    enemy.setMail(randomMail); // Set enemy mail using setter
+    if(debugMode != LOW) printf("Enemy Mail: %s\n", randomMail.c_str());
+
     gameplayEvent.subscribe("startGame", [this]() { this->onStartCommand(); });
     gameplayEvent.subscribe("stopGame", [this]() { this->onStopCommand(); });
     gameplayEvent.subscribe("drainSilent", [this]() { this->onDrainSilent(); });

@@ -218,7 +218,9 @@ void CommandInterpreter::systemstatus(std::istringstream &iss, std::vector<std::
         outputLine("Systemstatus: Target: " + gameplayManager->enemy.getHostname() + "@" + gameplayManager->enemy.getIpAddr());
         outputLine("Systemstatus: Target IP: " + gameplayManager->enemy.getIpAddr());
         outputLine("Systemstatus: Target Firewall State: " + std::to_string(gameplayManager->enemy.getHealth()) + "%");
-        outputLine("Systemstatus: Target SMTP Client: " + std::to_string(gameplayManager->enemy.getMail()));
+        outputLine("Systemstatus: Target SMTP Client: ");
+        outputLine(gameplayManager->enemy.getMail());
+        
     }
     else if(std::find(gameplayManager->ipPool,
                      gameplayManager->ipPool + sizeof(gameplayManager->ipPool)/sizeof(gameplayManager->ipPool[0]),
