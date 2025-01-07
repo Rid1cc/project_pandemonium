@@ -13,6 +13,8 @@ MiniGameManager::MiniGameManager()
     : //totalTime(60.0f),      
       // elapsedTime(0.0f),
       // timerActive(false),
+      arePlayersAlive(true),
+      miniGamesIntervalTime(15),
       showEndMessage(false),
       messageTimer(0.0f),
       endMessage(""),
@@ -308,6 +310,21 @@ void MiniGameManager::StartGameSequences(int difficulty) {
         break;
     }
 
+    // switch (difficulty)
+    // {
+    // case 1:
+    //     miniGamesIntervalTime = 15.0f;
+    //     break;
+    // case 2:
+    //     miniGamesIntervalTime = 10.0f;
+    //     break;
+    // case 3: 
+    //     miniGamesIntervalTime = 5.0f;
+    //     break;
+    // default:
+    //     break;
+    // }
+
 }
 
 
@@ -330,4 +347,8 @@ void MiniGameManager::StartFinderGame() {
 void MiniGameManager::StartBallGame() {
     auto bouncingballGame = std::make_shared<BallGame>(300,200,600,500, "Ball Game");
     miniGamesManager.AddGame(bouncingballGame);    
+}
+
+bool MiniGameManager::ArePlayersAlive() {
+    return true;
 }

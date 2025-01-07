@@ -35,6 +35,7 @@ private:
     float messageTimer;           // Timer to track how long the message has been displayed
     std::string endMessage;       // The message to display ("Level Completed!" or "Time's up! Level Failed!")
     bool win;                      // Flag to indicate if the level was completed successfully
+    bool arePlayersAlive;
 
     // Timer methods
     //void StartTimer(float duration); // Initializes and starts the global timer
@@ -44,6 +45,7 @@ private:
     //void AddTime(float timeAmount);
 
     int gameType;
+    float miniGamesIntervalTime;
     
 
     // Message display methods
@@ -60,6 +62,9 @@ private:
     bool CanBeInteracted(std::shared_ptr<MiniGame>& game, Vector2 mousePosition); // Checks if a window can be interacted with
     bool IsWindowFirst(std::shared_ptr<MiniGame>& game); // Determines if a window is the topmost
     void UpdateDotTimer(std::shared_ptr<MiniGame>& game); // Updates the dot timer for visual indicators
+
+    bool ArePlayersAlive();
+
 
     void Close(std::shared_ptr<MiniGame>& game); // Closes and removes a game from the manager
 
