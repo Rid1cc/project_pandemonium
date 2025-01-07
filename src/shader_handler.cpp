@@ -36,24 +36,26 @@ void GenerateCurvatureMap(Vector2 resolution, float curvature) {
             Vector2 uv = {x / (float)resolution.x, y / (float)resolution.y};
 
             uv = {uv.x * 2.0f - 1.0f, uv.y * 2.0f - 1.0f};
-            uv.x *= 1.0f + curvature * (uv.y * uv.y);
-            uv.y *= 1.0f + curvature * (uv.x * uv.x);
+            float dotProduct = uv.x * uv.x + uv.y * uv.y;
+            uv.x *= 1.0f + curvature * dotProduct;
+            uv.y *= 1.0f + curvature * dotProduct;
             uv = {(uv.x + 1.0f) * 0.5f, (uv.y + 1.0f) * 0.5f};
 
             curvatureMap[y][x] = {uv.x * resolution.x, uv.y * resolution.y};
         }
     }
 }
+
 Vector2 MapMouseToFlat(Vector2 mousePos, Vector2 resolution) {
     int x = (int)mousePos.x;
     int y = (int)mousePos.y;
 
-    // Upewnij się, że pozycja jest w granicach
     x = Clamp(x, 0, resolution.x - 1);
     y = Clamp(y, 0, resolution.y - 1);
 
     return curvatureMap[y][x];
 }
+
 void ReloadShader(){
     SetShaderValue(shader, curvatureLoc, &curvature, SHADER_UNIFORM_FLOAT);
     SetShaderValue(shader, bloomIntensityLoc, &bloomIntensity, SHADER_UNIFORM_FLOAT);
