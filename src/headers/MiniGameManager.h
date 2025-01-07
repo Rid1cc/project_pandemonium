@@ -63,7 +63,7 @@ private:
     bool IsWindowFirst(std::shared_ptr<MiniGame>& game); // Determines if a window is the topmost
     void UpdateDotTimer(std::shared_ptr<MiniGame>& game); // Updates the dot timer for visual indicators
 
-    bool ArePlayersAlive();
+    bool IsLevelCompleted();
 
 
     void Close(std::shared_ptr<MiniGame>& game); // Closes and removes a game from the manager

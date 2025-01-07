@@ -56,13 +56,16 @@ void DrawLabels() {
     //StatusWindow
 
     //AttackMenu
-
     //HealthBar
 }
 
 void DrawHealthBar() {
-    DrawRectangle(healthBar.x, healthBar.y, healthBar.width, healthBar.height, primaryColor);
+    //DrawRectangle(healthBar.x, healthBar.y, healthBar.width, healthBar.height, primaryColor);
+    DrawRectangle(healthBar.x, healthBar.y, 
+                ((float)local_player.getHealth() / (float)local_player.getMaxHealth()) * healthBar.width, healthBar.height, primaryColor);
     DrawRectangleLinesEx(healthBar, 1, GRAY);
+
+
 }
 
 void DrawAttackMenu() {

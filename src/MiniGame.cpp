@@ -8,7 +8,7 @@ MiniGame::MiniGame(float x, float y, float width, float height, const std::strin
     gameComplete(false), 
     isOpen(true), 
     dotTimer(0.0f),
-    totalTimer(15.0f),
+    totalTimer(40.0f),
     elapsedTime(0.0f),
     isTimerActive(false) {
         //SetMiniGameTimer(duration);

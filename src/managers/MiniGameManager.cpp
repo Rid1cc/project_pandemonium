@@ -14,7 +14,7 @@ MiniGameManager::MiniGameManager()
       // elapsedTime(0.0f),
       // timerActive(false),
       arePlayersAlive(true),
-      miniGamesIntervalTime(15),
+      miniGamesIntervalTime(15.0f),
       showEndMessage(false),
       messageTimer(0.0f),
       endMessage(""),
@@ -256,6 +256,31 @@ void MiniGameManager::SetEndMessage(bool isWin) {
 void MiniGameManager::Close(std::shared_ptr<MiniGame>& game) {
     if (game->isOpen == true) game->isOpen = false;
     auto it = std::find(games.begin(), games.end(), game);
+    switch (SelectedDifficulty)
+        {
+        case 1:
+            if (game->gameComplete) {
+            local_enemy.takeDamage(17);
+            printf("enemy hp -17\n");
+            local_player.heal(5);
+            printf("player hp +5\n");
+            } else { local_player.takeDamage(10); 
+                     printf("player hp -10\n"); }
+            break;
+        case 2:
+            if (game->gameComplete) {
+            local_enemy.takeDamage(12);
+            } else { local_player.takeDamage(10); }
+            break;
+        case 3:
+            if (game->gameComplete) {
+            local_enemy.takeDamage(8);
+            } else { local_player.takeDamage(15); }
+            break;
+        default:
+            break;
+        }
+
     games.erase(it); // Remove the game from the list
     currentlyDragged.reset();
     activeGame.reset();
@@ -349,6 +374,12 @@ void MiniGameManager::StartBallGame() {
     miniGamesManager.AddGame(bouncingballGame);    
 }
 
-bool MiniGameManager::ArePlayersAlive() {
-    return true;
+bool MiniGameManager::IsLevelCompleted() {
+    if (local_player.getHealth() > 0 && local_enemy.getHealth() > 0) {
+        return false;
+    } else {
+        currentScreen = TITLE;
+        if (local_enemy.getHealth() == 0) DifficultyCompleted(SelectedDifficulty);
+        return true;
+    }
 }
