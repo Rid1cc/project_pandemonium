@@ -41,8 +41,6 @@ extern GameScreen currentScreen;
 extern SettingState debugMode;
 extern SettingsScreen currentSettings;
 extern MiniGameManager miniGamesManager;
-extern Player local_player;
-extern Player local_enemy;
 extern Texture2D botnetTexture;
 extern Texture2D ddosTexture;
 extern Texture2D mailbombTexture;

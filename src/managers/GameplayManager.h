@@ -32,6 +32,7 @@ public:
     TimeManager timer;          // TimeManager instance
     TimeManager safeMarginTimer;
     Player enemy;              // Player instance
+    Player player;
 
     int difficulty;             // Variable to store difficulty level
     int port[5];                // Variable to store open port numbers

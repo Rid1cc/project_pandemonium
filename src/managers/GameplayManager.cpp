@@ -46,7 +46,8 @@ void TimeManager::waitThen(float seconds, void (*func)()) {
 GameplayManager::GameplayManager() : 
     difficulty(1),
     rng2(std::random_device{}()),
-    enemy("Enemy", 100, 1) // Initialize enemy Player
+    enemy("Enemy", 100), // Initialize enemy Player
+    player("Steve", 100)
 {
     
 }

@@ -260,22 +260,22 @@ void MiniGameManager::Close(std::shared_ptr<MiniGame>& game) {
         {
         case 1:
             if (game->gameComplete) {
-            local_enemy.takeDamage(17);
+            gameplayManager.enemy.takeDamage(17);
             printf("enemy hp -17\n");
-            local_player.heal(5);
+            gameplayManager.player.heal(5);
             printf("player hp +5\n");
-            } else { local_player.takeDamage(10); 
+            } else { gameplayManager.player.takeDamage(10); 
                      printf("player hp -10\n"); }
             break;
         case 2:
             if (game->gameComplete) {
-            local_enemy.takeDamage(12);
-            } else { local_player.takeDamage(10); }
+            gameplayManager.enemy.takeDamage(12);
+            } else { gameplayManager.player.takeDamage(10); }
             break;
         case 3:
             if (game->gameComplete) {
-            local_enemy.takeDamage(8);
-            } else { local_player.takeDamage(15); }
+            gameplayManager.enemy.takeDamage(8);
+            } else { gameplayManager.player.takeDamage(15); }
             break;
         default:
             break;
@@ -375,11 +375,11 @@ void MiniGameManager::StartBallGame() {
 }
 
 bool MiniGameManager::IsLevelCompleted() {
-    if (local_player.getHealth() > 0 && local_enemy.getHealth() > 0) {
+    if (gameplayManager.player.getHealth() > 0 && gameplayManager.enemy.getHealth() > 0) {
         return false;
     } else {
         gameplayManager.gameplayEvent.triggerEvent("stopGame");
-        if (local_enemy.getHealth() == 0) DifficultyCompleted(SelectedDifficulty);
+        if (gameplayManager.enemy.getHealth() == 0) DifficultyCompleted(SelectedDifficulty);
         currentScreen = TITLE;
         return true;
     }

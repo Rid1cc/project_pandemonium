@@ -65,8 +65,6 @@ std::string historyDrawn[50] = {" "};
 std::string input = "";
 MiniGameManager miniGamesManager;
 GameplayManager gameplayManager;
-Player local_player("PlayerName", 100);
-Player local_enemy("name", 100);
 Vector2 mousePos = { 0.0f, 0.0f};
 
 //Title
