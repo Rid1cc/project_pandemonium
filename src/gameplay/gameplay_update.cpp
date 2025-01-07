@@ -33,14 +33,6 @@ void UpdateGameplay(GameScreen& currentScreen, Rectangle& textBox, char* command
 
     // Update gameplayManager timer
     gameplayManager.timer.updateCountdown();
-    
-
-    // if(!isMiniGameSequenceStarted){ 
-    //     isMiniGameSequenceStarted = true;
-    //     printf("test");
-    //     //gameplayManager.gameplayEvent.triggerEvent("startMiniGames");
-    //     //DrawRectangle(100, 100, 100, 100, WHITE);
-    //     }
 
     // Handle text input
     CaptureTextInput(command, letterCount);

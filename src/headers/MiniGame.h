@@ -21,9 +21,24 @@ public:
     bool gameComplete;     // Is Game Complete?
     float dotTimer;        // Timer flag for flashing dot (better not use)
 
+    float totalTimer;
+    float elapsedTime;
+    bool isTimerActive;
+
     // Virtual methods for game-specific behavior
     virtual void Update(); // To be overridden for specific logic
     virtual void Draw();   // To be overridden for specific logic
+
+    //Timer methods
+    void UpdateTimer();
+    void StartTimer();
+    void StopTimer();
+    void ResetTimer();
+    void AdjustTimer(float newDuration);
+    bool IsTimeUp() const;
+
+    //virtual void OnTimerEnd();
+
 
     // Window management
     void Close();
