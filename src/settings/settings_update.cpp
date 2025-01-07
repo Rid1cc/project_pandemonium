@@ -65,13 +65,13 @@ void SettingsUpdate(float& general_volume, float& effects_volume, bool& mute_aud
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
             switch (shaderQuality) {
                 case LOW: {
-                    sh_resolution = {1920,1080};
+                    sh_resolution = {854,480};
                 } break;
                 case MID: {
-                    sh_resolution = {1600,900};
+                    sh_resolution = {1280,720};
                 } break;
                 case HI: {
-                    sh_resolution = {1280,720};
+                    sh_resolution = {1600,900};
                 } break;
                 default: break;
             }

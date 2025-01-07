@@ -85,6 +85,10 @@ void CommandInterpreter::parseCommand(const std::string& command, std::string* h
     else if (cmd == "netscan"){
        netscan(iss, args);
     } 
+    //Netscan command
+    else if (cmd == "systemstatus"){
+       systemstatus(iss, args);
+    } 
     //Portscan command
     else if (cmd == "portscan") {
         portscan(iss, args);
@@ -196,6 +200,35 @@ void CommandInterpreter::portscan(std::istringstream &iss, std::vector<std::stri
     }
     else {
         outputLine("Usage: portscan <ip_address>");
+    }
+}
+
+void CommandInterpreter::systemstatus(std::istringstream &iss, std::vector<std::string> &args) {
+    if(args.size() != 1) {
+        outputLine("Error: Syntax error");
+        outputLine("Usage: systemstatus <ip_address>");
+        return;
+    }
+
+    std::string ipNumber = args[0];
+
+    if(ipNumber == gameplayManager->enemyIp) {
+        outputLine("Systemstatus: Scanning target:");
+        outputLine("Systemstatus: Target: " + gameplayManager->enemyHostname + "@" + gameplayManager->enemyIp);
+        outputLine("Systemstatus: Target IP: " + gameplayManager->enemyIp);
+        outputLine("Systemstatus: Target Firewall State: " + std::to_string(gameplayManager->enemyHp) + "%");
+        outputLine("Systemstatus: Target SMTP Client: " + std::to_string(gameplayManager->enemyMail));
+    }
+    else if(std::find(gameplayManager->ipPool,
+                     gameplayManager->ipPool + sizeof(gameplayManager->ipPool)/sizeof(gameplayManager->ipPool[0]),
+                     ipNumber) != gameplayManager->ipPool + sizeof(gameplayManager->ipPool)/sizeof(gameplayManager->ipPool[0])) {
+        outputLine("Systemstatus: Target: Unknown@" + ipNumber);
+        outputLine("Systemstatus: Target IP: " + ipNumber);
+        outputLine("Systemstatus: Target Firewall State: Unknown");
+        outputLine("Systemstatus: Target SMTP Client: Unknown");
+    }
+    else {
+        outputLine("Error: IP address not in pool.");
     }
 }
 
