@@ -25,7 +25,7 @@ private:
 
     std::string ipaddr_;
     int ports_[5];
-    int mail_;
+    std::string mail_;
     std::string hostname_;
 
     int health_;
@@ -59,12 +59,12 @@ public:
     void resetPlayer();
 
     std::string getIpAddr() const;
-    void setIpAddr(std::string ipaddr);            // Changed to void
+    void setIpAddr(std::string ipaddr);         
     int getPort(int index) const;
-    void setPort(int index, int port);              // Changed to void
-    int getMail() const;
-    void setMail(int mail);                          // Changed to void
-    void setHostname(std::string hostname);          // Changed to void
+    void setPort(int index, int port);              
+    std::string getMail() const;
+    void setMail(std::string mail);                          
+    void setHostname(std::string hostname);          
     std::string getHostname() const;
 
 

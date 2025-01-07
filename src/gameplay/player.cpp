@@ -95,11 +95,11 @@ void Player::setPort(int index, int port) {        // Changed to void
     }
 }
 
-int Player::getMail() const {
+std::string Player::getMail() const {
     return mail_;
 }
 
-void Player::setMail(int mail) {                  // Changed to void
+void Player::setMail(std::string mail) {                  // Changed to void
     mail_ = mail;
 }
 
