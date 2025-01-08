@@ -15,6 +15,7 @@
 #include "minigames/BallGame.h"
 #include "headers/shader_handler.h"
 #include "logoscreen/logo_screen.h"
+#include "headers/settings_vars.h"
 
 
 int main(void) {
@@ -48,8 +49,8 @@ int main(void) {
     
     // music initialization functions
     InitAudioDevice();
-    Music main_theme = LoadMusicStream("../assets/audio/maintheme_pandemonium.wav");
-    Music game_theme = LoadMusicStream("../assets/audio/song2.wav");
+    main_theme = LoadMusicStream("../assets/audio/maintheme_pandemonium.wav");
+    game_theme = LoadMusicStream("../assets/audio/song2.wav");
     PlayMusicStream(main_theme); 
     PlayMusicStream(game_theme);   
     
@@ -87,6 +88,9 @@ int main(void) {
     while (!exitGame && !WindowShouldClose()) {
         Init3DTitleTexture();
         BeginTextureMode(target);
+        //Theme
+        SetMusicVolume(main_theme, music_volume);
+        SetMusicVolume(game_theme, music_volume);
 
         //Update mouse
         mousePos = MapMouseToFlat(GetMousePosition(), {1280.0, 720.0});

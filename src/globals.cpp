@@ -95,7 +95,8 @@ Color primaryColor;
 
 
 // Music
-
+Music main_theme;
+Music game_theme;
 bool mute_audio = false;
 
 

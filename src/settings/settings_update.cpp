@@ -17,7 +17,8 @@ void sc_switcher(Vector2 &mousePos, Rectangle button, bool &highlight, enum Sett
 }
 
 void SettingsUpdate(float& general_volume, float& effects_volume, bool& mute_audio) {
-
+    //Theme
+    
     //Return on escape
     if (IsKeyPressed(KEY_ESCAPE)) currentScreen = TITLE;
 

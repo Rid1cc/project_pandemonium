@@ -90,6 +90,7 @@ extern float effects_volume;
 extern int SelectedDifficulty;
 
 // Music
+extern Music game_theme;
 extern Music main_theme;
 extern bool mute_audio;
 extern TraceLogCallback failed_to_load_music;
