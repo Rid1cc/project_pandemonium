@@ -11,6 +11,11 @@ CommandInterpreter::CommandInterpreter(GameplayManager* manager) : currentComman
     // Feature NYD
 }
 
+void CommandInterpreter::reset() {
+    currentCommand = "";
+    history.clear();
+}
+
 void CommandInterpreter::executeCommand(const std::string& command) {
     currentCommand = command;
     parseCommand(command, historyDrawn);

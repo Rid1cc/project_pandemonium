@@ -11,6 +11,7 @@ public:
     void executeCommand(const std::string& command);
     void addToHistory(const std::string& command);
     void showHistory() const;
+    void reset();
 
     // Getters
     const std::string& getCurrentCommand() const;
