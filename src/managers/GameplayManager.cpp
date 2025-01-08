@@ -61,10 +61,7 @@ void GameplayManager::gameplayInit() {
     enemy.setHealth(100); // Set enemy health using setter
     exitWindowRequested = false;
     exitWindow = false;
-<<<<<<< Updated upstream
-=======
     payloadState = 0;
->>>>>>> Stashed changes
 
     // Open Port Randomizing with uniqueness check
     std::unordered_set<int> usedPorts;
