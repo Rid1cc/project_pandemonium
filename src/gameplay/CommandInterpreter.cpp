@@ -5,7 +5,13 @@
 #include "../managers/GameplayManager.h"
 #include "gameplay_vars.h"
 
+const int maxHistoryDrawnSize = 50;
+
 CommandInterpreter::CommandInterpreter(GameplayManager* manager) : currentCommand(""), gameplayManager(manager) {
+    // Initialize historyDrawn array
+    for(int i = 0; i < maxHistoryDrawnSize; ++i){
+        historyDrawn[i] = "";
+    }
     // Feature NYD
 }
 
@@ -37,7 +43,7 @@ const std::vector<std::string>& CommandInterpreter::getHistory() const {
 }
 
 void CommandInterpreter::historyDrawnUp() {
-    for(int i = 49; i > 0; i--) {
+    for(int i = maxHistoryDrawnSize - 1; i > 0; i--) {
         historyDrawn[i] = historyDrawn[i - 1];
     }
 }

@@ -23,6 +23,15 @@ void HandleEscapeKey(GameScreen& currentScreen);
 
 // Function Definitions
 void UpdateGameplay(GameScreen& currentScreen, Rectangle& textBox, char* command, int& letterCount, bool& mouseOnText, int& framesCounter, int& backTimer, std::string* history, int& upTimes) {
+    // Initialize history if not already done
+    static bool historyInitialized = false;
+    if (!historyInitialized) {
+        for(int i = 0; i < 50; ++i){
+            history[i] = "";
+        }
+        historyInitialized = true;
+    }
+
     // Update mouse state
     mouseOnText = IsMouseOnTextBox(textBox);
 
@@ -162,15 +171,14 @@ void UpdateCursorState(bool mouseOnText, int& framesCounter) {
         framesCounter++;
         if(framesCounter >= 60){
             framesCounter = 0;
-        }
-    } else {
-        SetMouseCursor(MOUSE_CURSOR_DEFAULT);
         framesCounter = 0;
     }
 }
 
+    }
 void HandleEscapeKey(GameScreen& currentScreen) {
     if (IsKeyPressed(KEY_ESCAPE)) {
         currentScreen = TITLE;
     }
 }
+

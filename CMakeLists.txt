@@ -15,6 +15,7 @@ if(WIN32)
     set(RAYLIB_ARCHIVE "${CMAKE_BINARY_DIR}/raylib-5.5_win64_mingw-w64.zip")
     set(RAYLIB_DIR "${CMAKE_BINARY_DIR}/raylib/raylib-5.5_win64_mingw-w64/raylib-5.5_win64_mingw-w64")
 
+
     if(NOT EXISTS "${RAYLIB_DIR}/lib/libraylib.a")
         message(STATUS "Raylib precompiled binaries not found. Downloading...")
 
@@ -90,6 +91,8 @@ if(WIN32)
     set(CMAKE_C_COMPILER "${MINGW64_BIN_DIR}/gcc.exe" CACHE FILEPATH "" FORCE)
     set(CMAKE_CXX_COMPILER "${MINGW64_BIN_DIR}/g++.exe" CACHE FILEPATH "" FORCE)
     set(CMAKE_MAKE_PROGRAM "${MINGW64_BIN_DIR}/mingw32-make.exe" CACHE FILEPATH "Path to make program" FORCE)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++ -static")
+    set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++ -static")
 endif()
 
 project(pandemonium LANGUAGES C CXX)
@@ -106,7 +109,7 @@ file(GLOB SOURCES
 
 if(WIN32)
     add_executable(pandemonium ${SOURCES})
-    set(CMAKE_EXE_LINKER_FLAGS "-L${RAYLIB_DIR}/lib -lraylib")
+    set(CMAKE_EXE_LINKER_FLAGS "-L${RAYLIB_DIR}/lib -lraylib -Wl,--allow-multiple-definition")
     link_directories("${RAYLIB_DIR}/lib")
     target_link_libraries(pandemonium PRIVATE raylib winmm)
     target_include_directories(pandemonium PRIVATE "${RAYLIB_DIR}/include")
@@ -114,8 +117,13 @@ if(WIN32)
     -D_CRT_SECURE_NO_WARNINGS 
     -DNOMINMAX 
     -DWIN32_LEAN_AND_MEAN
-    -DWIN32_NO_STATUS
-)
+    -DWIN32_NO_STATUS)
+    set_target_properties(pandemonium
+        PROPERTIES
+            LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/config
+            RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/config
+            LINK_FLAGS "-static-libgcc -static-libstdc++ -static -Wl,--allow-multiple-definition"
+        )
 elseif(APPLE)
     set(MACOSX_BUNDLE_BUNDLE_NAME "Pandemonium")
     set(MACOSX_BUNDLE_GUI_IDENTIFIER "com.yourcompany.pandemonium")
