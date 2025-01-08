@@ -46,8 +46,10 @@ int main(void) {
     
     // music initialization functions
     InitAudioDevice();
-    Music main_theme = LoadMusicStream("assets/audio/minigame_music.wav");
-    PlayMusicStream(main_theme);    
+    Music main_theme = LoadMusicStream("../assets/audio/maintheme_pandemonium.wav");
+    Music game_theme = LoadMusicStream("../assets/audio/song2.wav");
+    PlayMusicStream(main_theme); 
+    PlayMusicStream(game_theme);   
     
 
     // Init Logo Screen
@@ -81,7 +83,6 @@ int main(void) {
 
     // Main game loop
     while (!exitGame && !WindowShouldClose()) {
-       
         Init3DTitleTexture();
         BeginTextureMode(target);
 
@@ -97,15 +98,18 @@ int main(void) {
             } break;
             case TITLE: {
                 TitleUpdate();
+                UpdateMusicStream(main_theme);
             } break;
             case SETTINGS: {
                 SettingsUpdate(general_volume, effects_volume, mute_audio);
+                UpdateMusicStream(main_theme);
             } break;
             case GAMEPLAY: {
                 DrawTextureEx(botnetTexture, {botnetIcon.x, botnetIcon.y}, 0.0f, 1.75f, WHITE);
                 DrawTextureEx(ddosTexture, {ddosIcon.x, ddosIcon.y}, 0.0f, 1.75f, WHITE);
                 DrawTextureEx(mailbombTexture, {mailbombIcon.x, mailbombIcon.y}, 0.0f, 1.75f, WHITE);
                 UpdateGameplay(currentScreen, textBox, command, letterCount, mouseOnText, framesCounter, backTimer, history, upTimes);
+                UpdateMusicStream(game_theme);
             } break;
             case ENDING: {
                 if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP)) currentScreen = TITLE;
@@ -171,6 +175,7 @@ int main(void) {
     
     // Music De-Initialization
     UnloadMusicStream(main_theme);
+    UnloadMusicStream(game_theme);
     CloseAudioDevice();
     CloseWindow();
     return 0;
