@@ -70,3 +70,43 @@ void Player::addExperience(int amount) {
 int Player::getExperience() const {
     return experience_;
 }
+
+void Player::resetPlayer() {
+    health_ = maxHealth_;
+    status_ = Status::None;
+    
+}
+
+std::string Player::getIpAddr() const {
+    return ipaddr_;
+}
+
+void Player::setIpAddr(std::string ipaddr) {      // Changed to void
+    ipaddr_ = ipaddr;
+}
+
+int Player::getPort(int index) const {
+    return ports_[index];
+}
+
+void Player::setPort(int index, int port) {        // Changed to void
+    if(index >= 0 && index < 5){
+        ports_[index] = port;
+    }
+}
+
+std::string Player::getMail() const {
+    return mail_;
+}
+
+void Player::setMail(std::string mail) {                  // Changed to void
+    mail_ = mail;
+}
+
+void Player::setHostname(std::string hostname) {  // Changed to void
+    hostname_ = hostname;
+}
+
+std::string Player::getHostname() const {
+    return hostname_;
+}

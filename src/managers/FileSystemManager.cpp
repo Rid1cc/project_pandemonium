@@ -2,6 +2,7 @@
 #include "../headers/json.hpp"
 #include <fstream>
 #include "../headers/settings_vars.h"
+#include <filesystem>
 
 
 void FileSystemManager::save(const std::string& filePath, const nlohmann::json& data) {
@@ -25,16 +26,42 @@ nlohmann::json FileSystemManager::load(const std::string& filePath) {
     }
     return data;
 }
-    // master_volume = 0.5;
-    // music_volume = 1.0;
-    // sfx_volume = 1.0;
-    // shaderQuality = LOW;
-    // primaryColor = ORANGE;
-    // curvature = 0.07f;
-    // bloomIntensity = 2.3f;
-    // glowIntensity = 1.5f;
-    // scanlineIntensity = 1.0f;
-    // brightness = 1.4f;
+
+void FileSystemManager::saveMaxDifficulty(int maxDifficulty) {
+    nlohmann::json data;
+    data["maxDifficultyUnlocked"] = maxDifficulty;
+    save(configPath + "difficulty.json", data);
+}
+
+int FileSystemManager::loadMaxDifficulty() {
+    nlohmann::json data = load(configPath + "difficulty.json");
+    if (data.contains("maxDifficultyUnlocked")) {
+        return data["maxDifficultyUnlocked"];
+    }
+    return 1;
+}
+
+void FileSystemManager::difficultyCompleted(int difficulty) {
+    int maxDifficulty = loadMaxDifficulty();
+    if (difficulty > maxDifficulty) {
+        saveMaxDifficulty(difficulty);
+    }
+}
+
+bool FileSystemManager::isDifficultyCompleted(int difficulty) {
+    return difficulty <= loadMaxDifficulty();
+}
+
+// master_volume = 0.5;
+// music_volume = 1.0;
+// sfx_volume = 1.0;
+// shaderQuality = LOW;
+// primaryColor = ORANGE;
+// curvature = 0.07f;
+// bloomIntensity = 2.3f;
+// glowIntensity = 1.5f;
+// scanlineIntensity = 1.0f;
+// brightness = 1.4f;
 
 void FileSystemManager::saveSettings(const std::string& filename) {
     nlohmann::json settingsJson;
@@ -72,6 +99,43 @@ void FileSystemManager::loadSettings(const std::string& filename) {
     brightness = settingsJson["brightness"];
     sh_resolution = { settingsJson["sh_resolution"][0], settingsJson["sh_resolution"][1] };
     displayColor = { settingsJson["displayColor"][0], settingsJson["displayColor"][1], settingsJson["displayColor"][2], settingsJson["displayColor"][3] };
+}
+
+void FileSystemManager::initialize() {
+    // Check if configPath directory exists, if not, create it
+    if (!std::filesystem::exists(configPath)) {
+        std::filesystem::create_directory(configPath);
+    }
+
+    // Initialize settings.json
+    std::string settingsPath = configPath + "settings.json";
+    std::ifstream settingsFile(settingsPath);
+    if (!settingsFile.good()) {
+        LoadSettingsDefault();
+        saveSettings(settingsPath);
+        LoadSettingsDefault(); // Call to load default settings
+    } else {
+        try {
+            loadSettings(settingsPath);
+        } catch (const nlohmann::json::parse_error& e) {
+            std::cerr << "Failed to parse settings.json: " << e.what() << std::endl;
+            saveSettings(settingsPath);
+        }
+    }
+    
+    // Initialize difficulty.json
+    std::string difficultyPath = configPath + "difficulty.json";
+    std::ifstream difficultyFile(difficultyPath);
+    if (!difficultyFile.good()) {
+        saveMaxDifficulty(1); // Default max difficulty
+    } else {
+        try {
+            loadMaxDifficulty();
+        } catch (const nlohmann::json::parse_error& e) {
+            std::cerr << "Failed to parse difficulty.json: " << e.what() << std::endl;
+            saveMaxDifficulty(1); // Reset to default
+        }
+    }
 }
 
 

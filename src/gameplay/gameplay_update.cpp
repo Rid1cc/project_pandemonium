@@ -21,14 +21,26 @@ void NavigateHistory(char* command, int& letterCount, std::string* history, int&
 void UpdateCursorState(bool mouseOnText, int& framesCounter);
 void HandleEscapeKey(GameScreen& currentScreen);
 
+
+
 // Function Definitions
 void UpdateGameplay(GameScreen& currentScreen, Rectangle& textBox, char* command, int& letterCount, bool& mouseOnText, int& framesCounter, int& backTimer, std::string* history, int& upTimes) {
+    // Initialize history if not already done
+    static bool historyInitialized = false;
+    if (!historyInitialized) {
+        for(int i = 0; i < 50; ++i){
+            history[i] = "";
+        }
+        historyInitialized = true;
+    }
+
     // Update mouse state
     mouseOnText = IsMouseOnTextBox(textBox);
 
-    // Update game manager
-    gameManager.Update();
+    // Update  minigame manager
+    miniGamesManager.Update();
     isCounting = gameplayManager.timer.isCounting();
+    
 
     // Update gameplayManager timer
     gameplayManager.timer.updateCountdown();
@@ -36,8 +48,6 @@ void UpdateGameplay(GameScreen& currentScreen, Rectangle& textBox, char* command
     // Handle text input
     CaptureTextInput(command, letterCount);
 
-    // Initialize Command Interpreter with GameplayManager pointer
-    static CommandInterpreter cmdInterpreter(&gameplayManager);
     cmdInterpreter.timer.updateCountdown();
 
     // Handle command execution on Enter key press
@@ -70,7 +80,7 @@ bool IsMouseOnTextBox(const Rectangle& textBox) {
 }
 
 void CaptureTextInput(char* command, int& letterCount) {
-    if (!gameManager.hasActiveTypeGame()) { // Use gameManager's method
+    if (!miniGamesManager.hasActiveTypeGame()) { // Use miniGamesManager's method
         int key = GetCharPressed();
         while (key > 0) {
             if ((key >= 32) && (key <= 125) && (letterCount < 99)) {
@@ -162,15 +172,18 @@ void UpdateCursorState(bool mouseOnText, int& framesCounter) {
         framesCounter++;
         if(framesCounter >= 60){
             framesCounter = 0;
-        }
-    } else {
-        SetMouseCursor(MOUSE_CURSOR_DEFAULT);
         framesCounter = 0;
     }
 }
 
-void HandleEscapeKey(GameScreen& currentScreen) {
-    if (IsKeyPressed(KEY_ESCAPE)) {
-        currentScreen = TITLE;
     }
+void HandleEscapeKey(GameScreen& currentScreen) {
+    if (IsKeyPressed(KEY_ESCAPE)) 
+        gameplayManager.exitWindowRequested = !gameplayManager.exitWindowRequested;
+    if (gameplayManager.exitWindowRequested) {
+        if (IsKeyPressed(KEY_Y)) gameplayManager.exitWindow = true;
+        else if (IsKeyPressed(KEY_N)) gameplayManager.exitWindowRequested = false;
+    }
+    if (gameplayManager.exitWindow) 
+        currentScreen = TITLE;
 }

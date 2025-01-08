@@ -1,11 +1,13 @@
 #include "raylib.h"
 #include "headers/gameplay_update.h"
 #include "headers/gameplay_draw.h"
+#include "gameplay/gameplay_vars.h"
 #include "headers/settings_draw.h"
 #include "headers/settings_update.h"
 #include "headers/globals.h"
 #include "headers/title_draw.h"
 #include "headers/title_update.h"
+#include "headers/DifficultySelector.h"
 #include "minigames/RotatingRectangleGame.h"
 #include "minigames/ConnectWiresGame.h"
 #include "minigames/FinderGame.h"
@@ -55,19 +57,19 @@ int main(void) {
     // Init Logo Screen
     InitLogoScreen();
 
-    gameplayManager.gameplayInit();
+    //gameplayManager.gameplayInit();
 
     // // Minigames decs
-    auto connectingGame = std::make_shared<ConnectWiresGame>(700, 250, 400, 300, "window 1");
+    //auto connectingGame = std::make_shared<ConnectWiresGame>(700, 250, 400, 300,"window 1");
    // auto type = std::make_shared<TypeGame>(150, 120, 1000, 400, "TypeGame");
-   // gameManager.AddGame(type);
-    // //auto finder = std::make_shared<FinderGame>(200, 150, 400, 300, "FinderGame");
-    // auto bouncingballGame = std::make_shared<BallGame>(300,200,600,500, "Ball Game");
-    // gameManager.AddGame(bouncingballGame);
+   // miniGamesManager.AddGame(type);
+    //auto finder = std::make_shared<FinderGame>(200, 150, 400, 300, "FinderGame");
+    //auto bouncingballGame = std::make_shared<BallGame>(300,200,600,500, "Ball Game");
+    //miniGamesManager.AddGame(bouncingballGame);
     // // Add games to the game manager
-    // //gameManager.AddGame(finder);
-    // gameManager.SetTotalTime(900.0f);
-    gameManager.AddGame(connectingGame);
+    //miniGamesManager.AddGame(finder);
+    // miniGamesManager.SetTotalTime(900.0f);
+    //miniGamesManager.AddGame(connectingGame);
 
     //define camera state (for 3d models)
     camera.position = (Vector3){ 10.0f, 5.0f, 10.0f }; // Camera position
@@ -104,10 +106,10 @@ int main(void) {
                 SettingsUpdate(general_volume, effects_volume, mute_audio);
                 UpdateMusicStream(main_theme);
             } break;
+            case DIFFICULTY_SELECTION: {
+                UpdateDifficultySelection();
+            } break;
             case GAMEPLAY: {
-                DrawTextureEx(botnetTexture, {botnetIcon.x, botnetIcon.y}, 0.0f, 1.75f, WHITE);
-                DrawTextureEx(ddosTexture, {ddosIcon.x, ddosIcon.y}, 0.0f, 1.75f, WHITE);
-                DrawTextureEx(mailbombTexture, {mailbombIcon.x, mailbombIcon.y}, 0.0f, 1.75f, WHITE);
                 UpdateGameplay(currentScreen, textBox, command, letterCount, mouseOnText, framesCounter, backTimer, history, upTimes);
                 UpdateMusicStream(game_theme);
             } break;
@@ -127,8 +129,13 @@ int main(void) {
             case SETTINGS: {
                 DrawSettings(general_volume, effects_volume);
             } break;
+            case DIFFICULTY_SELECTION: {
+                DrawDifficultySelection();
+            } break;
             case GAMEPLAY: {
-                
+                DrawTextureEx(botnetTexture, {botnetIcon.x, botnetIcon.y}, 0.0f, 1.75f, WHITE);
+                DrawTextureEx(ddosTexture, {ddosIcon.x, ddosIcon.y}, 0.0f, 1.75f, WHITE);
+                DrawTextureEx(mailbombTexture, {mailbombIcon.x, mailbombIcon.y}, 0.0f, 1.75f, WHITE);
                 DrawGameplay(textBox, command, letterCount, mouseOnText, framesCounter, historyDrawn);
             } break;
             case ENDING: {

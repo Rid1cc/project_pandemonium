@@ -7,8 +7,17 @@
 #include <string>
 #include "raylib.h"
 #include "MiniGame.h"
+#include "../gameplay/gameplay_vars.h"
 
 // MiniGameManager handles multiple MiniGames
+enum class GameType {
+    None,
+    BALLGAME,
+    WIREGAME,
+    TYPINGGAME,
+    FINDERGAME
+};
+
 class MiniGameManager {
 private:
     std::vector<std::shared_ptr<MiniGame>> games; // List of mini-games
@@ -16,22 +25,23 @@ private:
     std::shared_ptr<MiniGame> activeGame;         // Currently active game
     bool isMouseOnMiniGameWindow;
 
-    // Timer variables
-    float totalTime;       // Total time allotted in seconds
-    float elapsedTime;     // Time elapsed since the timer started
-    bool timerActive;      // Flag to indicate if the timer is running
-
     // End message variables
     bool showEndMessage;          // Flag to indicate if the end message should be shown
     float messageTimer;           // Timer to track how long the message has been displayed
     std::string endMessage;       // The message to display ("Level Completed!" or "Time's up! Level Failed!")
     bool win;                      // Flag to indicate if the level was completed successfully
+    bool arePlayersAlive;
 
-    // Timer methods
-    void StartTimer(float duration); // Initializes and starts the global timer
-    void ResetTimer();               // Resets the global timer
-    void UpdateTimer();              // Updates the timer each frame
-    bool IsTimeUp() const;           // Checks if the timer has expired
+    int gameType;
+    //float miniGamesDurationTime;
+    int gameDurationScale;
+
+    bool startGameSequences;
+    bool isIntervalTimerOn;
+    float IntervalTimerSetTime;
+    float IntervalTimer;
+
+
 
     // Message display methods
     void SetEndMessage(bool isWin);  // Sets the end message based on win/loss
@@ -48,6 +58,9 @@ private:
     bool IsWindowFirst(std::shared_ptr<MiniGame>& game); // Determines if a window is the topmost
     void UpdateDotTimer(std::shared_ptr<MiniGame>& game); // Updates the dot timer for visual indicators
 
+    bool IsLevelCompleted();
+
+
     void Close(std::shared_ptr<MiniGame>& game); // Closes and removes a game from the manager
 
 public:
@@ -55,18 +68,31 @@ public:
     ~MiniGameManager() = default;
 
     // Game management methods
-    void AddGame(const std::shared_ptr<MiniGame>& game); // Adds a new mini-game to the manager
+    void AddGame(const std::shared_ptr<MiniGame>& game, float duration); // Adds a new mini-game to the manager
 
     // Core loop methods
     void Update(); // Updates all managed games and timers
     void Draw();   // Draws all managed games and UI elements
 
     // Timer configuration
-    void SetTotalTime(float duration); // Sets the total duration for the timer
+    //void SetTotalTime(float duration); // Sets the total duration for the timer
 
     bool allGamesClosed() const; // Add this line
     bool CheckMouseState() const;
     bool hasActiveTypeGame() const; // Ensure this line exists
+
+    void ManageGameSequences(const int& difficulty);
+    int GetRandomIntInRange(int begin, int end);
+    void RunGameSequence();
+    std::function<void()> GetRandomGame();
+    void StartConnectingGame(int& durationScale);
+    void StartTypingGame(int& durationScale);
+    void StartFinderGame(int& durationScale);
+    void StartBallGame(int& durationScale);
+
+    bool isSafeMarginTimerOn;
+
+
 };
 
 #endif // MINI_GAME_MANAGER_H

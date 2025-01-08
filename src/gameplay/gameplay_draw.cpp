@@ -2,6 +2,7 @@
 #include "../headers/globals.h"  // Wczytanie zmiennych globalnych, jeśli są potrzebne
 #include "Pid.h"     // Include Pid header
 #include "InfoPanel.h" // Include InfoPanel header
+#include "gameplay_vars.h"
 #include <string>
 
 // Forward declarations of helper functions
@@ -19,6 +20,8 @@ void DrawTerminalInput(const char* command, int letterCount, int framesCounter, 
 void DrawTerminalOutput(const std::string* historyDrawn, int historySize);
 void DrawVersionInfo();
 void DrawGameManager();
+//===========
+void DrawExit();
 
 // Instantiate Segments
 Pid pidMenuInstance;
@@ -40,6 +43,16 @@ void DrawGameplay(Rectangle textBox, const char* command, int letterCount, bool 
     DrawTerminalInput(command, letterCount, framesCounter, mouseOnText);
     DrawTerminalOutput(historyDrawn, 25);
     DrawGameManager();
+    DrawExit();
+}
+
+void DrawExit() {
+    if (gameplayManager.exitWindowRequested) {
+        DrawRectangle(exitWindow.x, exitWindow.y, exitWindow.width, exitWindow.height, BLACK);
+        DrawRectangleLinesEx(exitWindow, 2, GRAY);
+        DrawText("want to GIVE UP?", exitWindow.x + 60, exitWindow.y + 60, 30, primaryColor);
+        DrawText("Y/N", exitWindow.x + 165, exitWindow.y + 110, 40, primaryColor);
+    }
 }
 
 void DrawMonitor() {
@@ -55,13 +68,16 @@ void DrawLabels() {
     //StatusWindow
 
     //AttackMenu
-
     //HealthBar
 }
 
 void DrawHealthBar() {
-    DrawRectangle(healthBar.x, healthBar.y, healthBar.width, healthBar.height, primaryColor);
+    //DrawRectangle(healthBar.x, healthBar.y, healthBar.width, healthBar.height, primaryColor);
+    DrawRectangle(healthBar.x, healthBar.y, 
+                ((float)gameplayManager.player.getHealth() / (float)gameplayManager.player.getMaxHealth()) * healthBar.width, healthBar.height, primaryColor);
     DrawRectangleLinesEx(healthBar, 1, GRAY);
+
+
 }
 
 void DrawAttackMenu() {
@@ -133,6 +149,6 @@ void DrawTerminalOutput(const std::string* historyDrawn, int historySize) {
 }
 
 void DrawGameManager() {
-    // Draw additional game elements managed by gameManager
-    gameManager.Draw();
+    // Draw additional game elements managed by miniGamesManager
+    miniGamesManager.Draw();
 }

@@ -21,7 +21,10 @@ void TitleUpdate() {
     if(CheckCollisionPointRec(mousePos, button_play)==true){
         play_highl = true;
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-            currentScreen = GAMEPLAY;
+            gameplayManager.enemy.resetPlayer();
+            gameplayManager.player.resetPlayer();
+            currentScreen = DIFFICULTY_SELECTION;
+            gameplayManager.gameplayInit();
             play_highl = false;
             }
     } else play_highl = false;

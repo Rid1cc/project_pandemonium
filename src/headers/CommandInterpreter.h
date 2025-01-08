@@ -17,6 +17,7 @@ public:
     const std::vector<std::string>& getHistory() const;
 
     TimeManager timer; // TimeManager instance
+    void outputLine(std::string output);
 
 private:
     
@@ -27,7 +28,10 @@ private:
 
     void parseCommand(const std::string& command, std::string* historyDrawn);
     void historyDrawnUp();
-    void outputLine(std::string output);
+    void netscan(std::istringstream &iss, std::vector<std::string> &args);
+    void portscan(std::istringstream &iss, std::vector<std::string> &args);
+    void flood(std::istringstream &iss, std::vector<std::string> &args);
+    void systemstatus(std::istringstream &iss, std::vector<std::string> &args);
 };
 
 #endif

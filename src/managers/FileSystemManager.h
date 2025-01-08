@@ -10,8 +10,16 @@
 
 class FileSystemManager {
 public:
+    void initialize(); // Initialization method
     void saveSettings(const std::string& filePath);
     void loadSettings(const std::string& filePath);
+
+    // Difficulty methods
+    void saveMaxDifficulty(int maxDifficulty);
+    int loadMaxDifficulty();
+    void difficultyCompleted(int difficulty);
+    bool isDifficultyCompleted(int difficulty);
+
 private:
     void save(const std::string& filePath, const nlohmann::json& data);
     nlohmann::json load(const std::string& filePath);

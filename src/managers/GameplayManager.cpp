@@ -4,6 +4,8 @@
 #include <unordered_set>
 #include <vector> // Added to use std::vector
 #include <functional> // Added to use std::function
+#include <algorithm> // Added to use std::shuffle
+#include "../minigames/ConnectWiresGame.h"
 
 // TimeManager implementation
 // Its a simple class that counts down from a given number of seconds
@@ -16,7 +18,7 @@ void TimeManager::setCountdown(float seconds) {
 bool TimeManager::updateCountdown() {
     if (countdownFrames > 0) {
         countdownFrames--;
-        printf("Countdown: %d\n", countdownFrames);
+        //printf("Countdown: %d\n", countdownFrames);
         if (countdownFrames <= 0) {
             countdownFrames = 0;
             return false;
@@ -43,7 +45,9 @@ void TimeManager::waitThen(float seconds, void (*func)()) {
 // GameplayManager implementation
 GameplayManager::GameplayManager() : 
     difficulty(1),
-    rng2(std::random_device{}())
+    rng2(std::random_device{}()),
+    enemy("Enemy", 100), // Initialize enemy Player
+    player("Steve", 100)
 {
     
 }
@@ -53,10 +57,12 @@ GameplayManager::~GameplayManager() {
 }
 
 void GameplayManager::gameplayInit() {
-    //Enemy HP
-    enemyHp = 100;
+    // Enemy Initialization
+    enemy.setHealth(100); // Set enemy health using setter
+    exitWindowRequested = false;
+    exitWindow = false;
 
-    //Open Port Randomizing with uniqueness check
+    // Open Port Randomizing with uniqueness check
     std::unordered_set<int> usedPorts;
     for(int i = 0; i < (sizeof(port)/sizeof(port[0])); i++) {
         int newPort;
@@ -69,7 +75,7 @@ void GameplayManager::gameplayInit() {
         if(debugMode != LOW)printf("Port %d: %d\n", i, port[i]);
     }
 
-    //IP Pool Randomizing with uniqueness check
+    // IP Pool Randomizing with uniqueness check
     std::unordered_set<std::string> usedIPs;
     for(int i = 0; i < (sizeof(ipPool)/sizeof(ipPool[0])); i++) {
         std::string newIP;
@@ -85,12 +91,13 @@ void GameplayManager::gameplayInit() {
         if(debugMode != LOW)printf("IP %d: %s\n", i, ipPool[i].c_str());
     }
 
-    //Enemy IP
+    // Enemy IP
     std::uniform_int_distribution<int> enemyIPDist(0, 99);
-    enemyIp = ipPool[enemyIPDist(rng2)];
-    if(debugMode != LOW)printf("Enemy IP: %s\n", enemyIp.c_str());
+    std::string generatedIP = ipPool[enemyIPDist(rng2)];
+    enemy.setIpAddr(generatedIP); // Set enemy IP using setter
+    if(debugMode != LOW)printf("Enemy IP: %s\n", generatedIP.c_str());
 
-    // Add randomizer for enemyHostname with biblical demon names
+    // Set enemy Hostname using Player's setter
     const std::vector<std::string> demonNames = {
         "Asmodeus", "Belial", "Beelzebub", "Leviathan", "Mammon",
         "Astaroth", "Baal", "Lilith", "Samael", "Azazel",
@@ -100,14 +107,47 @@ void GameplayManager::gameplayInit() {
         "Andras", "Forneus", "Glasya", "Leraje", "Ronove"
     };
     std::uniform_int_distribution<int> nameDist(0, demonNames.size() - 1);
-    enemyHostname = demonNames[nameDist(rng2)];
-    if(debugMode != LOW)printf("Enemy Hostname: %s\n", enemyHostname.c_str());
-    
+    std::string selectedName = demonNames[nameDist(rng2)];
+    enemy.setHostname(selectedName); // Set hostname using setter
+    if(debugMode != LOW)printf("Enemy Hostname: %s\n", selectedName.c_str());
+
+    // Randomize enemy's mail
+    const std::vector<std::string> biblicalWords = {
+        "Genesis", "Exodus", "Leviticus", "Numbers", "Deuteronomy",
+        "Joshua", "Judges", "Ruth", "Samuel", "Kings",
+        "Chronicles", "Ezra", "Nehemiah", "Esther", "Job",
+        "Psalms", "Proverbs", "Ecclesiastes", "SongOfSongs", "Isaiah",
+        "Jeremiah", "Lamentations", "Ezekiel", "Daniel", "Hosea",
+        "Joel", "Amos", "Obadiah", "Jonah", "Micah",
+        "Nahum", "Habakkuk", "Zephaniah", "Haggai", "Zechariah", "Malachi"
+    };
+    const std::vector<std::string> biblicalDomains = {
+        "heaven", "eden", "zion", "bethel", "jericho",
+        "canaan", "galilee", "nazareth", "bethlehem", "jerusalem"
+    };
+
+    std::uniform_int_distribution<int> wordDist(0, biblicalWords.size() - 1);
+    std::uniform_int_distribution<int> domainDist(0, biblicalDomains.size() - 1);
+
+    std::string randomMail = biblicalWords[wordDist(rng2)] + "@" + biblicalDomains[domainDist(rng2)] + ".net";
+    enemy.setMail(randomMail); // Set enemy mail using setter
+    if(debugMode != LOW) printf("Enemy Mail: %s\n", randomMail.c_str());
+
     gameplayEvent.subscribe("startGame", [this]() { this->onStartCommand(); });
     gameplayEvent.subscribe("stopGame", [this]() { this->onStopCommand(); });
     gameplayEvent.subscribe("drainSilent", [this]() { this->onDrainSilent(); });
     gameplayEvent.subscribe("drainBruteforce", [this]() { this->onDrainBruteforce(); });
+    gameplayEvent.subscribe("portscan", [this]() { this->onPortscan(); });
+    gameplayEvent.subscribe("ddos", [this]() { this->onDdos(); });
+    gameplayEvent.subscribe("startMiniGames", [this]() {this->onSafeMarginTimerEnd(); });
 
+}
+
+void GameplayManager::onSafeMarginTimerEnd() {
+    printf("uruchomiono sekwencje minigier!\n");
+    gameplayEvent.unsubscribe("startMiniGames", [this]() {this->onSafeMarginTimerEnd(); });
+    printf("unsub dla \"startMiniGames\"\n");
+    miniGamesManager.ManageGameSequences(SelectedDifficulty);
 }
 
 void GameplayManager::gameplayEnd() {
@@ -143,35 +183,76 @@ void GameplayManager::onDrainSilent() {
     timer.setCountdown(5);
 
     if(silentdraintimes == 0){
-        // Initial drain: Select half of ipPool
-        int halfSize = sizeof(ipPool) / sizeof(ipPool[0]) / 2;
-        selectedIpPool.assign(ipPool, ipPool + halfSize);
-        
-        // Ensure enemyIp is included
-        if (std::find(selectedIpPool.begin(), selectedIpPool.end(), enemyIp) == std::end(selectedIpPool)) {
-            selectedIpPool[0] = enemyIp;
-        }
-    }
-    else {
-        // Subsequent drains: Halve the selectedIpPool
-        int currentSize = selectedIpPool.size();
-        int halfSize = currentSize / 2 + currentSize % 2; // Take one more if odd
-        selectedIpPool.assign(selectedIpPool.begin(), selectedIpPool.begin() + halfSize);
-        
-        // Ensure enemyIp is included
-        if (std::find(selectedIpPool.begin(), selectedIpPool.end(), enemyIp) == std::end(selectedIpPool)) {
-            selectedIpPool[0] = enemyIp;
+        // Initial drain: Select first 50 IPs
+        old_selectedIpPool.assign(std::begin(ipPool), std::end(ipPool));
+        int desiredSize = 50; // Initial desired pool size
+
+        // Clear existing selectedIpPool and insert new elements
+        selectedIpPool.clear();
+        for(int i = 0; i < desiredSize && i < sizeof(ipPool)/sizeof(ipPool[0]); ++i){
+            selectedIpPool.insert(ipPool[i]);
         }
 
-        // If only one address remains, print it
-        if(selectedIpPool.size() == 1){
-            timer.setCountdown(0);
-            printf("Final Address: %s\n", selectedIpPool[0].c_str());
+        // Ensure enemyIp is included
+        selectedIpPool.insert(enemyIp);
+    }
+    else {
+        // Define the reduction sequence
+        static const std::vector<int> drainStages = {50, 24, 14, 8, 4, 2, 1};
+        int desiredSize = 1; // Default to 1 if all stages are completed
+
+        // Determine the desired pool size for the current drain
+        if(silentdraintimes < drainStages.size()){
+            desiredSize = drainStages[silentdraintimes];
+        }
+
+        // Save current selectedIpPool to old_selectedIpPool
+        old_selectedIpPool.assign(selectedIpPool.begin(), selectedIpPool.end());
+
+        // Convert selectedIpPool to a vector for ordered access
+        std::vector<std::string> tempSelected(selectedIpPool.begin(), selectedIpPool.end());
+
+        // Shuffle the vector to randomize selection
+        std::shuffle(tempSelected.begin(), tempSelected.end(), rng2);
+
+        // Clear current selectedIpPool and insert the desired number of shuffled IPs
+        selectedIpPool.clear();
+        for(int i = 0; i < desiredSize && i < tempSelected.size(); ++i){
+            selectedIpPool.insert(tempSelected[i]);
+        }
+
+        // Ensure enemyIp is included
+        selectedIpPool.insert(enemyIp);
+
+        // If only one address remains and countdown is not active, print it
+        if(selectedIpPool.size() == 1 && !isCounting){
+            printf("Final Address: %s\n", selectedIpPool.begin()->c_str()); // Fixed by adding .c_str()
             isEnemyIpKnown = true;
         }
     }
     // Increment silentdraintimes
     silentdraintimes++;
 }
+
+int GameplayManager::onPortscan() {
+    pidState = PORTSCAN;
+    timer.setCountdown(10); //10 seconds
+    std::uniform_int_distribution<int> dist(0, 1);
+    if(dist(rng2) == 1){
+        std::uniform_int_distribution<int> rngport(0, 4);
+        portscanResult = port[rngport(rng2)];
+        std::cout << "Portscan: Open port found: " << portscanResult << std::endl;
+        return portscanResult; // Replace 'portNumber' with the actual port retrieval logic
+    } else {
+        portscanResult = 0;
+        return 0;
+    }
+}
+
+void GameplayManager::onDdos() {
+    pidState = DDOS;
+    timer.setCountdown(50); //10 seconds
+}
+
 
 

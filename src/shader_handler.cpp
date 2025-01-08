@@ -5,6 +5,7 @@
 #include "./headers/globals.h"
 #include "./headers/settings_vars.h"
 #include <filesystem>
+#include "./managers/FileSystemManager.h"
 
 
 //Locations
@@ -35,24 +36,26 @@ void GenerateCurvatureMap(Vector2 resolution, float curvature) {
             Vector2 uv = {x / (float)resolution.x, y / (float)resolution.y};
 
             uv = {uv.x * 2.0f - 1.0f, uv.y * 2.0f - 1.0f};
-            uv.x *= 1.0f + curvature * (uv.y * uv.y);
-            uv.y *= 1.0f + curvature * (uv.x * uv.x);
+            float dotProduct = uv.x * uv.x + uv.y * uv.y;
+            uv.x *= 1.0f + curvature * dotProduct;
+            uv.y *= 1.0f + curvature * dotProduct;
             uv = {(uv.x + 1.0f) * 0.5f, (uv.y + 1.0f) * 0.5f};
 
             curvatureMap[y][x] = {uv.x * resolution.x, uv.y * resolution.y};
         }
     }
 }
+
 Vector2 MapMouseToFlat(Vector2 mousePos, Vector2 resolution) {
     int x = (int)mousePos.x;
     int y = (int)mousePos.y;
 
-    // Upewnij się, że pozycja jest w granicach
     x = Clamp(x, 0, resolution.x - 1);
     y = Clamp(y, 0, resolution.y - 1);
 
     return curvatureMap[y][x];
 }
+
 void ReloadShader(){
     SetShaderValue(shader, curvatureLoc, &curvature, SHADER_UNIFORM_FLOAT);
     SetShaderValue(shader, bloomIntensityLoc, &bloomIntensity, SHADER_UNIFORM_FLOAT);
@@ -79,32 +82,9 @@ void InitializeShader() { //and load + initialize settings, extremely important,
     brightnessLoc = GetShaderLocation(shader, "brightness");
     sh_resolutionLoc = GetShaderLocation(shader, "resolution");
 
-    // Check if configPath directory exists, if not, create it
-    if (!std::filesystem::exists(configPath)) {
-        std::filesystem::create_directory(configPath);
-    }
-
-    // Load default settings first
-    LoadSettingsDefault();
-
-    // Check if settings file exists and is readable
-    std::ifstream settingsFile((configPath + "settings.json").c_str());
-    if (!settingsFile.good()) {
-        // Create settings.json with default settings
-        FileSystemManager fsm;
-        fsm.saveSettings((configPath + "settings.json").c_str());
-    } else {
-        try {
-            // Load settings from file
-            FileSystemManager fsm;
-            fsm.loadSettings((configPath + "settings.json").c_str());
-        } catch (const nlohmann::json::parse_error& e) {
-            std::cerr << "Failed to parse settings.json: " << e.what() << std::endl;
-            // Create settings.json with default settings
-            FileSystemManager fsm;
-            fsm.saveSettings((configPath + "settings.json").c_str());
-        }
-    }
+    // Initialize FileSystemManager
+    FileSystemManager fsm;
+    fsm.initialize();
 
     ReloadShader();
 }

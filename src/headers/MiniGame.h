@@ -19,11 +19,28 @@ public:
     bool isOpen;           // Is the game window open?
     // bool isFirst;         // Is Game Window Active?
     bool gameComplete;     // Is Game Complete?
+    bool gameLost;
     float dotTimer;        // Timer flag for flashing dot (better not use)
+
+    float totalTimer;
+    float elapsedTime;
+    bool isTimerActive;
 
     // Virtual methods for game-specific behavior
     virtual void Update(); // To be overridden for specific logic
     virtual void Draw();   // To be overridden for specific logic
+
+    //Timer methods
+    void UpdateMiniGameTimer();
+    void StartTimer();
+    void StopTimer();
+    void ResetTimer();
+    void SetMiniGameTimer(float newDuration);
+    bool IsTimeUp() const;
+    float RemainingTime() const;
+
+    virtual void OnTimerEnd();
+
 
     // Window management
     void Close();

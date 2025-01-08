@@ -61,6 +61,15 @@ TypeGame::~TypeGame(){
 }
 
 void TypeGame::Update(){
+    // float x = window.x;
+    // float y = window.y;
+    // std::string x_str = std::to_string(x);
+    // std::string y_str = std::to_string(y);
+    // printf("x: ");
+    // printf(x_str.c_str());
+    // printf("  y: ");
+    // printf(y_str.c_str());
+    // printf("\n");
     MiniGame::Update(); // handle dragging
     UpdateCorrectness(); 
     UpdateTypedText();
@@ -180,7 +189,7 @@ void TypeGame::UpdateCursor(float deltaTime){
 
 void TypeGame::UpdateTypedText(){
     std::lock_guard<std::mutex> lock(inputMutex); // Ensure thread safety
-    if (!gameManager.hasActiveTypeGame()) {
+    if (!miniGamesManager.hasActiveTypeGame()) {
         return; // Exit if TypeGame is no longer active
     }
 

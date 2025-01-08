@@ -1,25 +1,37 @@
 #include "../headers/MiniGameManager.h"
 #include "../headers/globals.h"
 #include "../minigames/TypeGame.h" // Ensure this include is present
+#include "../minigames/ConnectWiresGame.h"
+#include "../minigames/BallGame.h"
+#include "../minigames/FinderGame.h"
+#include "../gameplay/gameplay_vars.h"
+#include "GameplayManager.h"
+#include "EventManager.h"
+#include <random>
 
 // Constructor initializes timer and state variables
 MiniGameManager::MiniGameManager()
-    : totalTime(60.0f),      
-      elapsedTime(0.0f),
-      timerActive(false),
+    : startGameSequences(false),
+      gameDurationScale(1),
+      arePlayersAlive(true),
+      //miniGamesDurationTime(15.0f),
       showEndMessage(false),
       messageTimer(0.0f),
       endMessage(""),
-      win(false) {}
+      win(false),
+      gameType(0) {}
 
 // Update method called every frame to manage games and timer
 void MiniGameManager::Update() {
-    UpdateTimer(); // Update the global timer
+    //UpdateTimer(); // Update the global timer
+    IsLevelCompleted();
+    if (startGameSequences) RunGameSequence();    
 
     // Iterate through games in reverse order for proper layering
     for (auto it = games.rbegin(); it != games.rend(); ++it) {
         auto& game = *it;
         if (game->isOpen) {
+            game->UpdateMiniGameTimer();
             UpdateDotTimer(game); // Update visual dot timer
             DragWindow(game, mousePos); // Handle window dragging
             SetMouseState(mousePos, game);
@@ -27,22 +39,32 @@ void MiniGameManager::Update() {
             if (IsWindowFirst(game)) {
                 game->Update(); // Update the topmost game
             }
-        }
+        } else {Close(game);}
 
         // Check if the close button is clicked or the game is complete
         if ((CheckCollisionPointRec(mousePos, {game->window.x + game->window.width - 20, game->window.y, 20, 20}) &&
-             IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && CanBeInteracted(game, mousePos)) || game->gameComplete) {
+             IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && CanBeInteracted(game, mousePos)) || game->gameComplete || game->gameLost) {
             Close(game); // Close the game window
         }
     }
 
-    // Handle end message display timing
-    if (showEndMessage) {
-        messageTimer += GetFrameTime();
-        if (messageTimer >= 1.0f) { 
-            showEndMessage = false; // Hide the message after 1 second
-        }
+    // // Handle end message display timing
+    // if (showEndMessage) {
+    //     messageTimer += GetFrameTime();
+    //     if (messageTimer >= 1.0f) { 
+    //         showEndMessage = false; // Hide the message after 1 second
+    //     }
+    // }
+
+    isSafeMarginTimerOn = gameplayManager.safeMarginTimer.isCounting();
+    gameplayManager.safeMarginTimer.updateCountdown();
+    if(!isSafeMarginTimerOn && !isMiniGameSequenceStarted) {
+        isMiniGameSequenceStarted = true;
+        printf("test\n");
+        gameplayManager.gameplayEvent.triggerEvent("startMiniGames");
     }
+
+
 }
 
 void MiniGameManager::SetMouseState(Vector2 mousePosition, std::shared_ptr<MiniGame>& game) {
@@ -68,6 +90,11 @@ void MiniGameManager::Draw() {
             if (((int)game->dotTimer % 2) != 0)
                 DrawCircle(game->window.x + 6, game-> window.y + 6, 2, primaryColor);
             
+            // Draw remaining time
+            float leftTime = game->totalTimer - game->elapsedTime;
+            std::string timeLeftText = std::to_string(static_cast<int>(leftTime));
+            DrawText(timeLeftText.c_str(), game->window.x + game->window.width - 50, game->window.y + 5, 20, primaryColor);
+
             DrawText(game->title.c_str(), game->window.x + 10, game->window.y + 10, 20, WHITE); // Draw window title
             DrawText("x", game->window.x + game->window.width - 15, game->window.y + 5, 20, RED); // Draw close button
             game->Draw(); // Draw the mini-game content
@@ -75,15 +102,15 @@ void MiniGameManager::Draw() {
     }
 
     // Draw the global timer if active
-    if (timerActive) {
-        float remainingTime = totalTime - elapsedTime;
-        if (remainingTime < 0.0f) remainingTime = 0.0f;
-        std::string timerText = "Time Left: " + std::to_string(static_cast<int>(remainingTime)) + "s";
+    // if (timerActive) {
+    //     float remainingTime = totalTime - elapsedTime;
+    //     if (remainingTime < 0.0f) remainingTime = 0.0f;
+    //     std::string dotTimerText = "Time Left: " + std::to_string(static_cast<int>(remainingTime)) + "s";
         
-        // Position the timer text at the top-center of the screen
-        int screenWidth = GetScreenWidth();
-        DrawText(timerText.c_str(), screenWidth / 2 - MeasureText(timerText.c_str(), 20) / 2, 10, 20, primaryColor);
-    }
+    //     // Position the timer text at the top-center of the screen
+    //     int screenWidth = GetScreenWidth();
+    //     DrawText(dotTimerText.c_str(), screenWidth / 2 - MeasureText(dotTimerText.c_str(), 20) / 2, 10, 20, primaryColor);
+    // }
 
     // Draw the end message if applicable //DON'T DELETE THIS!!!
     /*
@@ -166,36 +193,37 @@ void MiniGameManager::StopDragging(std::shared_ptr<MiniGame>& game) {
     currentlyDragged.reset();
 }
 
-// Sets the total duration for the global timer
-void MiniGameManager::SetTotalTime(float duration) {
-    totalTime = duration;
-}
+// // Sets the total duration for the global timer
+// void MiniGameManager::SetTotalTime(float duration) {
+//     totalTime = duration;
+// }
 
 // Adds a new mini-game to the manager and starts the timer if not active
-void MiniGameManager::AddGame(const std::shared_ptr<MiniGame>& game) {
+void MiniGameManager::AddGame(const std::shared_ptr<MiniGame>& game, float duration) {
+    game->SetMiniGameTimer(duration);
     games.push_back(game);
-    if (!timerActive) {
-        StartTimer(totalTime); 
-    }
+    // if (!timerActive) {
+    //     StartTimer(totalTime); 
+    // }
 }
 
 // Initializes and starts the global timer with a specified duration
-void MiniGameManager::StartTimer(float duration) {
-    totalTime = duration;
-    elapsedTime = 0.0f;
-    timerActive = true;
-}
+// void MiniGameManager::StartTimer(float duration) {
+//     totalTime = duration;
+//     elapsedTime = 0.0f;
+//     timerActive = true;
+// }
 
-// Resets the global timer and deactivates it
-void MiniGameManager::ResetTimer() {
-    elapsedTime = 0.0f;
-    timerActive = false;
-}
+// // Resets the global timer and deactivates it
+// void MiniGameManager::ResetTimer() {
+//     elapsedTime = 0.0f;
+//     timerActive = false;
+// }
 
-// Checks if the global timer has reached or exceeded the total time
-bool MiniGameManager::IsTimeUp() const {
-    return elapsedTime >= totalTime;
-}
+// // Checks if the global timer has reached or exceeded the total time
+// bool MiniGameManager::IsTimeUp() const {
+//     return elapsedTime >= totalTime;
+// }
 
 // Sets and displays the end message based on whether the player won or lost
 void MiniGameManager::SetEndMessage(bool isWin) {
@@ -209,32 +237,63 @@ void MiniGameManager::SetEndMessage(bool isWin) {
     win = isWin;
 }
 
-// Updates the global timer and handles the scenario when time is up
-void MiniGameManager::UpdateTimer() {
-    if (timerActive) {
-        elapsedTime += GetFrameTime();
-        if (IsTimeUp()) {
-            timerActive = false;
-            SetEndMessage(false); // Set loss message
-            while (!games.empty()) {
-                Close(games.back()); // Close all open games
-            }
-        }
-    }
-}
+// // Updates the global timer and handles the scenario when time is up
+// void MiniGameManager::UpdateTimer() {
+//     if (timerActive) {
+//         elapsedTime += GetFrameTime();
+//         if (IsTimeUp()) {
+//             timerActive = false;
+//             SetEndMessage(false); // Set loss message
+//             while (!games.empty()) {
+//                 Close(games.back()); // Close all open games
+//             }
+//         }
+//     }
+// }
+
+// void MiniGameManager::AddTime(float timeAmount) {
+//     elapsedTime -= timeAmount;
+// }
 
 // Closes and removes a mini-game from the manager
 void MiniGameManager::Close(std::shared_ptr<MiniGame>& game) {
-    game->isOpen = false;
+    if (game->isOpen == true) game->isOpen = false;
     auto it = std::find(games.begin(), games.end(), game);
+    switch (SelectedDifficulty)
+        {
+        case 1:
+            if (game->gameComplete) {
+            gameplayManager.enemy.takeDamage(17);
+            printf("enemy hp -17\n");
+            gameplayManager.player.heal(5);
+            printf("player hp +5\n");
+            } else { gameplayManager.player.takeDamage(10); 
+                     printf("player hp -10\n"); }
+            break;
+        case 2:
+            if (game->gameComplete) {
+            gameplayManager.enemy.takeDamage(12);
+            } else { gameplayManager.player.takeDamage(10); }
+            break;
+        case 3:
+            if (game->gameComplete) {
+            gameplayManager.enemy.takeDamage(8);
+            } else { gameplayManager.player.takeDamage(15); }
+            break;
+        default:
+            break;
+        }
+
     games.erase(it); // Remove the game from the list
     currentlyDragged.reset();
     activeGame.reset();
+    isMouseOnMiniGameWindow = false;
 
     // If all games are closed and timer is active, show win message
-    if (games.empty() && timerActive) {
+    if (games.empty()) {
         SetEndMessage(true); // Set win message
-        timerActive = false;
+        printf("none minigame exists\n");
+        //timerActive = false;
     }
 }
 
@@ -254,4 +313,122 @@ bool MiniGameManager::hasActiveTypeGame() const {
         }
     }
     return false;
+}
+
+
+void MiniGameManager::RunGameSequence() {
+    // zaktualizuj timer jeśli jest aktywny
+    if (isIntervalTimerOn && IntervalTimer > 0.0f) {
+        IntervalTimer -= GetFrameTime();
+    }
+    // sprawdź czy wektor gier jest pusty
+    if (allGamesClosed()) {
+        if (isIntervalTimerOn == false) {
+            IntervalTimer = IntervalTimerSetTime;
+            isIntervalTimerOn = true;
+            }
+        if (IntervalTimer <= 0.0f) {
+            for (int i = 0; i < gameDurationScale; i++){
+                auto randomGame = GetRandomGame();
+                randomGame();
+            }
+            isIntervalTimerOn = false;
+        }
+    }
+}
+
+int MiniGameManager::GetRandomIntInRange(int begin, int end) {
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    std::uniform_int_distribution<int> dis(begin, end);
+
+    return dis(gen);
+}
+
+
+std::function<void()> MiniGameManager::GetRandomGame() {
+    int gameType = GetRandomIntInRange(1, 4);
+
+    switch (gameType)
+    {
+    case 1:
+        return [this]() { this->StartBallGame(gameDurationScale); };
+    case 2:
+        return [this]() { this->StartConnectingGame(gameDurationScale); };
+    case 3:
+        return [this]() { this->StartFinderGame(gameDurationScale); };
+    case 4:
+        return [this]() { this->StartTypingGame(gameDurationScale); };
+    default:
+        return []() { /* pusta funkcja */ };
+    }
+}
+
+void MiniGameManager::ManageGameSequences(const int& difficulty) {
+
+    switch (difficulty)
+    {
+    case 1:
+        IntervalTimerSetTime = 15.0f;
+        IntervalTimer = IntervalTimerSetTime;
+        break;
+    case 2:
+        IntervalTimerSetTime = 10.0f;
+        IntervalTimer = IntervalTimerSetTime;
+        break;
+    case 3:
+        IntervalTimerSetTime = 5.0f;
+        IntervalTimer = IntervalTimerSetTime;
+        gameDurationScale = 2;
+        break;
+    default:
+        break;
+    }
+    for (int i = 0; i < gameDurationScale; i++){
+        auto randomGame = GetRandomGame();
+        randomGame();
+    }
+    startGameSequences = true;
+}
+
+void MiniGameManager::StartConnectingGame(int& durationScale) {
+    auto connectWires = std::make_shared<ConnectWiresGame>(GetRandomIntInRange(screen.x, screen.width - 400), 
+                                                           GetRandomIntInRange(screen.y, screen.height -  300), 
+                                                           GetRandomIntInRange(300, 400), 
+                                                           GetRandomIntInRange(200, 300), "RJ45 CONNECTOR");
+    miniGamesManager.AddGame(connectWires, durationScale * 15.0f);
+
+}
+
+void MiniGameManager::StartTypingGame(int& durationScale) {
+    auto type = std::make_shared<TypeGame>(GetRandomIntInRange(screen.x, screen.width - 1000), 
+                                           GetRandomIntInRange(screen.y, screen.height - 400), 
+                                           1000, 400, "TypeGame");
+    miniGamesManager.AddGame(type, durationScale * 40.0f);
+}
+
+void MiniGameManager::StartFinderGame(int& durationScale) {
+    auto finder = std::make_shared<FinderGame>(GetRandomIntInRange(screen.x, screen.width - 400), 
+                                               GetRandomIntInRange(screen.y, screen.height -  300),
+                                               400, 300, "FinderGame");
+    miniGamesManager.AddGame(finder, durationScale * 30.0f);
+}
+
+void MiniGameManager::StartBallGame(int& durationScale) {
+    auto bouncingballGame = std::make_shared<BallGame>(GetRandomIntInRange(screen.x, screen.width - 650),
+                                                       GetRandomIntInRange(screen.y, screen.height - 550),
+                                                       GetRandomIntInRange(300, 500), 
+                                                       GetRandomIntInRange(250, 400), "Ball Game");
+    miniGamesManager.AddGame(bouncingballGame, durationScale * 120.0f);    
+}
+
+bool MiniGameManager::IsLevelCompleted() {
+    if (gameplayManager.player.getHealth() > 0 && gameplayManager.enemy.getHealth() > 0) {
+        return false;
+    } else {
+        gameplayManager.gameplayEvent.triggerEvent("stopGame");
+        if (gameplayManager.enemy.getHealth() == 0) DifficultyCompleted(SelectedDifficulty);
+        currentScreen = TITLE;
+        return true;
+    }
 }

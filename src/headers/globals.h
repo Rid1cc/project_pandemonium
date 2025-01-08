@@ -10,16 +10,29 @@
 #include "../managers/FileSystemManager.h"
 #include "../managers/EventManager.h"
 #include "../managers/GameplayManager.h"
+#include "DifficultySelector.h"
+#include "player.h"
 
 #if defined(_WIN32)
-#include <windows.h>
+    // #include <windows.h> // Removed to prevent conflicts
+    #include "raylib.h"
+    
+    // Define necessary Windows types manually
+    typedef void* HMODULE;
+    typedef char* LPSTR;
+    typedef unsigned long DWORD; // Added definition for DWORD
+    #define WINAPI __stdcall     // Added definition for WINAPI
+    
+    // Declare only GetModuleFileNameA
+    extern "C" __declspec(dllimport) DWORD WINAPI GetModuleFileNameA(HMODULE hModule, LPSTR lpFilename, DWORD nSize);
 #elif defined(__APPLE__)
-#include <mach-o/dyld.h>
+    #include <mach-o/dyld.h>
 #else
-#include <dlfcn.h>
+    #include <dlfcn.h>
+    #include <unistd.h>
 #endif
 
-typedef enum GameScreen { LOGO = 0, TITLE, SETTINGS, GAMEPLAY, ENDING } GameScreen;
+typedef enum GameScreen { LOGO = 0, TITLE, SETTINGS, DIFFICULTY_SELECTION, GAMEPLAY, ENDING } GameScreen;
 typedef enum SettingsScreen { GRAPHICS = 0, AUDIO, DISPLAY, CUSTOM } SettingsScreen;
 typedef enum SettingState { LOW = 0, MID, HI} SettingState;
 
@@ -27,19 +40,10 @@ typedef enum SettingState { LOW = 0, MID, HI} SettingState;
 extern GameScreen currentScreen;
 extern SettingState debugMode;
 extern SettingsScreen currentSettings;
-extern MiniGameManager gameManager;
-extern Rectangle healthBar;
-extern Rectangle attackMenu;
-extern Rectangle botnetIcon;
+extern MiniGameManager miniGamesManager;
 extern Texture2D botnetTexture;
-extern Rectangle ddosIcon;
 extern Texture2D ddosTexture;
-extern Rectangle mailbombIcon;
 extern Texture2D mailbombTexture;
-extern Rectangle infoPanel;
-extern Rectangle terminalWindow;
-extern Rectangle PIDMenu;
-extern Rectangle textBox;
 extern Rectangle screen;
 extern char command[100];
 extern int letterCount;
@@ -82,6 +86,8 @@ extern RenderTexture2D space3d;
 extern float general_volume;
 extern float effects_volume;
 
+// Difficulty
+extern int SelectedDifficulty;
 
 // Music
 extern Music main_theme;
