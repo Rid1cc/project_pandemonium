@@ -67,6 +67,7 @@ private:
     void onDrainBruteforce();
     int onPortscan();
     void onDdos();
+    void onMailBomb();
 };
 
 #endif

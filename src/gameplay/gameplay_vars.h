@@ -24,6 +24,7 @@ extern ProcessStateName pidState;
 extern CommandInterpreter cmdInterpreter;
 
 extern bool startMiniGamesSequence;
+extern bool payloadState;
 
 extern Rectangle healthBar;
 extern Rectangle attackMenu;

@@ -71,7 +71,7 @@ void Pid::Render() {
                 }
                 break;
             case MAIL:
-                DrawTextC("MAIL", pidMenu.x + 20, pidMenu.y + (pidMenu.height/2), 40, primaryColor);
+                MailRender();
                 break;
             case DDOS:
                 DdosRender();
@@ -359,6 +359,76 @@ void Pid::DdosRender() {
     }
 
     DrawTextC("PROCESS: FLOOD //", pidMenu.x + 10, pidMenu.y + 10, 20, primaryColor);
+    // Fix the warning by correctly converting to char*
+    std::string timeLeft = "EST. T.LEFT: " + std::to_string(gameplayManager.timer.countdownFrames / 60);
+    DrawTextC(timeLeft.c_str(), pidMenu.x + 10, pidMenu.y + 30, 20, primaryColor);
+}
+
+void Pid::MailRender() {
+    static int frameCounter = 0;
+    static std::vector<Vector2> particles;
+    static std::vector<Vector2> particleVelocities;
+
+    // Animation duration in frames (10 seconds at 60 FPS)
+    const int animationDuration = 10 * 60;
+
+    // Envelope dimensions
+    float envelopeWidth = 100.0f;
+    float envelopeHeight = 60.0f;
+    float envelopeX = pidMenu.x + (pidMenu.width - envelopeWidth) / 2;
+    float envelopeY = pidMenu.y + (pidMenu.height - envelopeHeight) / 2;
+
+    // Calculate the current frame of the animation
+    frameCounter++;
+    if (frameCounter > animationDuration) {
+        frameCounter = 0; // Reset the frame counter
+        particles.clear(); // Clear particles when animation resets
+        particleVelocities.clear(); // Clear particle velocities
+    }
+
+    // Calculate the envelope flap angle based on the frame
+    float progress = static_cast<float>(frameCounter) / animationDuration;
+    float angle = (1.0f - progress) * -270.0f; // Close the flap from 90 degrees to 0 degrees
+
+    // Draw the envelope body as a wireframe with thicker lines
+    DrawRectangleLinesEx({envelopeX, envelopeY, envelopeWidth, envelopeHeight}, 3, primaryColor);
+
+    // Draw the envelope flap as a wireframe with thicker lines
+    Vector2 flapPoints[3] = {
+        {envelopeX, envelopeY},
+        {envelopeX + envelopeWidth, envelopeY},
+        {envelopeX + envelopeWidth / 2, envelopeY - envelopeHeight / 2 * sin(DEG2RAD * angle)}
+    };
+    DrawLineEx(flapPoints[0], flapPoints[1], 3, primaryColor);
+    DrawLineEx(flapPoints[1], flapPoints[2], 3, primaryColor);
+    DrawLineEx(flapPoints[2], flapPoints[0], 3, primaryColor);
+
+    // Generate particles
+    if (frameCounter % 2 == 0) { // Generate a particle every 10 frames
+        particles.push_back({envelopeX + envelopeWidth / 2, envelopeY + envelopeHeight / 2});
+        float angle = static_cast<float>(rand() % 360) * DEG2RAD;
+        float speed = 1.0f + static_cast<float>(rand() % 3);
+        particleVelocities.push_back({cos(angle) * speed, sin(angle) * speed});
+    }
+
+    // Update and draw particles
+    for (size_t i = 0; i < particles.size(); ) {
+        particles[i].x += particleVelocities[i].x;
+        particles[i].y += particleVelocities[i].y;
+        DrawCircleV(particles[i], 2, primaryColor); // Draw particle as a small circle
+
+        // Remove particle if it goes out of the pidMenu bounds
+        if (particles[i].x < pidMenu.x || particles[i].x > pidMenu.x + pidMenu.width ||
+            particles[i].y < pidMenu.y || particles[i].y > pidMenu.y + pidMenu.height) {
+            particles.erase(particles.begin() + i);
+            particleVelocities.erase(particleVelocities.begin() + i);
+        } else {
+            ++i;
+        }
+    }
+
+    // Draw additional text
+    DrawTextC("PROCESS: SMTP//", pidMenu.x + 10, pidMenu.y + 10, 20, primaryColor);
     // Fix the warning by correctly converting to char*
     std::string timeLeft = "EST. T.LEFT: " + std::to_string(gameplayManager.timer.countdownFrames / 60);
     DrawTextC(timeLeft.c_str(), pidMenu.x + 10, pidMenu.y + 30, 20, primaryColor);

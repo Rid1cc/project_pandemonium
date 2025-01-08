@@ -61,6 +61,10 @@ void GameplayManager::gameplayInit() {
     enemy.setHealth(100); // Set enemy health using setter
     exitWindowRequested = false;
     exitWindow = false;
+<<<<<<< Updated upstream
+=======
+    payloadState = 0;
+>>>>>>> Stashed changes
 
     // Open Port Randomizing with uniqueness check
     std::unordered_set<int> usedPorts;
@@ -140,6 +144,7 @@ void GameplayManager::gameplayInit() {
     gameplayEvent.subscribe("portscan", [this]() { this->onPortscan(); });
     gameplayEvent.subscribe("ddos", [this]() { this->onDdos(); });
     gameplayEvent.subscribe("startMiniGames", [this]() {this->onSafeMarginTimerEnd(); });
+    gameplayEvent.subscribe("mailbomb", [this]() {this->onMailBomb(); });
 
 }
 
@@ -147,7 +152,7 @@ void GameplayManager::onSafeMarginTimerEnd() {
     printf("uruchomiono sekwencje minigier!\n");
     gameplayEvent.unsubscribe("startMiniGames", [this]() {this->onSafeMarginTimerEnd(); });
     printf("unsub dla \"startMiniGames\"\n");
-    miniGamesManager.StartGameSequences(SelectedDifficulty);
+   //miniGamesManager.StartGameSequences(SelectedDifficulty);
 }
 
 void GameplayManager::gameplayEnd() {
@@ -254,5 +259,13 @@ void GameplayManager::onDdos() {
     timer.setCountdown(50); //10 seconds
 }
 
+void GameplayManager::onMailBomb() {
+    pidState = MAIL;
+    timer.setCountdown(10); //10 seconds
+    std::uniform_int_distribution<int> dist(1, 100);
+    if (dist(rng2) <= 20) { // 20% chance
+        enemy.setHealth(enemy.getHealth() - 10);
+    }
+}
 
 

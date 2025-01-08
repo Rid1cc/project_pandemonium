@@ -99,6 +99,10 @@ void CommandInterpreter::parseCommand(const std::string& command, std::string* h
         flood(iss, args);
     }
 
+    else if (cmd == "smtp") {
+        smtpCommand(args);
+    }
+
     else if (cmd == "help") {
         historyDrawnUp();
         historyDrawn[0] = "Available commands: echo, ipconfig, start, stop, netscan, help";
@@ -280,5 +284,28 @@ void CommandInterpreter::flood(std::istringstream &iss, std::vector<std::string>
     }
     else {
         outputLine("Usage: flood <target_ip> <port_number>");
+    }
+}
+
+void CommandInterpreter::smtpCommand(const std::vector<std::string>& args) {
+    if (args.size() == 1 && args[0] == "prime") {
+        if (payloadState == 1) {
+            outputLine("Payload already primed.");
+        } else {
+            payloadState = 1;
+            outputLine("Payload primed.");
+        }
+    } else if (args.size() == 2 && args[0] == "send") {
+        if (payloadState != 1) {
+            outputLine("Error: Payload not primed.");
+        } else if (args[1] == gameplayManager->enemy.getMail()) {
+            outputLine("Mail sent to " + args[1]);
+            gameplayManager->gameplayEvent.triggerEvent("mailbomb");
+            payloadState = 0; // Reset payload state after sending
+        } else {
+            outputLine("Error: Wrong mail address.");
+        }
+    } else {
+        outputLine("Usage: smtp prime | smtp send mail");
     }
 }
