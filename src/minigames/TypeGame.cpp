@@ -7,45 +7,45 @@ TypeGame::TypeGame(float x, float y, float width, float height, const std::strin
             // Add \n after every endline without adding space behind or after '\n'
             // Every line should be in " "
 
-            "Firewall activated.\n"
-            "Unauthorized access attempts logged.\n"
-            "System integrity checks in progress.\n"
-            "Deploying countermeasures.", // text 1 [0]
+            "Firewall activated\n"
+            "Unauthorized access attempts logged\n"
+            "System integrity checks in progress\n"
+            "Deploying countermeasures", // text 1 [0]
 
-            "Encryption keys verified successfully.\n"
-            "Suspicious activity neutralized.\n"
-            "Real-time traffic monitoring engaged.\n" 
-            "Secure communication channel established.", // text 2 [1]
+            "Encryption keys verified successfully\n"
+            "Suspicious activity neutralized\n"
+            "Real-time traffic monitoring engaged\n" 
+            "Secure communication channel established", // text 2 [1]
 
-            "Alert! Possible phishing attack detected.\n"
-            "User credentials remain uncompromised.\n"
-            "Training staff on security protocols.\n"
-            "Audit scheduled for vulnerable systems.", // text 3 [2]
+            "Alert! Possible phishing attack detected\n"
+            "User credentials remain uncompromised\n"
+            "Training staff on security protocols\n"
+            "Audit scheduled for vulnerable systems", // text 3 [2]
 
-            "Multiple login attempts blocked.\n"
-            "Account locked for security reasons.\n"
-            "Implementing two-factor authentication.\n"
-            "Stay vigilant, report unusual activity.", // text 4 [3]
+            "Multiple login attempts blocked\n"
+            "Account locked for security reasons\n"
+            "Implementing two-factor authentication\n"
+            "Stay vigilant, report unusual activity", // text 4 [3]
 
-            "Network scan detected unrecognized devices.\n"
-            "Isolating unknown connections.\n"
-            "Security updates deployed successfully.\n" 
-            "Threat level reduced to minimal.", // text 5 [4]
+            "Network scan detected unrecognized devices\n"
+            "Isolating unknown connections\n"
+            "Security updates deployed successfully\n" 
+            "Threat level reduced to minimal", // text 5 [4]
 
-            "The system detected unusual port activity.\n"  
-            "Temporarily suspending external access.\n"
-            "Logs sent to the cybersecurity team.\n"
-            "Investigation underway, no breach detected.", // text 6 [5]
+            "The system detected unusual port activity\n"  
+            "Temporarily suspending external access\n"
+            "Logs sent to the cybersecurity team\n"
+            "Investigation underway, no breach detected", // text 6 [5]
 
-            "Regular backups ensure data safety.\n" 
-            "Unauthorized script execution prevented.\n"
-            "Patching vulnerabilities across the system.\n"
-            "Cybersecurity training completed successfully.", // text 7 [6]
+            "Regular backups ensure data safety\n" 
+            "Unauthorized script execution prevented\n"
+            "Patching vulnerabilities across the system\n"
+            "Cybersecurity training completed successfully", // text 7 [6]
 
-            "Admin privileges are locked down.\n"
-            "Only authorized personnel allowed.\n"
-            "Biometric verification in progress.\n"
-            "Defenses are holding strong.", // text 8 [7]
+            "Admin privileges are locked down\n"
+            "Only authorized personnel allowed\n"
+            "Biometric verification in progress\n"
+            "Defenses are holding strong", // text 8 [7]
         };
         isTypeWin = false;
         randomText = text[GetRandomValue(0, 7)]; // drawn text to display (for now we have 8 texts (0 - 7))
@@ -190,18 +190,25 @@ void TypeGame::UpdateTypedText(){
 
     if ((typedKey > 0) && (typedKey >= 32) && (typedKey <= 125) && (currentNumber < randomTextLength)) {
         isTyping = true;
-        typedText[currentNumber] = static_cast<char>(typedKey);
-        currentNumber++;
+        if (randomText[currentNumber] == '\n' && (typedKey == ' ' /*|| IsKeyPressed(KEY_ENTER)*/)) {
+            typedText[currentNumber] = '\n';
+            currentNumber++;
+        } else if (randomText[currentNumber] != '\n') {
+            typedText[currentNumber] = static_cast<char>(typedKey);
+            currentNumber++;
+        }
     } else {
         isTyping = false;
     }
 
+    // handle backspace
     if (IsKeyPressed(KEY_BACKSPACE) && currentNumber > 0){
         currentNumber--;
         isTyping = true;
         typedText[currentNumber] = '\0';
     }
 
+    // handle holding backspace
     if (IsKeyDown(KEY_BACKSPACE)) {
         if (backTimer >= 30) {
             currentNumber--;

@@ -21,6 +21,7 @@ void TitleUpdate() {
     if(CheckCollisionPointRec(mousePos, button_play)==true){
         play_highl = true;
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+            if (SelectedDifficulty != 0) SelectedDifficulty = 0;
             gameplayManager.enemy.resetPlayer();
             gameplayManager.player.resetPlayer();
             currentScreen = DIFFICULTY_SELECTION;
