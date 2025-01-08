@@ -312,10 +312,9 @@ bool MiniGameManager::hasActiveTypeGame() const {
     return false;
 }
 
-void MiniGameManager::StartGameSequences(int difficulty) {
+void MiniGameManager::RunGameSequence(const int& difficulty) {
     srand(time(0));
     gameType = (rand() % 4) + 1;
-    //gameType = 3;
 
     switch (gameType)
     {
@@ -335,21 +334,11 @@ void MiniGameManager::StartGameSequences(int difficulty) {
         break;
     }
 
-    // switch (difficulty)
-    // {
-    // case 1:
-    //     miniGamesIntervalTime = 15.0f;
-    //     break;
-    // case 2:
-    //     miniGamesIntervalTime = 10.0f;
-    //     break;
-    // case 3: 
-    //     miniGamesIntervalTime = 5.0f;
-    //     break;
-    // default:
-    //     break;
-    // }
+}
 
+void MiniGameManager::ManageGameSequences(const int& difficulty) {
+
+    
 }
 
 

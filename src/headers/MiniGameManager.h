@@ -86,7 +86,8 @@ public:
     bool CheckMouseState() const;
     bool hasActiveTypeGame() const; // Ensure this line exists
 
-    void StartGameSequences(int difficulty);
+    void ManageGameSequences(const int& difficulty);
+    void RunGameSequence(const int& difficulty);
     void StartConnectingGame();
     void StartTypingGame();
     void StartFinderGame();
