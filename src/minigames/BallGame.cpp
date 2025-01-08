@@ -243,7 +243,6 @@ void BallGame::Update(){
 
 // Główna funkcja rysująca grę
 void BallGame::Draw(){
-
     // Rysowanie prostokątów
     DrawRectangles();
 
