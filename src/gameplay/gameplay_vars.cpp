@@ -7,6 +7,8 @@ bool isCounting;
 bool isSafeMarginTimerOn;
 bool isMiniGameSequenceStarted = false;
 bool isEnemyIpKnown = false;
+bool startMiniGamesSequence = false;
+bool payloadState = 0;
 ProcessStateName pidState;
 
 CommandInterpreter cmdInterpreter(&gameplayManager);

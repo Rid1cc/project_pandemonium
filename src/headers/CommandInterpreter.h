@@ -11,6 +11,7 @@ public:
     void executeCommand(const std::string& command);
     void addToHistory(const std::string& command);
     void showHistory() const;
+    void reset();
 
     // Getters
     const std::string& getCurrentCommand() const;
@@ -31,6 +32,7 @@ private:
     void netscan(std::istringstream &iss, std::vector<std::string> &args);
     void portscan(std::istringstream &iss, std::vector<std::string> &args);
     void flood(std::istringstream &iss, std::vector<std::string> &args);
+    void smtpCommand(const std::vector<std::string>& args);
     void systemstatus(std::istringstream &iss, std::vector<std::string> &args);
 };
 
