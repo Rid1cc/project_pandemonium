@@ -80,6 +80,7 @@ RenderTexture2D space3d;
 // Data/Lore
 DataScreen currentDataScreen = TUTORIALS;
 MiniGameTutorial currentTutorial = BALL;
+RecoveredState currentRecovered = R1;
 
 //Main
 const int screenWidth = 1280;

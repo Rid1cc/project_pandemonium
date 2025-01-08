@@ -4,6 +4,7 @@
 // declarations
 void UpdateData();
 void UpdateTutorial();
+void UpdateRecovered();
 
 bool tutorials_highl;
 bool recovered_highl;
@@ -13,6 +14,11 @@ bool ballgame_highl;
 bool connectinggame_highl;
 bool findergame_highl;
 bool typegame_highl;
+
+// recovered buttons
+bool recovered1_highl;
+bool recovered2_highl;
+bool recovered3_highl;
 
 // functions
 
@@ -44,6 +50,7 @@ void UpdateData(){
         } break;
         case RECOVERED: {
             recovered_highl = true;
+            UpdateRecovered();
         } break;
         default: break;
     }
@@ -97,5 +104,50 @@ void UpdateTutorial() {
         } break;
         default: break;
     }
-
 }
+
+void UpdateRecovered() {
+    if(CheckCollisionPointRec(mousePos, button_recovered1)==true){
+        recovered1_highl = true;
+        if (isDifficultyCompleted(1)){
+            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+                currentRecovered = R1;
+                recovered1_highl = false;
+            }
+        }
+    } else recovered1_highl = false;
+
+    if(CheckCollisionPointRec(mousePos, button_recovered2)==true){
+        recovered2_highl = true;
+        if (isDifficultyCompleted(2)){
+            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+                currentRecovered = R2;
+                recovered2_highl = false;
+            }
+        }
+    } else recovered2_highl = false;
+
+    if(CheckCollisionPointRec(mousePos, button_recovered3)==true){
+        recovered3_highl = true;
+        if (isDifficultyCompleted(3)){
+            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+                currentRecovered = R3;
+                recovered3_highl = false;
+            }
+        }
+    } else recovered3_highl = false;
+
+    switch (currentRecovered) {
+        case R1: {
+            recovered1_highl = true;
+        } break;
+        case R2: {
+            recovered2_highl = true;
+        } break;
+        case R3: {
+            recovered3_highl = true;
+        } break;
+        default: break;
+    }
+}
+

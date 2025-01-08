@@ -13,7 +13,13 @@ extern bool connectinggame_highl;
 extern bool findergame_highl;
 extern bool typegame_highl;
 
+// recovered buttons
+extern bool recovered1_highl;
+extern bool recovered2_highl;
+extern bool recovered3_highl;
+
 void UpdateData();
 void UpdateTutorial();
+void UpdateRecovered();
 
 #endif

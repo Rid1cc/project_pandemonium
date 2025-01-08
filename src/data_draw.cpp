@@ -8,7 +8,7 @@ void DataButton(Rectangle rect, const char* text, Color color, int FontSize, boo
 void DrawTutorials();
 void DrawTutorialDescription(Rectangle rect, int FontSize, std::string text, Color color);
 void DrawRecovered();
-
+void DrawBlockedRecoveredButton(Rectangle rect, const char* text, int FontSize, bool isMouseOnButton, int xPos);
 
 // buttons
 float buttonWidth = 330.0f;
@@ -22,6 +22,11 @@ Rectangle button_BallGame = {100, float(screenHeight)-370, 270, 50};
 Rectangle button_ConnectingGame = {100, float(screenHeight)-290, 270, 50};
 Rectangle button_FinderGame = {100, float(screenHeight)-210, 270, 50};
 Rectangle button_TypeGame = {100, float(screenHeight)-130, 270, 50};
+
+// Recovered buttons
+Rectangle button_recovered1 = {100, float(screenHeight)-370, 270, 50};
+Rectangle button_recovered2 = {100, float(screenHeight)-290, 270, 50};
+Rectangle button_recovered3 = {100, float(screenHeight)-210, 270, 50};
 
 
 
@@ -73,8 +78,8 @@ void DrawTutorials(){
     Rectangle descriptionRect = {400, float(screenHeight) - 530, 780, 450};
     DrawRectangleRec(descriptionRect, BLACK);
     DrawRectangleLinesEx(descriptionRect, 3, primaryColor);
-    int DescriptionFontSize = 27;
 
+    int DescriptionFontSize = 27;
     switch (currentTutorial) {
         case BALL: {
             std::string BallGameDescription = 
@@ -159,8 +164,78 @@ void DrawTutorialDescription(Rectangle rect, int FontSize, std::string text, Col
     }
 }
 
-// void DrawRecovered(){
+void DrawRecovered(){
+    int RecoveredButtonsFontSize = 40;
+    DrawTextB("Secrets", 100, float(screenHeight)-530, RecoveredButtonsFontSize, primaryColor);
+    DrawTextB("unveiled!", 100, float(screenHeight)-485, RecoveredButtonsFontSize, primaryColor);
+    DrawTextB("Dive in!", 100, float(screenHeight)-440, RecoveredButtonsFontSize, primaryColor);
 
-// }
+    // description box
+    Rectangle descriptionRect = {400, float(screenHeight) - 530, 780, 450};
+    DrawRectangleRec(descriptionRect, BLACK);
+    DrawRectangleLinesEx(descriptionRect, 3, primaryColor);
+
+    //if (isDifficultyCompleted(1)) {
+        DataButton(button_recovered1, "RECOVERED 1", primaryColor, RecoveredButtonsFontSize, recovered1_highl, 100);
+    // } else {
+    //     DrawBlockedRecoveredButton(button_recovered1, "RECOVERED 1", RecoveredButtonsFontSize, recovered1_highl, 100);
+    //     if (recovered1_highl){
+    //         DrawTextB("Come back after", 100, float(screenHeight)-130, 25, DARKGRAY);
+    //         DrawTextB("beating EASY mode!", 100, float(screenHeight)-100, 25, DARKGRAY);
+    //     }
+    // }
+
+    if (isDifficultyCompleted(2)) {
+        DataButton(button_recovered2, "RECOVERED 2", primaryColor, RecoveredButtonsFontSize, recovered2_highl, 100);
+    } else {
+        DrawBlockedRecoveredButton(button_recovered2, "RECOVERED 2", RecoveredButtonsFontSize, recovered2_highl, 100);
+        if (recovered2_highl){
+            DrawTextB("Come back after", 100, float(screenHeight)-130, 25, DARKGRAY);
+            DrawTextB("beating NORMAL mode!", 100, float(screenHeight)-100, 25, DARKGRAY);
+        }
+    }
+
+    if (isDifficultyCompleted(3)) {
+        DataButton(button_recovered3, "RECOVERED 3", primaryColor, RecoveredButtonsFontSize, recovered3_highl, 100);
+    } else {
+        DrawBlockedRecoveredButton(button_recovered3, "RECOVERED 3", RecoveredButtonsFontSize, recovered3_highl, 100);
+        if (recovered3_highl){
+            DrawTextB("Come back after", 100, float(screenHeight)-130, 25, DARKGRAY);
+            DrawTextB("beating HARD mode!", 100, float(screenHeight)-100, 25, DARKGRAY);
+        }
+    }
+
+    int DescriptionFontSize = 27;
+    switch (currentRecovered) {
+        case R1: {
+            std::string description =
+            "RECOVERED 1:"
+            "\n"
+            "Story notes 1";
+            DrawTutorialDescription(descriptionRect, DescriptionFontSize, description, primaryColor);
+        } break;
+        case R2: {
+            std::string description =
+            "RECOVERED 2:"
+            "\n"
+            "Story notes 2";
+            DrawTutorialDescription(descriptionRect, DescriptionFontSize, description, primaryColor);
+        } break;
+        case R3: {
+            std::string description =
+            "RECOVERED 3:"
+            "\n"
+            "Story notes 3";
+            DrawTutorialDescription(descriptionRect, DescriptionFontSize, description, primaryColor);
+        } break;
+        default: break;
+    }
+}
+
+void DrawBlockedRecoveredButton(Rectangle rect, const char* text, int FontSize, bool isMouseOnButton, int xPos){
+    DrawRectangleRec(rect, BLACK);
+    DrawRectangleLinesEx(rect, 5, DARKGRAY);
+    DrawTextB(text, xPos + 10, rect.y + (rect.height - FontSize)/2, FontSize, DARKGRAY);
+}
 
 
