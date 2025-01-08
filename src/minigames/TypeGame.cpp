@@ -84,7 +84,8 @@ void TypeGame::UpdateCorrectness(){
         if (typedText[i] == '\0'){
             continue;
         }
-        else if (typedText[i] == randomText[i] || (randomText[i] == '\n' && typedText[i] == ' ')){
+        else if (typedText[i] == randomText[i] || 
+                (randomText[i] == '\n' && (typedText[i] == ' ' || typedText[i] == '\r' || typedText[i] == '\n'))){
             correctness[i] = true;
         } else {
             correctness[i] = false;

@@ -38,6 +38,10 @@ void TitleUpdate() {
     //lore
     if(CheckCollisionPointRec(mousePos, button_lore)==true){
         data_highl = true;
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+            currentScreen = DATA_LORE;
+            data_highl = false;
+            }
     } else data_highl = false;
 
     //quit

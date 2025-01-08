@@ -15,6 +15,8 @@
 #include "minigames/BallGame.h"
 #include "headers/shader_handler.h"
 #include "logoscreen/logo_screen.h"
+#include "headers/data_draw.h"
+#include "headers/data_update.h"
 
 
 int main(void) {
@@ -66,8 +68,8 @@ int main(void) {
     auto type = std::make_shared<TypeGame>(150, 120, 1000, 400, "TypeGame");
     gameManager.AddGame(type);
     // //auto finder = std::make_shared<FinderGame>(200, 150, 400, 300, "FinderGame");
-     auto bouncingballGame = std::make_shared<BallGame>(300,200,600,500, "Ball Game");
-     gameManager.AddGame(bouncingballGame);
+    // auto bouncingballGame = std::make_shared<BallGame>(300,200,600,500, "Ball Game");
+    // gameManager.AddGame(bouncingballGame);
     // // Add games to the game manager
     // //gameManager.AddGame(finder);
     // gameManager.SetTotalTime(900.0f);
@@ -107,6 +109,9 @@ int main(void) {
             case SETTINGS: {
                 SettingsUpdate(general_volume, effects_volume, mute_audio);
             } break;
+            case DATA_LORE: {
+                UpdateData();
+            } break;
             case DIFFICULTY_SELECTION: {
                 UpdateDifficultySelection();
             } break;
@@ -131,6 +136,9 @@ int main(void) {
             } break;
             case SETTINGS: {
                 DrawSettings(general_volume, effects_volume);
+            } break;
+            case DATA_LORE: {
+                DrawData();
             } break;
             case DIFFICULTY_SELECTION: {
                 DrawDifficultySelection();

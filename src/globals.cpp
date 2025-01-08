@@ -48,7 +48,7 @@ extern float brightness;
 extern Vector2 sh_resolution;
 
 // Gameplay
-GameScreen currentScreen = GAMEPLAY;
+GameScreen currentScreen = TITLE;
 Texture2D botnetTexture;
 Texture2D ddosTexture;
 Texture2D mailbombTexture;
@@ -76,6 +76,10 @@ Rectangle button_play ={100, float(screenHeight)-370, 200, 50};
 Rectangle desc_window ={350, float(screenHeight)-370, 500, 290};
 Rectangle anim_window_title ={880, float(screenHeight)-370, 300, 290};
 RenderTexture2D space3d;
+
+// Data/Lore
+DataScreen currentDataScreen = TUTORIALS;
+MiniGameTutorial currentTutorial = BALL;
 
 //Main
 const int screenWidth = 1280;
