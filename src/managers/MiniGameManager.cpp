@@ -7,12 +7,14 @@
 #include "../gameplay/gameplay_vars.h"
 #include "GameplayManager.h"
 #include "EventManager.h"
+#include <random>
 
 // Constructor initializes timer and state variables
 MiniGameManager::MiniGameManager()
     : startGameSequences(false),
+      gameDurationScale(1),
       arePlayersAlive(true),
-      miniGamesDurationTime(15.0f),
+      //miniGamesDurationTime(15.0f),
       showEndMessage(false),
       messageTimer(0.0f),
       endMessage(""),
@@ -41,7 +43,7 @@ void MiniGameManager::Update() {
 
         // Check if the close button is clicked or the game is complete
         if ((CheckCollisionPointRec(mousePos, {game->window.x + game->window.width - 20, game->window.y, 20, 20}) &&
-             IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && CanBeInteracted(game, mousePos)) || game->gameComplete) {
+             IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && CanBeInteracted(game, mousePos)) || game->gameComplete || game->gameLost) {
             Close(game); // Close the game window
         }
     }
@@ -197,7 +199,8 @@ void MiniGameManager::StopDragging(std::shared_ptr<MiniGame>& game) {
 // }
 
 // Adds a new mini-game to the manager and starts the timer if not active
-void MiniGameManager::AddGame(const std::shared_ptr<MiniGame>& game) {
+void MiniGameManager::AddGame(const std::shared_ptr<MiniGame>& game, float duration) {
+    game->SetMiniGameTimer(duration);
     games.push_back(game);
     // if (!timerActive) {
     //     StartTimer(totalTime); 
@@ -325,27 +328,37 @@ void MiniGameManager::RunGameSequence() {
             isIntervalTimerOn = true;
             }
         if (IntervalTimer <= 0.0f) {
-            auto randomGame = GetRandomGame();
-            randomGame();
+            for (int i = 0; i < gameDurationScale; i++){
+                auto randomGame = GetRandomGame();
+                randomGame();
+            }
             isIntervalTimerOn = false;
         }
     }
 }
 
+int MiniGameManager::GetRandomIntInRange(int begin, int end) {
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    std::uniform_int_distribution<int> dis(begin, end);
+
+    return dis(gen);
+}
+
+
 std::function<void()> MiniGameManager::GetRandomGame() {
-    srand(time(0));
-    gameType = (rand() % 4) + 1;
+    int gameType = GetRandomIntInRange(1, 4);
 
     switch (gameType)
     {
     case 1:
-        return [this]() { this->StartBallGame(); };
+        return [this]() { this->StartBallGame(gameDurationScale); };
     case 2:
-        return [this]() { this->StartConnectingGame(); };
+        return [this]() { this->StartConnectingGame(gameDurationScale); };
     case 3:
-        return [this]() { this->StartFinderGame(); };
+        return [this]() { this->StartFinderGame(gameDurationScale); };
     case 4:
-        return [this]() { this->StartTypingGame(); };
+        return [this]() { this->StartTypingGame(gameDurationScale); };
     default:
         return []() { /* pusta funkcja */ };
     }
@@ -366,34 +379,47 @@ void MiniGameManager::ManageGameSequences(const int& difficulty) {
     case 3:
         IntervalTimerSetTime = 5.0f;
         IntervalTimer = IntervalTimerSetTime;
+        gameDurationScale = 2;
         break;
     default:
         break;
     }
-    auto randomGame = GetRandomGame();
-    randomGame();
+    for (int i = 0; i < gameDurationScale; i++){
+        auto randomGame = GetRandomGame();
+        randomGame();
+    }
     startGameSequences = true;
 }
 
-void MiniGameManager::StartConnectingGame() {
-    auto connectWires = std::make_shared<ConnectWiresGame>(screen.x + (screenWidth/2) - 200, screen.y + (screenHeight/2) - 150, 400, 300, "RJ45 CONNECTOR");
-    miniGamesManager.AddGame(connectWires);
+void MiniGameManager::StartConnectingGame(int& durationScale) {
+    auto connectWires = std::make_shared<ConnectWiresGame>(GetRandomIntInRange(screen.x, screen.width - 400), 
+                                                           GetRandomIntInRange(screen.y, screen.height -  300), 
+                                                           GetRandomIntInRange(300, 400), 
+                                                           GetRandomIntInRange(200, 300), "RJ45 CONNECTOR");
+    miniGamesManager.AddGame(connectWires, durationScale * 15.0f);
 
 }
 
-void MiniGameManager::StartTypingGame() {
-    auto type = std::make_shared<TypeGame>(150, 120, 1000, 400, "TypeGame");
-    miniGamesManager.AddGame(type);
+void MiniGameManager::StartTypingGame(int& durationScale) {
+    auto type = std::make_shared<TypeGame>(GetRandomIntInRange(screen.x, screen.width - 1000), 
+                                           GetRandomIntInRange(screen.y, screen.height - 400), 
+                                           1000, 400, "TypeGame");
+    miniGamesManager.AddGame(type, durationScale * 40.0f);
 }
 
-void MiniGameManager::StartFinderGame() {
-    auto finder = std::make_shared<FinderGame>(200, 150, 400, 300, "FinderGame");
-    miniGamesManager.AddGame(finder);
+void MiniGameManager::StartFinderGame(int& durationScale) {
+    auto finder = std::make_shared<FinderGame>(GetRandomIntInRange(screen.x, screen.width - 400), 
+                                               GetRandomIntInRange(screen.y, screen.height -  300),
+                                               400, 300, "FinderGame");
+    miniGamesManager.AddGame(finder, durationScale * 30.0f);
 }
 
-void MiniGameManager::StartBallGame() {
-    auto bouncingballGame = std::make_shared<BallGame>(300,200,600,500, "Ball Game");
-    miniGamesManager.AddGame(bouncingballGame);    
+void MiniGameManager::StartBallGame(int& durationScale) {
+    auto bouncingballGame = std::make_shared<BallGame>(GetRandomIntInRange(screen.x, screen.width - 650),
+                                                       GetRandomIntInRange(screen.y, screen.height - 550),
+                                                       GetRandomIntInRange(300, 500), 
+                                                       GetRandomIntInRange(250, 400), "Ball Game");
+    miniGamesManager.AddGame(bouncingballGame, durationScale * 120.0f);    
 }
 
 bool MiniGameManager::IsLevelCompleted() {

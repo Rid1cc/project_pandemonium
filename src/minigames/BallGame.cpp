@@ -10,6 +10,7 @@ BallGame::BallGame(float x, float y, float width, float height, const std::strin
       window_height(height),
       score(0), // Inicjalizacja punktów
       gameOver(false), // Inicjalizacja stanu gry
+      //gameComplete(false), // Inicjalizacja flagi zakończenia gry
       maxScore(3),
       maxAttempts(20)
 {
@@ -144,9 +145,12 @@ void BallGame::CheckScore(){
         score += 1;
         attempts -= 1; // Odejmowanie próby po osiągnięciu mety
         if(score >= maxScore){
-            gameOver = true; // Ustawienie flagi zakończenia gry jako sukces
+            gameOver = true; // Zakończenie gry
+            if(attempts > 0){
+                gameComplete = true; // Ustawienie flagi zakończenia gry jako kompletnej
+            }
         } else if(attempts <= 0){
-            gameOver = true; // Zakończenie gry, jeśli brak prób
+            gameLost = true;
         } else {
             BallReset(); // Reset pozycji piłki po zdobyciu punktu
             IncreaseDifficulty(); // Zwiększenie trudności po zdobyciu punktu
@@ -167,6 +171,7 @@ void BallGame::ResetGame(){
     score = 0;
     attempts = maxAttempts;
     gameOver = false;
+    gameComplete = false; // Resetowanie flagi zakończenia gry
     BallReset();
     // Resetowanie prędkości prostokątów do początkowych wartości
     rectangles.clear();
@@ -264,5 +269,17 @@ void BallGame::Draw(){
     // Jeśli osiągnięto maksymalną punktację lub wyczerpano próby, zakończ grę
     if(gameOver){
         GameOver();
+    }
+
+    // Opcjonalne: Wyświetlenie komunikatu, jeśli gra została ukończona
+    if(gameComplete){
+        float centerX = window.x + window_width / 2;
+        float centerY = window.y + window_height / 2;
+        string completeText = "Game Completed Successfully!";
+        DrawText(completeText.c_str(),
+                 centerX - MeasureText(completeText.c_str(), 30) / 2,
+                 centerY,
+                 30,
+                 GREEN);
     }
 }

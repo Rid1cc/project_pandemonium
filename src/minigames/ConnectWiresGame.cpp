@@ -31,6 +31,7 @@ ConnectWiresGame::ConnectWiresGame(float x, float y, float width, float height, 
 void ConnectWiresGame::Update() {
     MiniGame::Update(); // Handle dragging
     UpdatePoints();
+
 }
 
 void ConnectWiresGame::Draw() {
@@ -64,7 +65,7 @@ void ConnectWiresGame::UpdatePoints() {
     for (int i = pointsNum - 1; i >= 0; i--) { // for all points
         
         // check if point should be able to move
-        if ((CheckCollisionPointCircle(mousePos, points[i], 10.0f)) && 
+        if ((CheckCollisionPointCircle(mousePos, points[i], window.height * 0.034f)) && 
             (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) && 
             !IsAnyMovable()) {
             isPointMovable[i] = true;
@@ -89,7 +90,7 @@ void ConnectWiresGame::UpdatePoints() {
             points[i].y = std::clamp(points[i].y, endArea.rect.y, endArea.rect.y + endArea.rect.height);
         }
         
-        if (CheckCollisionCircleRec(points[i], 10.0f, targetAreas[i].rect)){
+        if (CheckCollisionCircleRec(points[i], window.height * 0.034f, targetAreas[i].rect)){
             if(!isAtTargetArea[i]) {
                 isAtTargetArea[i] = true;
                 inTargetAreaCounter++;
@@ -105,8 +106,8 @@ void ConnectWiresGame::UpdatePoints() {
         }
         
         if (inTargetAreaCounter >= 14 && 
-            CheckCollisionCircleRec(points[7], 10.0f, targetAreas[11].rect) && 
-            CheckCollisionCircleRec(points[11], 10.0f, targetAreas[7].rect)) {
+            CheckCollisionCircleRec(points[7], window.height * 0.034f, targetAreas[11].rect) && 
+            CheckCollisionCircleRec(points[11], window.height * 0.034f, targetAreas[7].rect)) {
             if(!gameComplete) {
                 //if(debugMode != LOW)TraceLog(LOG_INFO, "MiniGame Complete!");
                 gameComplete = true;
@@ -126,9 +127,9 @@ void ConnectWiresGame::DrawWires() {
             // Prevent out-of-bounds access
             continue;
         }
-        DrawLineBezier(points[2*i], points[(2*i)+1], 4.0f, (i%2==0) ? colors[i/2] : colors[(i-1)/2]);
-        DrawCircleV(points[i*2], CheckCollisionPointCircle(mousePosition, points[i*2], 10.0f) ? 14.0f : 8.0f, (i%2==0) ? WHITE : colors[i/2]);
-        DrawCircleV(points[(i*2)+1], CheckCollisionPointCircle(mousePosition, points[(i*2)+1], 10.0f) ? 14.0f : 8.0f, (i%2==0) ? WHITE : colors[i/2]);
+        DrawLineBezier(points[2*i], points[(2*i)+1], window.height * 0.015f, (i%2==0) ? colors[i/2] : colors[(i-1)/2]);
+        DrawCircleV(points[i*2], CheckCollisionPointCircle(mousePosition, points[i*2], window.height * 0.034f) ? window.height * 0.0467f : window.height * 0.0267f, (i%2==0) ? WHITE : colors[i/2]);
+        DrawCircleV(points[(i*2)+1], CheckCollisionPointCircle(mousePosition, points[(i*2)+1], window.height * 0.034f) ? window.height * 0.0467f : window.height * 0.0267f, (i%2==0) ? WHITE : colors[i/2]);
     }
     for (size_t i = 0; i < targetAreas.size(); ++i) {
         // Ensure each area is valid before drawing

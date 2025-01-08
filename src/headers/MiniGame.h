@@ -19,6 +19,7 @@ public:
     bool isOpen;           // Is the game window open?
     // bool isFirst;         // Is Game Window Active?
     bool gameComplete;     // Is Game Complete?
+    bool gameLost;
     float dotTimer;        // Timer flag for flashing dot (better not use)
 
     float totalTimer;

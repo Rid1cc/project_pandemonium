@@ -25,11 +25,6 @@ private:
     std::shared_ptr<MiniGame> activeGame;         // Currently active game
     bool isMouseOnMiniGameWindow;
 
-    // Timer variables
-    //float totalTime;       // Total time allotted in seconds
-    //float elapsedTime;     // Time elapsed since the timer started
-    //bool timerActive;      // Flag to indicate if the timer is running
-
     // End message variables
     bool showEndMessage;          // Flag to indicate if the end message should be shown
     float messageTimer;           // Timer to track how long the message has been displayed
@@ -37,21 +32,16 @@ private:
     bool win;                      // Flag to indicate if the level was completed successfully
     bool arePlayersAlive;
 
-    // Timer methods
-    //void StartTimer(float duration); // Initializes and starts the global timer
-    //void ResetTimer();               // Resets the global timer
-    //void UpdateTimer();              // Updates the timer each frame
-    // bool IsTimeUp() const;           // Checks if the timer has expired
-    //void AddTime(float timeAmount);
-
     int gameType;
-    float miniGamesDurationTime;
+    //float miniGamesDurationTime;
+    int gameDurationScale;
 
     bool startGameSequences;
     bool isIntervalTimerOn;
     float IntervalTimerSetTime;
     float IntervalTimer;
-    
+
+
 
     // Message display methods
     void SetEndMessage(bool isWin);  // Sets the end message based on win/loss
@@ -78,7 +68,7 @@ public:
     ~MiniGameManager() = default;
 
     // Game management methods
-    void AddGame(const std::shared_ptr<MiniGame>& game); // Adds a new mini-game to the manager
+    void AddGame(const std::shared_ptr<MiniGame>& game, float duration); // Adds a new mini-game to the manager
 
     // Core loop methods
     void Update(); // Updates all managed games and timers
@@ -92,12 +82,13 @@ public:
     bool hasActiveTypeGame() const; // Ensure this line exists
 
     void ManageGameSequences(const int& difficulty);
+    int GetRandomIntInRange(int begin, int end);
     void RunGameSequence();
     std::function<void()> GetRandomGame();
-    void StartConnectingGame();
-    void StartTypingGame();
-    void StartFinderGame();
-    void StartBallGame();
+    void StartConnectingGame(int& durationScale);
+    void StartTypingGame(int& durationScale);
+    void StartFinderGame(int& durationScale);
+    void StartBallGame(int& durationScale);
 
     bool isSafeMarginTimerOn;
 
