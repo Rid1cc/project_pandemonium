@@ -45,7 +45,12 @@ private:
     //void AddTime(float timeAmount);
 
     int gameType;
-    float miniGamesIntervalTime;
+    float miniGamesDurationTime;
+
+    bool startGameSequences;
+    bool isIntervalTimerOn;
+    float IntervalTimerSetTime;
+    float IntervalTimer;
     
 
     // Message display methods
@@ -87,13 +92,15 @@ public:
     bool hasActiveTypeGame() const; // Ensure this line exists
 
     void ManageGameSequences(const int& difficulty);
-    void RunGameSequence(const int& difficulty);
+    void RunGameSequence();
+    std::function<void()> GetRandomGame();
     void StartConnectingGame();
     void StartTypingGame();
     void StartFinderGame();
     void StartBallGame();
 
     bool isSafeMarginTimerOn;
+
 
 };
 
