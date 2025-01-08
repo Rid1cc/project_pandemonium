@@ -10,11 +10,9 @@
 
 // Constructor initializes timer and state variables
 MiniGameManager::MiniGameManager()
-    : //totalTime(60.0f),      
-      // elapsedTime(0.0f),
-      // timerActive(false),
+    : startGameSequences(false),
       arePlayersAlive(true),
-      miniGamesIntervalTime(15.0f),
+      miniGamesDurationTime(15.0f),
       showEndMessage(false),
       messageTimer(0.0f),
       endMessage(""),
@@ -25,6 +23,8 @@ MiniGameManager::MiniGameManager()
 void MiniGameManager::Update() {
     //UpdateTimer(); // Update the global timer
     IsLevelCompleted();
+    if (startGameSequences) RunGameSequence();    
+
     // Iterate through games in reverse order for proper layering
     for (auto it = games.rbegin(); it != games.rend(); ++it) {
         auto& game = *it;
@@ -312,35 +312,68 @@ bool MiniGameManager::hasActiveTypeGame() const {
     return false;
 }
 
-void MiniGameManager::RunGameSequence(const int& difficulty) {
+
+void MiniGameManager::RunGameSequence() {
+    // zaktualizuj timer jeśli jest aktywny
+    if (isIntervalTimerOn && IntervalTimer > 0.0f) {
+        IntervalTimer -= GetFrameTime();
+    }
+    // sprawdź czy wektor gier jest pusty
+    if (allGamesClosed()) {
+        if (isIntervalTimerOn == false) {
+            IntervalTimer = IntervalTimerSetTime;
+            isIntervalTimerOn = true;
+            }
+        if (IntervalTimer <= 0.0f) {
+            auto randomGame = GetRandomGame();
+            randomGame();
+            isIntervalTimerOn = false;
+        }
+    }
+}
+
+std::function<void()> MiniGameManager::GetRandomGame() {
     srand(time(0));
     gameType = (rand() % 4) + 1;
 
     switch (gameType)
     {
-    case (int)GameType::BALLGAME:
-        StartBallGame();
-        break;
-    case (int)GameType::WIREGAME:
-        StartConnectingGame();
-        break;
-    case (int)GameType::TYPINGGAME:
-        StartTypingGame();
-        break;
-    case (int)GameType::FINDERGAME:
-        StartFinderGame();
-        break;
+    case 1:
+        return [this]() { this->StartBallGame(); };
+    case 2:
+        return [this]() { this->StartConnectingGame(); };
+    case 3:
+        return [this]() { this->StartFinderGame(); };
+    case 4:
+        return [this]() { this->StartTypingGame(); };
     default:
-        break;
+        return []() { /* pusta funkcja */ };
     }
-
 }
 
 void MiniGameManager::ManageGameSequences(const int& difficulty) {
 
-    
+    switch (difficulty)
+    {
+    case 1:
+        IntervalTimerSetTime = 15.0f;
+        IntervalTimer = IntervalTimerSetTime;
+        break;
+    case 2:
+        IntervalTimerSetTime = 10.0f;
+        IntervalTimer = IntervalTimerSetTime;
+        break;
+    case 3:
+        IntervalTimerSetTime = 5.0f;
+        IntervalTimer = IntervalTimerSetTime;
+        break;
+    default:
+        break;
+    }
+    auto randomGame = GetRandomGame();
+    randomGame();
+    startGameSequences = true;
 }
-
 
 void MiniGameManager::StartConnectingGame() {
     auto connectWires = std::make_shared<ConnectWiresGame>(screen.x + (screenWidth/2) - 200, screen.y + (screenHeight/2) - 150, 400, 300, "RJ45 CONNECTOR");

@@ -209,7 +209,7 @@ void UpdateDifficultySelection(){
         switch (SelectedDifficulty)
         {
         case 1:
-            gameplayManager.safeMarginTimer.setCountdown(60);
+            gameplayManager.safeMarginTimer.setCountdown(5);
             printf("safeMarginTimer set to 60 seconds\n");
             break;
         case 2:

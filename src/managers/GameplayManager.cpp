@@ -149,7 +149,7 @@ void GameplayManager::onSafeMarginTimerEnd() {
     printf("uruchomiono sekwencje minigier!\n");
     gameplayEvent.unsubscribe("startMiniGames", [this]() {this->onSafeMarginTimerEnd(); });
     printf("unsub dla \"startMiniGames\"\n");
-   //miniGamesManager.StartGameSequences(SelectedDifficulty);
+    miniGamesManager.ManageGameSequences(SelectedDifficulty);
 }
 
 void GameplayManager::gameplayEnd() {
