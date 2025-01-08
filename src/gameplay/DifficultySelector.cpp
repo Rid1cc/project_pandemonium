@@ -204,6 +204,9 @@ void DrawDescription(Rectangle rect, int FontSize, std::string text, Color color
 
 
 void UpdateDifficultySelection(){
+    // escape handle
+    if (IsKeyPressed(KEY_ESCAPE)) currentScreen = TITLE;
+
     if (SelectedDifficulty == 1 || SelectedDifficulty == 2 || SelectedDifficulty == 3){
         std::cout << "SelectedDifficulty: " << SelectedDifficulty << std::endl;
         switch (SelectedDifficulty)
