@@ -32,15 +32,22 @@
     #include <unistd.h>
 #endif
 
-typedef enum GameScreen { LOGO = 0, TITLE, SETTINGS, DIFFICULTY_SELECTION, GAMEPLAY, ENDING } GameScreen;
+typedef enum GameScreen { LOGO = 0, TITLE, SETTINGS, DATA_LORE, DIFFICULTY_SELECTION, GAMEPLAY, ENDING } GameScreen;
 typedef enum SettingsScreen { GRAPHICS = 0, AUDIO, DISPLAY, CUSTOM } SettingsScreen;
 typedef enum SettingState { LOW = 0, MID, HI} SettingState;
+typedef enum DataScreen { TUTORIALS, RECOVERED } DataScreen;
+typedef enum MiniGameTutorial {BALL, CONNECTING, FINDER, TYPE} MiniGameTutorial;
+typedef enum RecoveredState {R1, R2, R3} RecoveredState;
 
 // Deklaracja zmiennych globalnych
 extern GameScreen currentScreen;
 extern SettingState debugMode;
 extern SettingsScreen currentSettings;
 extern MiniGameManager miniGamesManager;
+extern DataScreen currentDataScreen;
+extern MiniGameTutorial currentTutorial;
+extern RecoveredState currentRecovered;
+extern MiniGameManager gameManager;
 extern Texture2D botnetTexture;
 extern Texture2D ddosTexture;
 extern Texture2D mailbombTexture;

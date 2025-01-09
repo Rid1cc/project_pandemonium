@@ -77,6 +77,11 @@ Rectangle desc_window ={350, float(screenHeight)-370, 500, 290};
 Rectangle anim_window_title ={880, float(screenHeight)-370, 300, 290};
 RenderTexture2D space3d;
 
+// Data/Lore
+DataScreen currentDataScreen = TUTORIALS;
+MiniGameTutorial currentTutorial = BALL;
+RecoveredState currentRecovered = R1;
+
 //Main
 const int screenWidth = 1280;
 const int screenHeight = 720;

@@ -16,6 +16,8 @@
 #include "headers/shader_handler.h"
 #include "logoscreen/logo_screen.h"
 #include "headers/settings_vars.h"
+#include "headers/data_draw.h"
+#include "headers/data_update.h"
 
 
 int main(void) {
@@ -108,7 +110,6 @@ int main(void) {
             } break;
             case SETTINGS: {
                 SettingsUpdate(general_volume, effects_volume, mute_audio);
-                UpdateMusicStream(main_theme);
             } break;
             case DIFFICULTY_SELECTION: {
                 UpdateDifficultySelection();
@@ -132,6 +133,9 @@ int main(void) {
             } break;
             case SETTINGS: {
                 DrawSettings(general_volume, effects_volume);
+            } break;
+            case DATA_LORE: {
+                DrawData();
             } break;
             case DIFFICULTY_SELECTION: {
                 DrawDifficultySelection();

@@ -25,6 +25,7 @@ private:
     float cursorBlinkTime = 0.5f;
     float timeSinceLastCursorBlink = 0.0f;
     bool isTyping;
+    int randomTextLength;
     
     void UpdateCorrectness();
     void UpdateCurrentNumber(); // update cuurent text[] number
