@@ -114,6 +114,9 @@ int main(void) {
             case DIFFICULTY_SELECTION: {
                 UpdateDifficultySelection();
             } break;
+            case DATA_LORE: {
+                UpdateData();
+            } break;
             case GAMEPLAY: {
                 UpdateGameplay(currentScreen, textBox, command, letterCount, mouseOnText, framesCounter, backTimer, history, upTimes);
                 UpdateMusicStream(game_theme);
