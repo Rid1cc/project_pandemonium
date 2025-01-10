@@ -4,8 +4,7 @@
 #include "../headers/globals.h"
 
 bool isCounting;
-bool isSafeMarginTimerOn;
-bool isMiniGameSequenceStarted = false;
+//bool isSafeMarginTimerOn;
 bool isEnemyIpKnown = false;
 bool startMiniGamesSequence = false;
 bool payloadState = 0;

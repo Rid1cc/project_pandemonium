@@ -20,7 +20,7 @@ MiniGameManager::MiniGameManager()
       endMessage(""),
       win(false),
       gameType(0),
-      isSafeMarginTimerOn(false),
+      //isSafeMarginTimerOn(false),
       isConnectingGameOn(false),
       isTypeGameOn(false),
       isBallGameOn(false),
@@ -68,13 +68,11 @@ void MiniGameManager::Update() {
     //     }
     // }
 
-    isSafeMarginTimerOn = gameplayManager.safeMarginTimer.isCounting();
-    gameplayManager.safeMarginTimer.updateCountdown();
-    if(!isSafeMarginTimerOn && !isMiniGameSequenceStarted) {
-        isMiniGameSequenceStarted = true;
-        printf("test\n");
-        gameplayManager.gameplayEvent.triggerEvent("startMiniGames");
-    }
+    // if(!gameplayManager.isSafeMarginTimerOn && !isMiniGameSequenceStarted) {
+    //     isMiniGameSequenceStarted = true;
+    //     printf("test\n");
+    //     gameplayManager.gameplayEvent.triggerEvent("startMiniGames");
+    // }
 
 
 }
@@ -356,7 +354,8 @@ void MiniGameManager::RunGameSequence() {
             isIntervalTimerOn = true;
             }
         if (IntervalTimer <= 0.0f) {
-            for (int i = 0; i < gameDurationScale; i++){
+            int dif = SelectedDifficulty;
+            for (int i = 0; i < dif; i++){
                 auto randomGame = GetRandomGame();
                 randomGame();
             }

@@ -83,7 +83,6 @@ public:
     bool CheckMouseState() const;
     bool hasActiveTypeGame() const; // Ensure this line exists
 
-    bool isSafeMarginTimerOn;
     void ManageGameSequences(const int& difficulty);
     int GetRandomIntInRange(int begin, int end);
     void RunGameSequence();

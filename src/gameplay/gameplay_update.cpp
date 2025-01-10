@@ -45,6 +45,11 @@ void UpdateGameplay(GameScreen& currentScreen, Rectangle& textBox, char* command
     // Update gameplayManager timer
     gameplayManager.timer.updateCountdown();
 
+    // Update gameplayManager safeMarginTimer;
+    gameplayManager.updateSafeMarginTimer();
+    //printf("isSafeMarginTimeron: %i\n", gameplayManager.isSafeMarginTimerOn);
+    printf("isMiniGamesSequenceStarted: %i\n", gameplayManager.isMiniGameSequenceStarted);
+
     // Handle text input
     CaptureTextInput(command, letterCount);
 

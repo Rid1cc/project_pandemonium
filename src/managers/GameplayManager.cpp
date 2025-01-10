@@ -59,6 +59,7 @@ void GameplayManager::gameplayInit() {
     exitWindowRequested = false;
     exitWindow = false;
     payloadState = 0;
+    bool isMiniGameSequenceStarted = false;
 
     // Open Port Randomizing with uniqueness check
     std::unordered_set<int> usedPorts;
@@ -143,6 +144,15 @@ void GameplayManager::gameplayInit() {
 
 }
 
+void GameplayManager::updateSafeMarginTimer() {
+    isSafeMarginTimerOn = safeMarginTimer.isCounting();
+    safeMarginTimer.updateCountdown();
+    if (!isSafeMarginTimerOn && !isMiniGameSequenceStarted) {
+        isMiniGameSequenceStarted = true;
+        gameplayEvent.triggerEvent("startMiniGames");
+    }
+}
+
 void GameplayManager::onSafeMarginTimerEnd() {
     printf("uruchomiono sekwencje minigier!\n");
     gameplayEvent.unsubscribe("startMiniGames", [this]() {this->onSafeMarginTimerEnd(); });
@@ -153,6 +163,7 @@ void GameplayManager::onSafeMarginTimerEnd() {
 void GameplayManager::gameplayEnd() {
     // Cleanup code
     cmdInterpreter.reset();
+    isMiniGameSequenceStarted = false;
     // Unsubscribe from events if necessary
     gameplayEvent.unsubscribe("startGame", [this]() { this->onStartCommand(); });
     gameplayEvent.unsubscribe("stopGame", [this]() { this->onStopCommand(); });

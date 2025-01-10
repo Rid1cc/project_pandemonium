@@ -27,6 +27,7 @@ public:
 
     void gameplayInit(); // Gameplay Initializer
     void gameplayEnd();  // Gameplay Uninitializer
+    void updateSafeMarginTimer();
     
 
     EventManager gameplayEvent; // EventManager instance
@@ -34,6 +35,8 @@ public:
     TimeManager safeMarginTimer;
     Player enemy;              // Player instance
     Player player;
+    bool isSafeMarginTimerOn;
+    bool isMiniGameSequenceStarted;
 
     bool exitWindowRequested;
     bool exitWindow;
