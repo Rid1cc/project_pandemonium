@@ -38,6 +38,9 @@ void DifficultyCompleted(int difficulty){
     // Use FileSystemManager to handle difficulty completion
     FileSystemManager fsm;
     fsm.difficultyCompleted(difficulty);
+    if (difficulty == 3) {
+        fsm.difficulty3Completed = true; // Set the flag when difficulty 3 is completed
+    }
 }
 
 bool isDifficultyCompleted(int difficulty){

@@ -1,5 +1,7 @@
 #include "headers/data_draw.h"
 #include "headers/data_update.h"
+#include "headers/settings_update.h"
+#include "managers/FileSystemManager.h"
 
 
 // declarations
@@ -165,6 +167,7 @@ void DrawTutorialDescription(Rectangle rect, int FontSize, std::string text, Col
 }
 
 void DrawRecovered(){
+
     int RecoveredButtonsFontSize = 40;
     DrawTextB("Scrapped logs,", 100, float(screenHeight)-530, RecoveredButtonsFontSize, primaryColor);
     DrawTextB("recovered", 100, float(screenHeight)-485, RecoveredButtonsFontSize, primaryColor);
@@ -175,17 +178,17 @@ void DrawRecovered(){
     DrawRectangleRec(descriptionRect, BLACK);
     DrawRectangleLinesEx(descriptionRect, 3, primaryColor);
 
-    //if (isDifficultyCompleted(1)) {
+    if (fsm.isDifficultyCompleted(2)) {
         DataButton(button_recovered1, "RECOVERED 1", primaryColor, RecoveredButtonsFontSize, recovered1_highl, 100);
-    // } else {
-    //     DrawBlockedRecoveredButton(button_recovered1, "RECOVERED 1", RecoveredButtonsFontSize, recovered1_highl, 100);
-    //     if (recovered1_highl){
-    //         DrawTextB("Come back after", 100, float(screenHeight)-130, 25, DARKGRAY);
-    //         DrawTextB("beating EASY mode!", 100, float(screenHeight)-100, 25, DARKGRAY);
-    //     }
-    // }
+    } else {
+        DrawBlockedRecoveredButton(button_recovered1, "RECOVERED 1", RecoveredButtonsFontSize, recovered1_highl, 100);
+        if (recovered1_highl){
+            DrawTextB("Come back after", 100, float(screenHeight)-130, 25, DARKGRAY);
+            DrawTextB("beating EASY mode!", 100, float(screenHeight)-100, 25, DARKGRAY);
+        }
+    }
 
-    if (isDifficultyCompleted(2)) {
+    if (fsm.isDifficultyCompleted(3)) {
         DataButton(button_recovered2, "RECOVERED 2", primaryColor, RecoveredButtonsFontSize, recovered2_highl, 100);
     } else {
         DrawBlockedRecoveredButton(button_recovered2, "RECOVERED 2", RecoveredButtonsFontSize, recovered2_highl, 100);
@@ -195,7 +198,7 @@ void DrawRecovered(){
         }
     }
 
-    if (isDifficultyCompleted(3)) {
+    if (fsm.difficulty3Completed) {
         DataButton(button_recovered3, "RECOVERED 3", primaryColor, RecoveredButtonsFontSize, recovered3_highl, 100);
     } else {
         DrawBlockedRecoveredButton(button_recovered3, "RECOVERED 3", RecoveredButtonsFontSize, recovered3_highl, 100);
@@ -207,6 +210,7 @@ void DrawRecovered(){
 
     int DescriptionFontSize = 27;
     switch (currentRecovered) {
+        case R0: break;
         case R1: {
             std::string description =
             "log:exorcist_001 04:09:10 01.02.1984\n"
