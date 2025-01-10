@@ -13,7 +13,7 @@ if(WIN32)
     set(CMAKE_GENERATOR "MinGW Makefiles" CACHE STRING "Default generator for Windows" FORCE)
     set(RAYLIB_URL "https://github.com/raysan5/raylib/releases/download/5.5/raylib-5.5_win64_mingw-w64.zip")
     set(RAYLIB_ARCHIVE "${CMAKE_BINARY_DIR}/raylib-5.5_win64_mingw-w64.zip")
-    set(RAYLIB_DIR "${CMAKE_BINARY_DIR}/raylib/raylib-5.5_win64_mingw-w64/raylib-5.5_win64_mingw-w64")
+    set(RAYLIB_DIR "${CMAKE_BINARY_DIR}/raylib/raylib-5.5_win64_mingw-w64/raylib-5.5_win64_mingw-w64/raylib-5.5_win64_mingw-w64")
 
 
     if(NOT EXISTS "${RAYLIB_DIR}/lib/libraylib.a")

@@ -470,8 +470,10 @@ bool MiniGameManager::IsLevelCompleted() {
         gameplayManager.gameplayEvent.triggerEvent("stopGame");
         gameplayManager.gameplayEnd();
         if (gameplayManager.enemy.getHealth() == 0){
-             DifficultyCompleted(SelectedDifficulty);
-        currentScreen = TITLE;
-        return true;
+            DifficultyCompleted(SelectedDifficulty);
+            currentScreen = TITLE;
+            return true;
+        }
     }
+    return false; // Ensure the function returns a boolean value
 }
