@@ -134,7 +134,7 @@ void CommandInterpreter::netscan(std::istringstream &iss, std::vector<std::strin
             if(!isEnemyIpKnown){
                 if(args[1] == gameplayManager->enemy.getHostname()){
                     if(args[2] == "-s"){
-                        if(!isCounting){
+                        if(!isPIDCounting){
                             outputLine("Netscan: Silent Draining started");
                             gameplayManager->gameplayEvent.triggerEvent("drainSilent");}
                         else{
@@ -142,7 +142,7 @@ void CommandInterpreter::netscan(std::istringstream &iss, std::vector<std::strin
                         }
                     }
                     else if(args[2] == "-b"){
-                        if(!isCounting){
+                        if(!isPIDCounting){
                             outputLine("Netscan: Bruteforce Draining started");
                             gameplayManager->gameplayEvent.triggerEvent("drainBruteforce");}
                         else{
@@ -277,11 +277,14 @@ void CommandInterpreter::flood(std::istringstream &iss, std::vector<std::string>
                      gameplayManager->port + sizeof(gameplayManager->port)/sizeof(gameplayManager->port[0]),
                      portNumber
                     ) != gameplayManager->port + sizeof(gameplayManager->port)/sizeof(gameplayManager->port[0]) 
-        && args[0] == gameplayManager->enemy.getIpAddr()) {
+        && args[0] == gameplayManager->enemy.getIpAddr()) 
+        { if (isPIDCounting) {
+            outputLine("Error: Process already running.");
+        } else {
         outputLine("Flood: Started flooding:");
         outputLine("Flood: Target IP: " + args[0]);
         outputLine("Flood: Target Port: " + args[1]);
-        gameplayManager->gameplayEvent.triggerEvent("ddos");
+        gameplayManager->gameplayEvent.triggerEvent("ddos");}
     }
     else if(args.size() == 2 && args[0] != gameplayManager->enemy.getIpAddr()) {
         outputLine("Error: flooding failed");
@@ -293,7 +296,6 @@ void CommandInterpreter::flood(std::istringstream &iss, std::vector<std::string>
                      portNumber
                     ) == gameplayManager->port + sizeof(gameplayManager->port)/sizeof(gameplayManager->port[0]) 
         && args[0] == gameplayManager->enemy.getIpAddr()) {
-        outputLine("Flood: Started flooding:");
         outputLine("Error: flooding failed");
         outputLine("Error: port invalid");
     }
@@ -311,14 +313,18 @@ void CommandInterpreter::smtpCommand(const std::vector<std::string>& args) {
             outputLine("Payload primed.");
         }
     } else if (args.size() == 2 && args[0] == "send") {
-        if (payloadState != 1) {
-            outputLine("Error: Payload not primed.");
-        } else if (args[1] == gameplayManager->enemy.getMail()) {
-            outputLine("Mail sent to " + args[1]);
-            gameplayManager->gameplayEvent.triggerEvent("mailbomb");
-            payloadState = 0; // Reset payload state after sending
+        if(isPIDCounting){
+            outputLine("Error: Process already running.");
         } else {
-            outputLine("Error: Wrong mail address.");
+            if (payloadState != 1) {
+                outputLine("Error: Payload not primed.");
+            } else if (args[1] == gameplayManager->enemy.getMail()) {
+                outputLine("Mail sent to " + args[1]);
+                gameplayManager->gameplayEvent.triggerEvent("mailbomb");
+                payloadState = 0; // Reset payload state after sending
+            } else {
+                outputLine("Error: Wrong mail address.");
+            }
         }
     } else {
         outputLine("Usage: smtp prime | smtp send mail");
@@ -344,26 +350,32 @@ void CommandInterpreter::botnetAttack() {
 }
 
 void CommandInterpreter::botnet(std::istringstream &iss, std::vector<std::string> &args) {
-    if (args.size() == 2 && args[0] == "add") {
-        std::string ip = args[1];
-        if (ip == gameplayManager->enemy.getIpAddr()) {
-            outputLine("Error: Cannot add enemy IP to botnet.");
-        } else if (gameplayManager->botnet.size() >= 5) {
-            outputLine("Error: Botnet is full. Maximum 5 IPs allowed.");
-        } else if (std::find(std::begin(gameplayManager->ipPool), std::end(gameplayManager->ipPool), ip) != std::end(gameplayManager->ipPool)) {
-            gameplayManager->botnet.insert(ip);
-            outputLine("Botnet: Added IP " + ip + " to botnet.");
+    if(isPIDCounting){
+        outputLine("Error: Process already running.");
+        return;
+    } 
+    else { 
+        if (args.size() == 2 && args[0] == "add") {
+            std::string ip = args[1];
+            if (ip == gameplayManager->enemy.getIpAddr()) {
+                outputLine("Error: Cannot add enemy IP to botnet.");
+            } else if (gameplayManager->botnet.size() >= 5) {
+                outputLine("Error: Botnet is full. Maximum 5 IPs allowed.");
+            } else if (std::find(std::begin(gameplayManager->ipPool), std::end(gameplayManager->ipPool), ip) != std::end(gameplayManager->ipPool)) {
+                gameplayManager->botnet.insert(ip);
+                outputLine("Botnet: Added IP " + ip + " to botnet.");
+            } else {
+                outputLine("Error: IP not found in IP pool.");
+            }
+        } else if (args.size() == 1 && args[0] == "discover") {
+            outputLine("Botnet: Discovering bots in botnet.");
+            for (const auto& ip : gameplayManager->botnet) {
+                outputLine(ip);
+            }
+        } else if (args.size() == 1 && args[0] == "attack") {
+            botnetAttack();
         } else {
-            outputLine("Error: IP not found in IP pool.");
+            outputLine("Usage: botnet add <ip> | botnet discover | botnet attack");
         }
-    } else if (args.size() == 1 && args[0] == "discover") {
-        outputLine("Botnet: Discovering bots in botnet.");
-        for (const auto& ip : gameplayManager->botnet) {
-            outputLine(ip);
-        }
-    } else if (args.size() == 1 && args[0] == "attack") {
-        botnetAttack();
-    } else {
-        outputLine("Usage: botnet add <ip> | botnet discover | botnet attack");
     }
 }

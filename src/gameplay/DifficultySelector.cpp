@@ -38,6 +38,9 @@ void DifficultyCompleted(int difficulty){
     // Use FileSystemManager to handle difficulty completion
     FileSystemManager fsm;
     fsm.difficultyCompleted(difficulty);
+    if (difficulty == 3) {
+        fsm.difficulty3Completed = true; // Set the flag when difficulty 3 is completed
+    }
 }
 
 bool isDifficultyCompleted(int difficulty){
@@ -87,7 +90,7 @@ void DrawDifficultySelection(){
     DrawDifficultyButton(easyRect, easy, primaryColor, buttonFontSize, isMouseOnButton(easyRect));
     if (isMouseOnButton(easyRect)){
         std::string easyDescription = 
-        ">Relax and take your time!\n"
+        ">Training Grounds\n"
         "\n"
         ">This difficulty level offers\n"
         " generous time limits for\n"
@@ -109,7 +112,7 @@ void DrawDifficultySelection(){
         DrawDifficultyButton(normalRect, normal, primaryColor, buttonFontSize, isMouseOnButton(normalRect));    
         if(isMouseOnButton(normalRect)){
             std::string normalDescription = 
-                ">Strike a balance!\n"
+                ">Hostile Territory\n"
                 "\n"
                 ">Mini-games require focus\n"
                 " and moderate speed to complete.\n"
@@ -138,7 +141,7 @@ void DrawDifficultySelection(){
         DrawDifficultyButton(hardRect, hard, primaryColor, buttonFontSize, isMouseOnButton(hardRect));
         if(isMouseOnButton(hardRect)){
             std::string hardDescription = 
-            ">Only for the brave!\n"
+            ">Pray or be damned\n"
             "\n"
             ">With tight time limits,\n"
             " mini-games demand quick\n"

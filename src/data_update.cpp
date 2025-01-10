@@ -1,5 +1,7 @@
 #include "headers/data_update.h"
 #include "headers/data_draw.h"
+#include "headers/settings_update.h"
+#include "managers/FileSystemManager.h"
 
 // declarations
 void UpdateData();
@@ -107,9 +109,10 @@ void UpdateTutorial() {
 }
 
 void UpdateRecovered() {
+    
     if(CheckCollisionPointRec(mousePos, button_recovered1)==true){
         recovered1_highl = true;
-        if (isDifficultyCompleted(1)){
+        if (fsm.isDifficultyCompleted(2)){
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
                 currentRecovered = R1;
                 recovered1_highl = false;
@@ -119,7 +122,7 @@ void UpdateRecovered() {
 
     if(CheckCollisionPointRec(mousePos, button_recovered2)==true){
         recovered2_highl = true;
-        if (isDifficultyCompleted(2)){
+        if (fsm.isDifficultyCompleted(3)){
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
                 currentRecovered = R2;
                 recovered2_highl = false;
@@ -129,7 +132,7 @@ void UpdateRecovered() {
 
     if(CheckCollisionPointRec(mousePos, button_recovered3)==true){
         recovered3_highl = true;
-        if (isDifficultyCompleted(3)){
+        if (fsm.difficulty3Completed){
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
                 currentRecovered = R3;
                 recovered3_highl = false;
@@ -138,6 +141,7 @@ void UpdateRecovered() {
     } else recovered3_highl = false;
 
     switch (currentRecovered) {
+        case R0: break;
         case R1: {
             recovered1_highl = true;
         } break;

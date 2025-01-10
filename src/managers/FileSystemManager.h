@@ -19,6 +19,7 @@ public:
     int loadMaxDifficulty();
     void difficultyCompleted(int difficulty);
     bool isDifficultyCompleted(int difficulty);
+    bool difficulty3Completed = false;
 
 private:
     void save(const std::string& filePath, const nlohmann::json& data);

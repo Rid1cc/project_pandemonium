@@ -103,26 +103,36 @@ int main(void) {
         switch (currentScreen) {
             case LOGO: {
                 UpdateLogoScreen();
+                UpdateMusicStream(main_theme);
             } break;
             case TITLE: {
                 TitleUpdate();
                 UpdateMusicStream(main_theme);
+                if(isMusicReset){
+                    isMusicReset = false;
+                }
             } break;
             case SETTINGS: {
                 SettingsUpdate(general_volume, effects_volume, mute_audio);
+                UpdateMusicStream(main_theme);
             } break;
             case DIFFICULTY_SELECTION: {
                 UpdateDifficultySelection();
+                UpdateMusicStream(main_theme);
             } break;
             case DATA_LORE: {
                 UpdateData();
+                UpdateMusicStream(main_theme);
             } break;
             case GAMEPLAY: {
                 UpdateGameplay(currentScreen, textBox, command, letterCount, mouseOnText, framesCounter, backTimer, history, upTimes);
                 UpdateMusicStream(game_theme);
             } break;
             case ENDING: {
-                if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP)) currentScreen = TITLE;
+                if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP)) {
+                    currentScreen = TITLE;
+                    isMusicReset = true;
+                }
             } break;
             default: break;
         }

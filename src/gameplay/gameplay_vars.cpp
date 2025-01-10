@@ -3,7 +3,7 @@
 #include "../headers/CommandInterpreter.h"
 #include "../headers/globals.h"
 
-bool isCounting;
+bool isPIDCounting;
 //bool isSafeMarginTimerOn;
 bool isEnemyIpKnown = false;
 bool startMiniGamesSequence = false;

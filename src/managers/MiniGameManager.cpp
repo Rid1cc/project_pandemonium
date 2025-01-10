@@ -433,7 +433,7 @@ void MiniGameManager::StartConnectingGame(float& durationScale) {
     auto connectWires = std::make_shared<ConnectWiresGame>(GetRandomIntInRange(screen.x, screen.width - 400), 
                                                            GetRandomIntInRange(screen.y, screen.height -  300), 
                                                            GetRandomIntInRange(300, 400), 
-                                                           GetRandomIntInRange(200, 300), "RJ45 CONNECTOR");
+                                                           GetRandomIntInRange(200, 300), "SPLINTER-45");
     miniGamesManager.AddGame(connectWires, durationScale * 40.0f);
     isConnectingGameOn = true;
 }
@@ -441,7 +441,7 @@ void MiniGameManager::StartConnectingGame(float& durationScale) {
 void MiniGameManager::StartTypingGame(float& durationScale) {
     auto type = std::make_shared<TypeGame>(GetRandomIntInRange(screen.x, screen.width - 1000), 
                                            GetRandomIntInRange(screen.y, screen.height - 400), 
-                                           1000, 400, "TypeGame");
+                                           1000, 400, "REG.HACK");
     miniGamesManager.AddGame(type, durationScale * 60.0f);
     isTypeGameOn = true;
 }
@@ -449,7 +449,7 @@ void MiniGameManager::StartTypingGame(float& durationScale) {
 void MiniGameManager::StartFinderGame(float& durationScale) {
     auto finder = std::make_shared<FinderGame>(GetRandomIntInRange(screen.x, screen.width - 400), 
                                                GetRandomIntInRange(screen.y, screen.height -  300),
-                                               400, 300, "FinderGame");
+                                               400, 300, "BACKDOOR");
     miniGamesManager.AddGame(finder, durationScale * 40.0f);
     isFinderGameOn = true;
 }
@@ -458,7 +458,7 @@ void MiniGameManager::StartBallGame(float& durationScale) {
     auto ballGame = std::make_shared<BallGame>(GetRandomIntInRange(screen.x, screen.width - 650),
                                                        GetRandomIntInRange(screen.y, screen.height - 550),
                                                        GetRandomIntInRange(300, 500), 
-                                                       GetRandomIntInRange(250, 400), "Ball Game");
+                                                       GetRandomIntInRange(250, 400), "PKG SPOOF");
     miniGamesManager.AddGame(ballGame, durationScale * 70.0f);    
     isBallGameOn = true;
 }
@@ -469,7 +469,8 @@ bool MiniGameManager::IsLevelCompleted() {
     } else {
         gameplayManager.gameplayEvent.triggerEvent("stopGame");
         gameplayManager.gameplayEnd();
-        if (gameplayManager.enemy.getHealth() == 0) DifficultyCompleted(SelectedDifficulty);
+        if (gameplayManager.enemy.getHealth() == 0){
+             DifficultyCompleted(SelectedDifficulty);
         currentScreen = TITLE;
         return true;
     }

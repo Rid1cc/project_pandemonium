@@ -164,6 +164,8 @@ void GameplayManager::gameplayEnd() {
     // Cleanup code
     cmdInterpreter.reset();
     isMiniGameSequenceStarted = false;
+    SeekMusicStream(main_theme, 0);
+    SeekMusicStream(game_theme, 0);
     // Unsubscribe from events if necessary
     gameplayEvent.unsubscribe("startGame", [this]() { this->onStartCommand(); });
     gameplayEvent.unsubscribe("stopGame", [this]() { this->onStopCommand(); });
@@ -236,7 +238,7 @@ void GameplayManager::onDrainSilent() {
         selectedIpPool.insert(enemyIp);
 
         // If only one address remains and countdown is not active, print it
-        if(selectedIpPool.size() == 1 && !isCounting){
+        if(selectedIpPool.size() == 1 && !isPIDCounting){
             printf("Final Address: %s\n", selectedIpPool.begin()->c_str()); // Fixed by adding .c_str()
             isEnemyIpKnown = true;
         }

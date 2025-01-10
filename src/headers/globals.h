@@ -37,7 +37,7 @@ typedef enum SettingsScreen { GRAPHICS = 0, AUDIO, DISPLAY, CUSTOM } SettingsScr
 typedef enum SettingState { LOW = 0, MID, HI} SettingState;
 typedef enum DataScreen { TUTORIALS, RECOVERED } DataScreen;
 typedef enum MiniGameTutorial {BALL, CONNECTING, FINDER, TYPE} MiniGameTutorial;
-typedef enum RecoveredState {R1, R2, R3} RecoveredState;
+typedef enum RecoveredState {R0, R1, R2, R3} RecoveredState;
 
 // Deklaracja zmiennych globalnych
 extern GameScreen currentScreen;
@@ -101,7 +101,7 @@ extern Music game_theme;
 extern Music main_theme;
 extern bool mute_audio;
 extern TraceLogCallback failed_to_load_music;
-
+extern bool isMusicReset;
 extern GameplayManager gameplayManager;
 
 #endif // GLOBALS_H

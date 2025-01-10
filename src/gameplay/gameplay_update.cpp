@@ -39,7 +39,7 @@ void UpdateGameplay(GameScreen& currentScreen, Rectangle& textBox, char* command
 
     // Update  minigame manager
     miniGamesManager.Update();
-    isCounting = gameplayManager.timer.isCounting();
+    isPIDCounting = gameplayManager.timer.isCounting();
     
 
     // Update gameplayManager timer

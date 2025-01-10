@@ -20,6 +20,7 @@ extern Rectangle settings_desc;
 extern Rectangle button_return;
 extern Rectangle button_restore;
 extern Rectangle button_apply;
+extern FileSystemManager fsm;
 
 void SettingsUpdate(float& general_volume, float& effects_volume, bool& mute_audio);
 

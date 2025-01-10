@@ -31,6 +31,7 @@ bool exitGame = false;
 std::string assetsPath;
 std::string configPath;
 Rectangle TextureKernel;
+bool isMusicReset = false;
 
 //3D stuff
 Model model_globe;
@@ -48,7 +49,7 @@ extern float brightness;
 extern Vector2 sh_resolution;
 
 // Gameplay
-GameScreen currentScreen = TITLE;
+GameScreen currentScreen = LOGO;
 Texture2D botnetTexture;
 Texture2D ddosTexture;
 Texture2D mailbombTexture;
@@ -80,7 +81,7 @@ RenderTexture2D space3d;
 // Data/Lore
 DataScreen currentDataScreen = TUTORIALS;
 MiniGameTutorial currentTutorial = BALL;
-RecoveredState currentRecovered = R1;
+RecoveredState currentRecovered = R0;
 
 //Main
 const int screenWidth = 1280;

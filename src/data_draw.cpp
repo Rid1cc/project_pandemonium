@@ -1,5 +1,7 @@
 #include "headers/data_draw.h"
 #include "headers/data_update.h"
+#include "headers/settings_update.h"
+#include "managers/FileSystemManager.h"
 
 
 // declarations
@@ -67,13 +69,13 @@ void DataButton(Rectangle rect, const char* text, Color color, int FontSize, boo
 
 void DrawTutorials(){
     int TutorialsButtonsFontSize = 40;
-    DrawTextB("Hackers are", 100, float(screenHeight)-530, TutorialsButtonsFontSize, primaryColor);
-    DrawTextB("coming!", 100, float(screenHeight)-485, TutorialsButtonsFontSize, primaryColor);
-    DrawTextB("Get ready!", 100, float(screenHeight)-440, TutorialsButtonsFontSize, primaryColor);
-    DataButton(button_BallGame, "BALL GAME", primaryColor, TutorialsButtonsFontSize, ballgame_highl, 100);
-    DataButton(button_ConnectingGame, "RJ-45 GAME", primaryColor, TutorialsButtonsFontSize, connectinggame_highl, 100);
-    DataButton(button_FinderGame, "FINDER GAME", primaryColor, TutorialsButtonsFontSize, findergame_highl, 100);
-    DataButton(button_TypeGame, "TYPE GAME", primaryColor, TutorialsButtonsFontSize, typegame_highl, 100);
+    DrawTextB("Exorcist's", 100, float(screenHeight)-530, TutorialsButtonsFontSize, primaryColor);
+    DrawTextB("handbook.", 100, float(screenHeight)-485, TutorialsButtonsFontSize, primaryColor);
+    DrawTextB("Be prepared.", 100, float(screenHeight)-440, TutorialsButtonsFontSize, primaryColor);
+    DataButton(button_BallGame, "PKG SPOOF", primaryColor, TutorialsButtonsFontSize, ballgame_highl, 100);
+    DataButton(button_ConnectingGame, "SPLINTER-45", primaryColor, TutorialsButtonsFontSize, connectinggame_highl, 100);
+    DataButton(button_FinderGame, "BACKDOOR", primaryColor, TutorialsButtonsFontSize, findergame_highl, 100);
+    DataButton(button_TypeGame, "REG.HACK", primaryColor, TutorialsButtonsFontSize, typegame_highl, 100);
 
     Rectangle descriptionRect = {400, float(screenHeight) - 530, 780, 450};
     DrawRectangleRec(descriptionRect, BLACK);
@@ -165,27 +167,28 @@ void DrawTutorialDescription(Rectangle rect, int FontSize, std::string text, Col
 }
 
 void DrawRecovered(){
+
     int RecoveredButtonsFontSize = 40;
-    DrawTextB("Secrets", 100, float(screenHeight)-530, RecoveredButtonsFontSize, primaryColor);
-    DrawTextB("unveiled!", 100, float(screenHeight)-485, RecoveredButtonsFontSize, primaryColor);
-    DrawTextB("Dive in!", 100, float(screenHeight)-440, RecoveredButtonsFontSize, primaryColor);
+    DrawTextB("Scrapped logs,", 100, float(screenHeight)-530, RecoveredButtonsFontSize, primaryColor);
+    DrawTextB("recovered", 100, float(screenHeight)-485, RecoveredButtonsFontSize, primaryColor);
+    DrawTextB("from battles", 100, float(screenHeight)-440, RecoveredButtonsFontSize, primaryColor);
 
     // description box
     Rectangle descriptionRect = {400, float(screenHeight) - 530, 780, 450};
     DrawRectangleRec(descriptionRect, BLACK);
     DrawRectangleLinesEx(descriptionRect, 3, primaryColor);
 
-    //if (isDifficultyCompleted(1)) {
+    if (fsm.isDifficultyCompleted(2)) {
         DataButton(button_recovered1, "RECOVERED 1", primaryColor, RecoveredButtonsFontSize, recovered1_highl, 100);
-    // } else {
-    //     DrawBlockedRecoveredButton(button_recovered1, "RECOVERED 1", RecoveredButtonsFontSize, recovered1_highl, 100);
-    //     if (recovered1_highl){
-    //         DrawTextB("Come back after", 100, float(screenHeight)-130, 25, DARKGRAY);
-    //         DrawTextB("beating EASY mode!", 100, float(screenHeight)-100, 25, DARKGRAY);
-    //     }
-    // }
+    } else {
+        DrawBlockedRecoveredButton(button_recovered1, "RECOVERED 1", RecoveredButtonsFontSize, recovered1_highl, 100);
+        if (recovered1_highl){
+            DrawTextB("Come back after", 100, float(screenHeight)-130, 25, DARKGRAY);
+            DrawTextB("beating EASY mode!", 100, float(screenHeight)-100, 25, DARKGRAY);
+        }
+    }
 
-    if (isDifficultyCompleted(2)) {
+    if (fsm.isDifficultyCompleted(3)) {
         DataButton(button_recovered2, "RECOVERED 2", primaryColor, RecoveredButtonsFontSize, recovered2_highl, 100);
     } else {
         DrawBlockedRecoveredButton(button_recovered2, "RECOVERED 2", RecoveredButtonsFontSize, recovered2_highl, 100);
@@ -195,7 +198,7 @@ void DrawRecovered(){
         }
     }
 
-    if (isDifficultyCompleted(3)) {
+    if (fsm.difficulty3Completed) {
         DataButton(button_recovered3, "RECOVERED 3", primaryColor, RecoveredButtonsFontSize, recovered3_highl, 100);
     } else {
         DrawBlockedRecoveredButton(button_recovered3, "RECOVERED 3", RecoveredButtonsFontSize, recovered3_highl, 100);
@@ -207,25 +210,54 @@ void DrawRecovered(){
 
     int DescriptionFontSize = 27;
     switch (currentRecovered) {
+        case R0: break;
         case R1: {
             std::string description =
-            "RECOVERED 1:"
+            "log:exorcist_001 04:09:10 01.02.1984\n"
+            "------------------------------------\n"
+            "I have been selected as the exorcist of my platoon.\n"
+            "I was told that it was some kind of\n"
+            "experimental type of hack service.... \n"
+            "and that I would find out more already on duty.\n"
+            "Strangely enough, they started forcibly selecting people\n"
+            "to join the army just when news of this whole mega\n"
+            "investment about drilling into the earth's interior stopped.\n"
             "\n"
-            "Story notes 1";
+            "I have a bad feeling about this... \n";
             DrawTutorialDescription(descriptionRect, DescriptionFontSize, description, primaryColor);
         } break;
         case R2: {
             std::string description =
-            "RECOVERED 2:"
+            "log:exorcist_431 22:13:04 20.12.2001\n"
+            "------------------------------------\n"
+            "The war is slowly coming to an end, they have stopped\n"
+            "sending “us” into hostile territory. Two of my platoon\n"
+            "didn't return from the last expedition. To be honest,\n"
+            "it doesn't feel good to sit in front of a a computer\n"
+            "by myself and not risk my life on the battlefield.\n"
+            "At least not like this - physically.\n"
+            "Most of ours don't even know what they're fighting.\n"
+            "They've been told it's just another rogue software leak.\n"
             "\n"
-            "Story notes 2";
+            "The barbarity...\n"
+            "At least tell them what their deaths will look like...";
             DrawTutorialDescription(descriptionRect, DescriptionFontSize, description, primaryColor);
         } break;
         case R3: {
             std::string description =
-            "RECOVERED 3:"
+            "Strictly confidential - information hazard\n"
+            "------------------------------------\n"
+            "The CEO of [Babel inc.] announces the freezing of\n"
+            "excavation in (loc.). Reason: accident to a digging unit,\n"
+            "loss of 1492 employees. Investigation led by IBP branch,\n"
+            "only led to further loss of manpower.\n"
+            "We seek government action immediately,\n"
+            "possible risk of human extinction category.\n"
+            "If action is taken - under no circumstances disclose\n"
+            "details of the situation to anyone outside the facility.\n"
             "\n"
-            "Story notes 3";
+            "Babel inc. CEO, Joseph Nimrod\n"
+            "loc. 51.1283757226213, 20.412782326273952";
             DrawTutorialDescription(descriptionRect, DescriptionFontSize, description, primaryColor);
         } break;
         default: break;

@@ -49,7 +49,7 @@ void Pid::PortscanRender() {
 
 void Pid::Render() {
     // Debug: Check timer status
-    if(!isCounting && displayEnemyIpFrames == 0) {
+    if(!isPIDCounting && displayEnemyIpFrames == 0) {
         RenderIdle();
     } else {
         switch(pidState) {

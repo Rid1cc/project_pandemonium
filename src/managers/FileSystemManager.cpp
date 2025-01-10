@@ -30,15 +30,29 @@ nlohmann::json FileSystemManager::load(const std::string& filePath) {
 void FileSystemManager::saveMaxDifficulty(int maxDifficulty) {
     nlohmann::json data;
     data["maxDifficultyUnlocked"] = maxDifficulty;
+    data["difficulty3Completed"] = difficulty3Completed; // Save the flag
     save(configPath + "difficulty.json", data);
 }
 
 int FileSystemManager::loadMaxDifficulty() {
     nlohmann::json data = load(configPath + "difficulty.json");
     if (data.contains("maxDifficultyUnlocked")) {
+        if (data.contains("difficulty3Completed")) {
+            difficulty3Completed = data["difficulty3Completed"]; // Load the flag
+        } else {
+            // Flag not available, regenerate difficulty.json with default values
+            saveMaxDifficulty(1);
+            difficulty3Completed = false;
+            std::cerr << "difficulty3Completed flag not found. Regenerating difficulty.json with default values." << std::endl;
+        }
         return data["maxDifficultyUnlocked"];
+    } else {
+        // maxDifficultyUnlocked not found, regenerate difficulty.json with default values
+        saveMaxDifficulty(1);
+        difficulty3Completed = false;
+        std::cerr << "maxDifficultyUnlocked not found. Regenerating difficulty.json with default values." << std::endl;
+        return 1;
     }
-    return 1;
 }
 
 void FileSystemManager::difficultyCompleted(int difficulty) {
@@ -46,22 +60,15 @@ void FileSystemManager::difficultyCompleted(int difficulty) {
     if (difficulty + 1 <= 3) {
         saveMaxDifficulty(difficulty + 1);
     }
+    if (difficulty == 3) {
+        difficulty3Completed = true; // Set the flag when difficulty 3 is completed
+        saveMaxDifficulty(maxDifficulty); // Save the updated flag
+    }
 }
 
 bool FileSystemManager::isDifficultyCompleted(int difficulty) {
     return difficulty <= loadMaxDifficulty();
 }
-
-// master_volume = 0.5;
-// music_volume = 1.0;
-// sfx_volume = 1.0;
-// shaderQuality = LOW;
-// primaryColor = ORANGE;
-// curvature = 0.07f;
-// bloomIntensity = 2.3f;
-// glowIntensity = 1.5f;
-// scanlineIntensity = 1.0f;
-// brightness = 1.4f;
 
 void FileSystemManager::saveSettings(const std::string& filename) {
     nlohmann::json settingsJson;
