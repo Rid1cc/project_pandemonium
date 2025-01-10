@@ -27,10 +27,13 @@ MiniGameManager::MiniGameManager()
       isFinderGameOn(false) {}
 
 void MiniGameManager::gameplayEnd() {
-    
-    for (auto& game : games) {
+    for ( auto it = games.rbegin(); it != games.rend(); ++it) {
+        auto& game = *it;
         Close(game);
     }
+    // for (auto& game : games) {
+    //     Close(game);
+    // }
 }
 
 // Update method called every frame to manage games and timer
