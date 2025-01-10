@@ -16,7 +16,7 @@ typedef enum ProcessStateName {
     ADD_BOTNET,
     ATK_BOTNET
 } ProcessStateName;
-extern bool isCounting;
+extern bool isPIDCounting;
 extern bool isSafeMarginTimerOn;
 extern bool isEnemyIpKnown;
 extern bool isMiniGameSequenceStarted;
