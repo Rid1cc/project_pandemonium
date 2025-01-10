@@ -18,6 +18,7 @@ private:
     void DdosRender();
     void MailRender();
     int animationTimer;
+    void AtkBotnetRender();
 };
 
 #endif // PID_H

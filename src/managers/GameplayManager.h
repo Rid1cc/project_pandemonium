@@ -45,6 +45,8 @@ public:
     std::unordered_set<std::string> selectedIpPool; // Updated from previous type
     std::vector<std::string> old_selectedIpPool;
     int portscanResult;         // Variable to store portscan result
+    std::unordered_set<std::string> botnet; // Variable to store botnet IPs
+    int botnetSize;
 
 
     
@@ -68,6 +70,7 @@ private:
     int onPortscan();
     void onDdos();
     void onMailBomb();
+    void onBotnetAttack();
 };
 
 #endif

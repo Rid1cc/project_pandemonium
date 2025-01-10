@@ -47,7 +47,8 @@ GameplayManager::GameplayManager() :
     difficulty(1),
     rng2(std::random_device{}()),
     enemy("Enemy", 100), // Initialize enemy Player
-    player("Steve", 100)
+    player("Steve", 100),
+    botnet() // Initialize botnet
 {
     
 }
@@ -142,6 +143,7 @@ void GameplayManager::gameplayInit() {
     gameplayEvent.subscribe("ddos", [this]() { this->onDdos(); });
     gameplayEvent.subscribe("startMiniGames", [this]() {this->onSafeMarginTimerEnd(); });
     gameplayEvent.subscribe("mailbomb", [this]() {this->onMailBomb(); });
+    gameplayEvent.subscribe("botnetAttack", [this]() { this->onBotnetAttack(); });
 
 }
 
@@ -263,6 +265,15 @@ void GameplayManager::onMailBomb() {
     if (dist(rng2) <= 20) { // 20% chance
         enemy.setHealth(enemy.getHealth() - 10);
     }
+}
+
+void GameplayManager::onBotnetAttack() {
+    timer.setCountdown(10); //10 seconds
+    pidState = ATK_BOTNET;
+    botnetSize = botnet.size();
+    int damage = botnetSize * 10; // Example: each bot deals 10% damage
+    enemy.setHealth(enemy.getHealth() - damage);
+    if (debugMode != LOW) std::cout << "Botnet attack: Dealt " << damage << "% damage to enemy." << std::endl;
 }
 
 

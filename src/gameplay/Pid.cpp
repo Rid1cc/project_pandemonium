@@ -80,7 +80,8 @@ void Pid::Render() {
                 DrawTextC("ADD BOTNET", pidMenu.x + 20, pidMenu.y + (pidMenu.height/2), 40, primaryColor);
                 break;
             case ATK_BOTNET:
-                DrawTextC("ATTACK BOTNET", pidMenu.x + 20, pidMenu.y + (pidMenu.height/2), 40, primaryColor);
+                animationTimer = 0; // Reset the timer
+                AtkBotnetRender();
                 break;
             case PORTSCAN:
                 animationTimer = 0; // Reset the timer
@@ -153,7 +154,7 @@ void Pid::b_DrainRender() {
         }
         // Draw enemy IP text centrally with increasing alpha
         DrawTextC(gameplayManager.enemyIp.c_str(), 
-                 pidMenu.x + (pidMenu.width - MeasureText(gameplayManager.enemyIp.c_str(), 20)) / 2, 
+                 pidMenu.x + (pidMenu.width - MeasureText(gameplayManager.enemy.getIpAddr().c_str(), 20)) / 2, 
                  pidMenu.y + (pidMenu.height / 2) - 10, 
                  20, 
                  (Color){primaryColor.r, primaryColor.g, primaryColor.b, (unsigned char)enemyIpAlpha});
@@ -429,6 +430,112 @@ void Pid::MailRender() {
 
     // Draw additional text
     DrawTextC("PROCESS: SMTP//", pidMenu.x + 10, pidMenu.y + 10, 20, primaryColor);
+    // Fix the warning by correctly converting to char*
+    std::string timeLeft = "EST. T.LEFT: " + std::to_string(gameplayManager.timer.countdownFrames / 60);
+    DrawTextC(timeLeft.c_str(), pidMenu.x + 10, pidMenu.y + 30, 20, primaryColor);
+}
+
+// Define a struct for particles
+struct Particle {
+    float x;
+    float y;
+    float speedX;
+    float speedY;
+    float alpha;
+};
+
+void Pid::AtkBotnetRender() {
+    static std::vector<Rectangle> botnetRects;
+    static std::vector<Particle> particles;
+    static bool animationStarted = false;
+    static int frames = 0;
+    const int animationDuration = 10 * 60; // 10 seconds at 60 FPS
+
+    if (!animationStarted) {
+        // Initialize botnet rectangles
+        int botnetSize = gameplayManager.botnetSize;
+        float rectWidth = 50.0f;
+        float rectHeight = 30.0f;
+        float spacing = 10.0f;
+        int maxPerLine = 3;
+        int lines = (botnetSize + maxPerLine - 1) / maxPerLine;
+        float totalWidth = maxPerLine * rectWidth + (maxPerLine - 1) * spacing;
+        float startX = pidMenu.x + (pidMenu.width - totalWidth) / 2;
+        float startY = pidMenu.y + pidMenu.height - rectHeight - 20.0f - (lines - 1) * (rectHeight + spacing);
+
+        for (int i = 0; i < botnetSize; ++i) {
+            Rectangle rect;
+            rect.x = startX + (i % maxPerLine) * (rectWidth + spacing);
+            rect.y = startY + (i / maxPerLine) * (rectHeight + spacing);
+            rect.width = rectWidth;
+            rect.height = rectHeight;
+            botnetRects.push_back(rect);
+        }
+        animationStarted = true;
+    }
+
+    // Draw botnet rectangles as wireframes
+    for (const auto& rect : botnetRects) {
+        DrawRectangleLinesEx(rect, 2, primaryColor);
+    }
+
+    // Draw target rectangle as wireframe
+    Rectangle targetRect = {pidMenu.x + pidMenu.width / 2 - 25, pidMenu.y + pidMenu.height / 2 - 15, 50, 30};
+    DrawRectangleLinesEx(targetRect, 2, primaryColor);
+
+    // Draw "X" inside the target rectangle
+    DrawLine(targetRect.x, targetRect.y, targetRect.x + targetRect.width, targetRect.y + targetRect.height, primaryColor);
+    DrawLine(targetRect.x + targetRect.width, targetRect.y, targetRect.x, targetRect.y + targetRect.height, primaryColor);
+
+    // Generate particles
+    if (frames % 5 == 0) { // Generate a particle every 5 frames
+        for (const auto& rect : botnetRects) {
+            Particle particle;
+            particle.x = rect.x + rect.width / 2;
+            particle.y = rect.y + rect.height / 2;
+            float targetX = targetRect.x + targetRect.width / 2;
+            float targetY = targetRect.y + targetRect.height / 2;
+            float angle = atan2(targetY - particle.y, targetX - particle.x);
+            float speed = 2.0f + static_cast<float>(rand() % 3);
+            particle.speedX = cos(angle) * speed;
+            particle.speedY = sin(angle) * speed;
+            particle.alpha = 255.0f;
+            particles.push_back(particle);
+        }
+    }
+
+    // Update and draw particles
+    for (auto it = particles.begin(); it != particles.end(); ) {
+        it->x += it->speedX;
+        it->y += it->speedY;
+        it->alpha -= 2.0f; // Decrease alpha for fading effect
+
+        // Ensure particles stay within pidMenu
+        if (it->x < pidMenu.x) it->x = pidMenu.x;
+        if (it->x > pidMenu.x + pidMenu.width) it->x = pidMenu.x + pidMenu.width;
+        if (it->y < pidMenu.y) it->y = pidMenu.y;
+        if (it->y > pidMenu.y + pidMenu.height) it->y = pidMenu.y + pidMenu.height;
+
+        // Draw particle
+        DrawCircle(it->x, it->y, 3, (Color){primaryColor.r, primaryColor.g, primaryColor.b, (unsigned char)it->alpha});
+
+        // Remove particle if fully faded
+        if (it->alpha <= 0) {
+            it = particles.erase(it);
+        } else {
+            ++it;
+        }
+    }
+
+    frames++;
+    if (frames > animationDuration) {
+        frames = 0;
+        animationStarted = false;
+        botnetRects.clear();
+        particles.clear();
+    }
+
+    DrawTextC("PROCESS: BTN ATK//", pidMenu.x + 10, pidMenu.y + 10, 20, primaryColor);
     // Fix the warning by correctly converting to char*
     std::string timeLeft = "EST. T.LEFT: " + std::to_string(gameplayManager.timer.countdownFrames / 60);
     DrawTextC(timeLeft.c_str(), pidMenu.x + 10, pidMenu.y + 30, 20, primaryColor);

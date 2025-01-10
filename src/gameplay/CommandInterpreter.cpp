@@ -93,6 +93,9 @@ void CommandInterpreter::parseCommand(const std::string& command, std::string* h
         SelectedDifficulty = 0;
         outputLine("Game stopped.");
     }
+    else if (cmd == "botnet") {
+        botnet(iss, args);
+    }
     //Netscan command
     else if (cmd == "netscan"){
        netscan(iss, args);
@@ -318,5 +321,48 @@ void CommandInterpreter::smtpCommand(const std::vector<std::string>& args) {
         }
     } else {
         outputLine("Usage: smtp prime | smtp send mail");
+    }
+}
+
+void CommandInterpreter::botnetAttack() {
+    if (gameplayManager->botnet.empty()) {
+        outputLine("Error: Botnet is empty. Add bots before attacking.");
+        return;
+    }
+
+    int botnetSize = gameplayManager->botnet.size();
+    outputLine("Botnet: Attacking with " + std::to_string(botnetSize) + " bots.");
+    
+    // Trigger attack event based on botnet size
+    if (botnetSize > 0) {
+        gameplayManager->gameplayEvent.triggerEvent("botnetAttack");
+    }
+
+    // Clear the botnet after attack
+    gameplayManager->botnet.clear();
+}
+
+void CommandInterpreter::botnet(std::istringstream &iss, std::vector<std::string> &args) {
+    if (args.size() == 2 && args[0] == "add") {
+        std::string ip = args[1];
+        if (ip == gameplayManager->enemy.getIpAddr()) {
+            outputLine("Error: Cannot add enemy IP to botnet.");
+        } else if (gameplayManager->botnet.size() >= 5) {
+            outputLine("Error: Botnet is full. Maximum 5 IPs allowed.");
+        } else if (std::find(std::begin(gameplayManager->ipPool), std::end(gameplayManager->ipPool), ip) != std::end(gameplayManager->ipPool)) {
+            gameplayManager->botnet.insert(ip);
+            outputLine("Botnet: Added IP " + ip + " to botnet.");
+        } else {
+            outputLine("Error: IP not found in IP pool.");
+        }
+    } else if (args.size() == 1 && args[0] == "discover") {
+        outputLine("Botnet: Discovering bots in botnet.");
+        for (const auto& ip : gameplayManager->botnet) {
+            outputLine(ip);
+        }
+    } else if (args.size() == 1 && args[0] == "attack") {
+        botnetAttack();
+    } else {
+        outputLine("Usage: botnet add <ip> | botnet discover | botnet attack");
     }
 }

