@@ -34,7 +34,7 @@ private:
 
     int gameType;
     //float miniGamesDurationTime;
-    int gameDurationScale;
+    float gameDurationScale;
 
     bool startGameSequences;
     bool isIntervalTimerOn;
@@ -83,16 +83,21 @@ public:
     bool CheckMouseState() const;
     bool hasActiveTypeGame() const; // Ensure this line exists
 
+    bool isSafeMarginTimerOn;
     void ManageGameSequences(const int& difficulty);
     int GetRandomIntInRange(int begin, int end);
     void RunGameSequence();
     std::function<void()> GetRandomGame();
-    void StartConnectingGame(int& durationScale);
-    void StartTypingGame(int& durationScale);
-    void StartFinderGame(int& durationScale);
-    void StartBallGame(int& durationScale);
+    void StartConnectingGame(float& durationScale);
+    void StartTypingGame(float& durationScale);
+    void StartFinderGame(float& durationScale);
+    void StartBallGame(float& durationScale);
 
-    bool isSafeMarginTimerOn;
+    bool isConnectingGameOn;
+    bool isTypeGameOn;
+    bool isBallGameOn;
+    bool isFinderGameOn;
+
 
 
 };

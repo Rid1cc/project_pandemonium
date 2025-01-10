@@ -70,7 +70,7 @@ int main(void) {
     //auto bouncingballGame = std::make_shared<BallGame>(300,200,600,500, "Ball Game");
     //miniGamesManager.AddGame(bouncingballGame);
     // // Add games to the game manager
-    //miniGamesManager.AddGame(finder);
+    //miniGamesManager.AddGame(finder, 60.0f);
     // miniGamesManager.SetTotalTime(900.0f);
     //miniGamesManager.AddGame(connectingGame);
 

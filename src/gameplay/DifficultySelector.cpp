@@ -209,19 +209,20 @@ void UpdateDifficultySelection(){
 
     if (SelectedDifficulty == 1 || SelectedDifficulty == 2 || SelectedDifficulty == 3){
         std::cout << "SelectedDifficulty: " << SelectedDifficulty << std::endl;
+        int randomTime = miniGamesManager.GetRandomIntInRange(20, 30);
         switch (SelectedDifficulty)
         {
         case 1:
-            gameplayManager.safeMarginTimer.setCountdown(5);
-            printf("safeMarginTimer set to 60 seconds\n");
+            gameplayManager.safeMarginTimer.setCountdown(randomTime);
+            printf("safeMarginTimer set to %i seconds\n", randomTime);
             break;
         case 2:
-            gameplayManager.safeMarginTimer.setCountdown(30);
-            printf("safeMarginTimer set to 30 seconds\n");
+            gameplayManager.safeMarginTimer.setCountdown(randomTime);
+            printf("safeMarginTimer set to %i seconds\n", randomTime);
             break;
         case 3:
-            gameplayManager.safeMarginTimer.setCountdown(2);
-            printf("safeMarginTimer set to 2 seconds\n");
+            gameplayManager.safeMarginTimer.setCountdown(randomTime);
+            printf("safeMarginTimer set to %i seconds\n", randomTime);
             break;
         default:
             break;

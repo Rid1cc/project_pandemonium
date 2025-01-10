@@ -80,7 +80,7 @@ bool IsMouseOnTextBox(const Rectangle& textBox) {
 }
 
 void CaptureTextInput(char* command, int& letterCount) {
-    if (!miniGamesManager.hasActiveTypeGame()) { // Use miniGamesManager's method
+    if (!miniGamesManager.isTypeGameOn) { // Use miniGamesManager's method
         int key = GetCharPressed();
         while (key > 0) {
             if ((key >= 32) && (key <= 125) && (letterCount < 99)) {
@@ -154,12 +154,12 @@ void NavigateHistory(char* command, int& letterCount, std::string* history, int&
         }
     } else {
         if (upTimes > 0) {
-            upTimes--;
             std::string nextCommand = history[upTimes - 1];
             letterCount = nextCommand.length();
             if(letterCount >= 100) letterCount = 99; // Ensure letterCount does not exceed buffer
             std::copy(nextCommand.begin(), nextCommand.end(), command);
             command[letterCount] = '\0';
+            upTimes--;
         } else if (upTimes == 0) {
             ClearCommand(command, letterCount);
         }
