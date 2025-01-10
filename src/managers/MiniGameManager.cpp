@@ -19,7 +19,15 @@ MiniGameManager::MiniGameManager()
       messageTimer(0.0f),
       endMessage(""),
       win(false),
-      gameType(0) {}
+      gameType(0),
+      isSafeMarginTimerOn(false) {}
+
+void MiniGameManager::gameplayEnd() {
+    
+    for (auto& game : games) {
+        Close(game);
+    }
+}
 
 // Update method called every frame to manage games and timer
 void MiniGameManager::Update() {
@@ -427,6 +435,7 @@ bool MiniGameManager::IsLevelCompleted() {
         return false;
     } else {
         gameplayManager.gameplayEvent.triggerEvent("stopGame");
+        gameplayManager.gameplayEnd();
         if (gameplayManager.enemy.getHealth() == 0) DifficultyCompleted(SelectedDifficulty);
         currentScreen = TITLE;
         return true;

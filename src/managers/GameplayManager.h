@@ -23,11 +23,12 @@ private:
 class GameplayManager {
 public:
     GameplayManager();  // Constructor
-    ~GameplayManager(); // Destructor
+    ~GameplayManager() = default; // Destructor
 
     void gameplayInit(); // Gameplay Initializer
     void gameplayEnd();  // Gameplay Uninitializer
     
+
     EventManager gameplayEvent; // EventManager instance
     TimeManager timer;          // TimeManager instance
     TimeManager safeMarginTimer;

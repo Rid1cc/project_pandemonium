@@ -182,8 +182,9 @@ void HandleEscapeKey(GameScreen& currentScreen) {
         gameplayManager.exitWindowRequested = !gameplayManager.exitWindowRequested;
     if (gameplayManager.exitWindowRequested) {
         if (IsKeyPressed(KEY_Y)) {
+            gameplayManager.gameplayEnd();
+            miniGamesManager.gameplayEnd();
             gameplayManager.exitWindow = true;
-            cmdInterpreter.reset();
         }
         else if (IsKeyPressed(KEY_N)) gameplayManager.exitWindowRequested = false;
     }

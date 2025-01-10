@@ -44,17 +44,13 @@ void TimeManager::waitThen(float seconds, void (*func)()) {
 
 // GameplayManager implementation
 GameplayManager::GameplayManager() : 
-    difficulty(1),
+    difficulty(SelectedDifficulty),
     rng2(std::random_device{}()),
     enemy("Enemy", 100), // Initialize enemy Player
     player("Steve", 100),
     botnet() // Initialize botnet
 {
     
-}
-
-GameplayManager::~GameplayManager() {
-    // Destructor implementation
 }
 
 void GameplayManager::gameplayInit() {
@@ -156,7 +152,7 @@ void GameplayManager::onSafeMarginTimerEnd() {
 
 void GameplayManager::gameplayEnd() {
     // Cleanup code
-
+    cmdInterpreter.reset();
     // Unsubscribe from events if necessary
     gameplayEvent.unsubscribe("startGame", [this]() { this->onStartCommand(); });
     gameplayEvent.unsubscribe("stopGame", [this]() { this->onStopCommand(); });

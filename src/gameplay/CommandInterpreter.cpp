@@ -9,7 +9,8 @@
 
 const int maxHistoryDrawnSize = 50;
 
-CommandInterpreter::CommandInterpreter(GameplayManager* manager) : currentCommand(""), gameplayManager(manager) {
+CommandInterpreter::CommandInterpreter(GameplayManager* manager) 
+    : currentCommand(""), gameplayManager(manager) {
     // Initialize historyDrawn array
     for(int i = 0; i < maxHistoryDrawnSize; ++i){
         historyDrawn[i] = " ";

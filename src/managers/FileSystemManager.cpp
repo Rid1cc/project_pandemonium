@@ -43,8 +43,8 @@ int FileSystemManager::loadMaxDifficulty() {
 
 void FileSystemManager::difficultyCompleted(int difficulty) {
     int maxDifficulty = loadMaxDifficulty();
-    if (difficulty > maxDifficulty) {
-        saveMaxDifficulty(difficulty);
+    if (difficulty + 1 <= 3) {
+        saveMaxDifficulty(difficulty + 1);
     }
 }
 
