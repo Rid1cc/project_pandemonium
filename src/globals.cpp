@@ -49,7 +49,7 @@ extern float brightness;
 extern Vector2 sh_resolution;
 
 // Gameplay
-GameScreen currentScreen = TITLE;
+GameScreen currentScreen = LOGO;
 Texture2D botnetTexture;
 Texture2D ddosTexture;
 Texture2D mailbombTexture;
