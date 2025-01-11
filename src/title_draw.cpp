@@ -11,8 +11,8 @@ void Init3DTitleTexture() {
     BeginMode3D(camera);
     if(play_highl){DrawModel(model_globe, (Vector3){ 0.0f, 0.0f, 0.0f }, 0.40f, primaryColor);}
     if(settings_highl){DrawModel(model_cog, (Vector3){ 0.0f, 0.0f, 0.0f }, 10.0f, primaryColor);}
-    if(data_highl){DrawModel(model_data, (Vector3){ 0.0f, -1.0f, 0.0f }, 0.1f, primaryColor);}
-    if(exit_highl){DrawModel(model_door, (Vector3){ 0.0f, 0.0f, 0.0f }, 0.5f, primaryColor);}
+    if(data_highl){DrawModel(model_data, (Vector3){ 0.0f, -5.0f, 0.0f }, 2.0f, primaryColor);}
+    if(exit_highl){DrawModel(model_door, (Vector3){ 0.0f, 0.0f, 0.0f }, 0.1f, primaryColor);}
     EndMode3D();
     EndTextureMode();
 }

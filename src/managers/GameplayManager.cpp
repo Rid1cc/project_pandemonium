@@ -163,6 +163,7 @@ void GameplayManager::onSafeMarginTimerEnd() {
 void GameplayManager::gameplayEnd() {
     // Cleanup code
     cmdInterpreter.reset();
+    isEnemyIpKnown = false;
     isMiniGameSequenceStarted = false;
     SeekMusicStream(main_theme, 0);
     SeekMusicStream(game_theme, 0);

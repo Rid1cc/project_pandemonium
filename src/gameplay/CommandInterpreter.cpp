@@ -21,6 +21,9 @@ CommandInterpreter::CommandInterpreter(GameplayManager* manager)
 void CommandInterpreter::reset() {
     currentCommand = "";
     history.clear();
+    for(int i = 0; i < maxHistoryDrawnSize; ++i){
+        historyDrawn[i] = " ";
+    }
 }
 
 void CommandInterpreter::executeCommand(const std::string& command) {
@@ -85,15 +88,15 @@ void CommandInterpreter::parseCommand(const std::string& command, std::string* h
         outputLine("IP Address: " + gameplayManager->enemy.getIpAddr());
     } 
     // Subscribe to events based on commands
-    else if (cmd == "start") {
-        gameplayManager->gameplayEvent.triggerEvent("ddos");
-        outputLine("Game started.");
-    }
-    else if (cmd == "stop") {
-        gameplayManager->gameplayEvent.triggerEvent("stopGame");
-        SelectedDifficulty = 0;
-        outputLine("Game stopped.");
-    }
+    // else if (cmd == "start") {
+    //     gameplayManager->gameplayEvent.triggerEvent("ddos");
+    //     outputLine("Game started.");
+    // }
+    // else if (cmd == "stop") {
+    //     gameplayManager->gameplayEvent.triggerEvent("stopGame");
+    //     SelectedDifficulty = 0;
+    //     outputLine("Game stopped.");
+    // }
     else if (cmd == "botnet") {
         botnet(iss, args);
     }
@@ -119,8 +122,15 @@ void CommandInterpreter::parseCommand(const std::string& command, std::string* h
     }
 
     else if (cmd == "help") {
-        historyDrawnUp();
-        historyDrawn[0] = "Available commands: echo, ipconfig, start, stop, netscan, help";
+        outputLine("Available commands:");
+        outputLine("- echo <text>: Echoes the text");
+        outputLine("- ipconfig: Displays the IP address");
+        outputLine("- netscan: help of netscan command");
+        outputLine("- portscan: help of portscan command");
+        outputLine("- flood: help of flood command");
+        outputLine("- smtp: help of smtp command");
+        outputLine("- botnet: help of botnet command");
+        outputLine("- systemstatus <ip>: status of a system");
     }
     else {
         historyDrawnUp();      

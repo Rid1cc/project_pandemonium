@@ -24,29 +24,27 @@ Rectangle textBox = terminalWindow;
 Vector2 iconDescriptionCoorinates = {infoPanel.x + 10, infoPanel.y + 120};
 std::vector<std::string> botnetDescription = {
     "BotNet:",
-    "Turn computer",
-    "into zombie bots",
-    "(40% chance)",
-    "Bigger botnet",
-    "bigger damage."
+    "Build botnet with",
+    "cilents in network",
+    "(command: botnet)",
+    "attack has 40%",
+    "chance of success"
 };
 
 std::vector<std::string> ddosDescription = {
-    "DDOS:",
-    "Find open ports",
-    "(50% chance).",
-    "Attack through port",
-    "for 10s, dealing",
-    "30% HP damage."
+    "FLOOD:",
+    "Flood enemy IP",
+    "through port.",
+    "(command: flood)",
+    "(needed: port)",
+    "(needed: ip address)"
 };
 
 std::vector<std::string> mailBombDescription = {
     "Mail Bomb:",
-    "Find enemy email",
-    "(100% chance).",
-    "Send email",
+    "Send malicious",
+    "email to enemy.",
+    "(command: smtp)",
     "(20% chance).",
-    "Success reduces",
-    "firewall by 30%.",
 };
 

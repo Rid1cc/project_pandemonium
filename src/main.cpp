@@ -83,6 +83,7 @@ int main(void) {
 
     // Load 3d models
     model_globe = LoadModel((assetsPath + "models/globe.obj").c_str());
+    model_data = LoadModel((assetsPath + "models/data.obj").c_str());
     model_cog = LoadModel((assetsPath + "models/cog.obj").c_str());
     model_door = LoadModel((assetsPath + "models/door.obj").c_str());
 
@@ -91,8 +92,8 @@ int main(void) {
         Init3DTitleTexture();
         BeginTextureMode(target);
         //Theme
-        SetMusicVolume(main_theme, music_volume);
-        SetMusicVolume(game_theme, music_volume);
+        SetMusicVolume(main_theme, (music_volume*master_volume));
+        SetMusicVolume(game_theme, (music_volume*master_volume));
 
         //Update mouse
         mousePos = MapMouseToFlat(GetMousePosition(), {1280.0, 720.0});
