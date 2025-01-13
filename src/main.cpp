@@ -45,14 +45,14 @@ int main(void) {
     RenderTexture2D target = LoadRenderTexture(screenWidth, screenHeight);
     space3d = LoadRenderTexture((int)desc_window.width, (int)desc_window.height);
 
-    Texture2D botnetTexture = LoadTexture("../assets/images/botnet.png");
-    Texture2D ddosTexture = LoadTexture("../assets/images/ddos.png");
-    Texture2D mailbombTexture = LoadTexture("../assets/images/mailbomb.png");
+    Texture2D botnetTexture = LoadTexture((assetsPath + "images/botnet.png").c_str());
+    Texture2D ddosTexture = LoadTexture((assetsPath + "images/ddos.png").c_str());
+    Texture2D mailbombTexture = LoadTexture((assetsPath + "images/mailbomb.png").c_str());
     
     // music initialization functions
     InitAudioDevice();
-    main_theme = LoadMusicStream("../assets/audio/maintheme_pandemonium.wav");
-    game_theme = LoadMusicStream("../assets/audio/song2.wav");
+    main_theme = LoadMusicStream((assetsPath + "audio/maintheme_pandemonium.wav").c_str());
+    game_theme = LoadMusicStream((assetsPath + "audio/song2.wav").c_str());
     PlayMusicStream(main_theme); 
     PlayMusicStream(game_theme);   
     
