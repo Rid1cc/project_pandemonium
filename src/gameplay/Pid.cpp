@@ -57,7 +57,7 @@ void Pid::Render() {
                 b_DrainRender();
                 if(gameplayManager.timer.countdownFrames == 1){
                     cmdInterpreter.outputLine("Netscan: Brute Force Drain complete.");
-                    cmdInterpreter.outputLine("Netscan: Remaining IP: " + gameplayManager.enemyIp);
+                    cmdInterpreter.outputLine("Netscan: Remaining IP: " + gameplayManager.enemy.getIpAddr());
                     cmdInterpreter.outputLine("Netscan: Enemy Ip Saved.");
                     isEnemyIpKnown = true;
                 }
@@ -153,7 +153,7 @@ void Pid::b_DrainRender() {
             }
         }
         // Draw enemy IP text centrally with increasing alpha
-        DrawTextC(gameplayManager.enemyIp.c_str(), 
+        DrawTextC(gameplayManager.enemy.getIpAddr().c_str(), 
                  pidMenu.x + (pidMenu.width - MeasureText(gameplayManager.enemy.getIpAddr().c_str(), 20)) / 2, 
                  pidMenu.y + (pidMenu.height / 2) - 10, 
                  20, 
